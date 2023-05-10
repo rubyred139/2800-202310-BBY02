@@ -38,3 +38,11 @@ body {
     display: none;
   }
 }
+
+.nav-link:hover {
+  color:rgb(52, 148, 204);
+}
+.navbar-nav .nav-link {
+  margin-right: 40px;
+  margin-left: 10px;
+}
