@@ -45,6 +45,10 @@ app.use(session({
 
 
 app.get('/', (req, res) => {
+    res.render("landing");
+});
+
+app.get('/main', (req, res) => {
     res.send("Hello ADVENTOURs");
 });
 
