@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
     res.send("Hello ADVENTOURs");
 });
 
+app.get('/login', (req, res) =>{
+    res.render("login");
+});
 
 
 app.use(express.static(__dirname + "/public"));
