@@ -3,3 +3,38 @@
 body {
   font-family: 'Comfortaa', cursive;
 } 
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 350,
+  'GRAD' -25,
+  'opsz' 48
+}
+
+.profile {
+  padding-right: 8px;
+}
+
+.navbar-toggler {
+  padding: .25rem .3rem;
+  font-size: 1.25rem;
+  line-height: 1;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+  transition: box-shadow .15s ease-in-out;
+  box-shadow: none;
+  width: 30px; /* adjust this value as needed */
+}
+
+.navbar-toggler:focus,
+.navbar-toggler:hover {
+  box-shadow: none;
+}
+
+@media (min-width: 992px) {
+  .profile {
+    display: none;
+  }
+}
