@@ -13,3 +13,5 @@ Install:
 -bcrypt
 -joi
 -ejs
+
+Dices icons created by Luvdat - Flaticon, https://www.flaticon.com/free-icons/dices"

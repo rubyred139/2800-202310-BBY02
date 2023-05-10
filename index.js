@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
     res.send("Hello ADVENTOURs");
 });
 
+app.get('/gachaPage', (req, res) => {
+    res.render("gachaPage");
+})
 
 
 app.use(express.static(__dirname + "/public"));
