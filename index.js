@@ -91,6 +91,11 @@ app.get('/quiz', (req,res) => {
       res.status(500).send('Error saving quiz answers to database');
     }
   });
+  
+app.get('/gachaPage', (req, res) => {
+    res.render("gachaPage");
+})
+
 
 app.use(express.static(__dirname + "/public"));
 
