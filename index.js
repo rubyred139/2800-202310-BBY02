@@ -14,8 +14,12 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: false }));
 
-
+//this one is the landing page
 app.get('/', (req, res) => {
+    res.render("landing");
+});
+
+app.get('/main', (req, res) => {
     res.send("Hello ADVENTOURs");
 });
 
