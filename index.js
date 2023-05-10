@@ -216,7 +216,7 @@ app.post('/loggingin', async (req, res) => {
 });
 
 app.get('/main', sessionValidation, (req, res) => {
-  res.send("Hello ADVENTOURs");
+  res.render("main");
 });
 
 
