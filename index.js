@@ -32,6 +32,42 @@ app.get('/login', (req, res) =>{
     res.render("login");
 });
 
+app.get('/quizWelcome', (req,res) => {
+	res.render("quizWelcome", { name: req.session.name });
+})
+
+app.get('/quiz', (req,res) => {
+    if (!req.session.authenticated) {
+        res.redirect('/');
+      } else {
+        var name = req.session.name;
+        var userId = req.session._id;
+        res.render("quiz", {name, userId})
+      }
+  });
+  
+  app.post('/quiz', async (req, res) => {
+    const db = database.db(mongodb_database);
+    const userCollection = db.collection('users');
+  
+    const userId = req.session._id;
+    const answers = {
+      question1: req.body.question1,
+      question2: req.body.question2,
+      question3: req.body.question3,
+      question4: req.body.question4
+    };
+  
+    try { 
+      const result = await userCollection.updateOne({ _id: ObjectId(userId) }, { $set: { quizAnswers: answers } });
+      console.log('Answers saved to database');
+      res.redirect('/members');
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Error saving quiz answers to database');
+    }
+  });
+
 app.use(express.static(__dirname + "/public"));
 
 app.get("*", (req, res) => {

@@ -1,0 +1,91 @@
+<%- include("templates/header") %>
+
+<div class="container py-5">
+  <h1 class="display-4 mb-4">Preference Quiz</h1>
+
+  <form method="post" action="/quiz">
+    <div class="form-group mb-4">
+      <h4 class="mb-3">Question 1: Why are you travelling?</h4>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question1" id="q1-option1" value="fun" required>
+        <label class="form-check-label" for="q1-option1">For fun</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question1" id="q1-option2" value="grad">
+        <label class="form-check-label" for="q1-option2">Graduation trip</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question1" id="q1-option3" value="family">
+        <label class="form-check-label" for="q1-option3">Family trip</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question1" id="q1-option4" value="honeymoon">
+        <label class="form-check-label" for="q1-option4">Honeymoon</label>
+      </div>
+    </div>
+
+    <div class="form-group mb-4">
+      <h4 class="mb-3">Question 2: What type of destination do you want to go to?</h4>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question2" id="q2-option1" value="snowy" required>
+        <label class="form-check-label" for="q2-option1">Snowy</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question2" id="q2-option2" value="beach">
+        <label class="form-check-label" for="q2-option2">Beach</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question2" id="q2-option3" value="history">
+        <label class="form-check-label" for="q2-option3">Historic City</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question2" id="q2-option4" value="jungle">
+        <label class="form-check-label" for="q2-option4">Jungle</label>
+      </div>
+    </div>
+
+    <div class="form-group mb-4">
+      <h4 class="mb-3">Question 3: What month do you want to go travelling?</h4>
+      <select class="form-select" name="question3" required>
+        <option value="january">January</option>
+        <option value="february">February</option>
+        <option value="march">March</option>
+        <option value="april">April</option>
+        <option value="may">May</option>
+        <option value="june">June</option>
+        <option value="july">July</option>
+        <option value="august">August</option>
+        <option value="september">September</option>
+        <option value="october">October</option>
+        <option value="november">November</option>
+        <option value="december">December</option>
+      </select>
+    </div>
+    
+
+    <div class="form-group mb-4">
+      <h4 class="mb-3">Question 4: What activity do you mainly want to do at your destination?</h4>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question4" id="q4-option1" value="sight seeing" required>
+        <label class="form-check-label" for="q4-option1">Sight seeing</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question4" id="q4-option2" value="nature">
+        <label class="form-check-label" for="q4-option2">Being in nature</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question4" id="q4-option3" value="food">
+        <label class="form-check-label" for="q4-option3">Trying new food</label>
+      </div>
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="question4" id="q4-option4" value="relaxing">
+        <label class="form-check-label" for="q4-option4">Relaxing</label>
+      </div>
+    </div>
+
+    <input type="hidden" name="userId" value="<%= userId %>">
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
+
+<%- include("templates/footer") %>
