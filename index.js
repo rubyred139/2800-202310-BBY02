@@ -326,22 +326,23 @@ app.get('/gachaPage', (req, res) => {
 })
 
 app.get("/main", sessionValidation, (req, res) => {
-  var exname = "victor";
+  var username = req.session.username;
+  console.log(username);
 
   userCollection
-    .find({ name: exname })
-    .project({ country: 1, season: 1, month: 1 })
+    .find({ username: username })
+    .project({ quizAnswers: 1 })
     .toArray()
     .then((result) => {
-      console.log(result);
       const userEntry = result[0];
+      const answers = userEntry.quizAnswers;
 
       const response = openai.createCompletion({
         model: "text-davinci-003",
         prompt: `
-          A new traveller is going to ${userEntry.country} in ${userEntry.month} during ${userEntry.season}.
+          A new traveller is going to Canada. They are going ${answers.question1} in ${answers.question3}. They enjoy the ${answers.question2} and ${answers.question4}.
 
-          Provide one quirky fun fact about this country, one recommended local business, and one natural destination there.
+          Provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, and one natural destination they would like.
 
           Return response in the following parsable JSON format:
           
