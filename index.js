@@ -170,7 +170,7 @@ app.post('/signupSubmit', async (req, res) => {
 
 
 app.get('/login', (req, res) => {
-  res.render("login", { errorMessage: "" });
+  res.render("login", { errorMessage: "" , successMessage: ""});
 });
 
 app.post('/loggingin', async (req, res) => {
@@ -258,14 +258,12 @@ app.post('/resetPassword', async (req, res) => {
     res.render('resetPassword', { errorMessage: errorMessage, email: email });
     return;
   }
-
-  // Update the user's password in the database
-  console.log('password is changed for user with this email: ', email);
-  const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-  await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
-
-   
-  res.redirect('/login');
+  else {
+    const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+    await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
+    res.render('login', { successMessage: 'Your password has been changed successfully. Please log in again.', errorMessage: ""});
+    console.log('password is changed for user with this email: ', email);
+  }
 });
 
 

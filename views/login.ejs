@@ -33,7 +33,7 @@
 
 
   <body class="text-center vsc-initialized">
-
+  
     <main class="form-signin w-100 m-auto">
       <img class="mx-auto my-auto py-3" src="logo2.png" alt="logo" width="250">
       <h1 class="h3 mb-3 fw-normal">Log in</h1>
@@ -42,6 +42,12 @@
           <%= errorMessage %>
         </div>
       <% } %>
+      <% if (successMessage) { %>
+        <div class="alert alert-success" role="alert">
+          <%= successMessage %>
+        </div>
+      <% } %>
+      
       <form action="/loggingin" method="post">
         <div class="form-floating">
           <input name='email' type="text" class="form-control" id="floatingInput" placeholder="Email Address">
