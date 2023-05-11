@@ -1,8 +1,10 @@
 <%- include("templates/header") %>
 
-<h1> Some basic facts about <%= userEntry.country %></h1>
-<h2><%= parsedResponse.firstFact %> </h2>
-<h2><%= parsedResponse.secondFact %> </h2>
-<h2><%= parsedResponse.thirdFact %> </h2>
+<div class="container">
+    <h1><%= userEntry.country %></h1>
+    <h2><%= parsedResponse.quirkyFact %> </h2>
+    <h2><%= parsedResponse.businessFact %> </h2>
+    <h2><%= parsedResponse.natureFact %> </h2>
+</div>
 
 <%- include("templates/footer") %>

@@ -138,7 +138,7 @@ app.get("/main", (req, res) => {
 
   userCollection
     .find({ name: exname })
-    .project({ country: 1, season: 1, month: 1, _id: 1 })
+    .project({ country: 1, season: 1, month: 1 })
     .toArray()
     .then((result) => {
       console.log(result);
@@ -147,17 +147,19 @@ app.get("/main", (req, res) => {
       const response = openai.createCompletion({
         model: "text-davinci-003",
         prompt: `
-          Give three short facts about travelling to ${userEntry.country} in ${userEntry.month} during ${userEntry.season}.
+          A new travEller is going to ${userEntry.country} in ${userEntry.month} during ${userEntry.season}.
+
+          Provide one quirky fun fact about this country, one recommended local business, and one natural destination there.
 
           Return response in the following parsable JSON format:
           
           {
-            "firstFact" : "the first fact",
-            "secondFact" : "the second fact",
-            "thirdFact" : "the third fact",
+            "quirkyFact" : "the quirky fact",
+            "businessFact" : "the business fact",
+            "natureFact" : "the natural fact",
           }
         `,
-        max_tokens: 2000,
+        max_tokens: 1500,
         temperature: 0,
         top_p: 1.0,
         frequency_penalty: 0.0,
