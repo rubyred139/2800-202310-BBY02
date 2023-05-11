@@ -322,39 +322,15 @@ app.post("/quiz", async (req, res) => {
   }
 });
 
-app.get("/quiz_test", (req, res) => {
-  var html = `
-    test quiz
-    <form action='/middle' method='post'>
-    <input name='country' type='text' placeholder='country'>
-    <br>
-    <input name='season' type='text' placeholder='season'>
-    <br>
-    <input name='month' type='text' placeholder='travel month'>
-    <br>
-    <input name='name' type='text' placeholder='name'>
-    <br>
-    <button>Submit</button>
-    </form>
-    `;
-  res.send(html);
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  console.log("user logged out");
+  res.redirect('/');
 });
 
-app.post("/middle", async (req, res) => {
-  var country = req.body.country;
-  var season = req.body.season;
-  var month = req.body.month;
-  var name = req.body.name;
-
-  await userCollection.insertOne({
-    country: country,
-    season: season,
-    month: month,
-    name: name,
-  });
-  console.log("Inserted test.");
-  res.redirect("/main", { result });
-});
+app.get('/gachaPage', (req, res) => {
+    res.render("gachaPage");
+})
 
 app.get("/main", (req, res) => {
   var exname = "victor";
@@ -370,7 +346,7 @@ app.get("/main", (req, res) => {
       const response = openai.createCompletion({
         model: "text-davinci-003",
         prompt: `
-          A new travEller is going to ${userEntry.country} in ${userEntry.month} during ${userEntry.season}.
+          A new traveller is going to ${userEntry.country} in ${userEntry.month} during ${userEntry.season}.
 
           Provide one quirky fun fact about this country, one recommended local business, and one natural destination there.
 
