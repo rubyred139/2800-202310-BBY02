@@ -148,7 +148,8 @@ app.post('/signupSubmit', async (req, res) => {
 
 
   var hashedPassword = await bcrypt.hash(password, saltRounds);
-//remove the security answer after we connect to the profile page, user will set their own security answer there
+
+
   await userCollection.insertOne({ username: username, email: email, password: hashedPassword, securityAnswer: 'dog'});
   console.log("Inserted user");
 
@@ -183,7 +184,7 @@ app.post('/loggingin', async (req, res) => {
   if (validationResult.error != null) {
     console.log(validationResult.error);
     const errorMessage = 'User not found.';
-    res.render('login', { errorMessage: errorMessage });
+    res.render('login', { errorMessage: errorMessage, successMessage:"" });
     return;
   }
 
@@ -194,7 +195,7 @@ app.post('/loggingin', async (req, res) => {
   if (result.length != 1) {
     console.log("user not found");
     const errorMessage = 'User not found.';
-    res.render('login', { errorMessage: errorMessage });
+    res.render('login', { errorMessage: errorMessage, successMessage: "" });
     return;
   }
   if (await bcrypt.compare(password, result[0].password)) {
@@ -202,7 +203,6 @@ app.post('/loggingin', async (req, res) => {
     req.session.authenticated = true;
     req.session.username = result[0].username;
     req.session.cookie.maxAge = expireTime;
-    req.session.user_type = result[0].user_type;
 
     res.redirect('/main');
     return;
@@ -210,7 +210,7 @@ app.post('/loggingin', async (req, res) => {
   else {
     console.log("incorrect password");
     const errorMessage = 'Invalid email/password combination.';
-    res.render('login', { errorMessage: errorMessage });
+    res.render('login', { errorMessage: errorMessage, successMessage: "" });
     return;
   }
 });
