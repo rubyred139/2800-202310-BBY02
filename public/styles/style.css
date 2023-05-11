@@ -8,3 +8,8 @@ body {
 #quizQ3 {
   text-align: center;
 }
+
+.sizer {
+  max-width: 50%;
+  max-height: 50%;
+}
