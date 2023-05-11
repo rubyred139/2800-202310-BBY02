@@ -24,7 +24,7 @@
 
 <body>
 
-  <a href="/" style="display: flex;">
+  <a class="back" href="/" style="display: flex;">
     <p class="material-symbols-outlined">
       arrow_back_ios
       </span>
@@ -33,6 +33,7 @@
 
 
   <body class="text-center vsc-initialized">
+
     <main class="form-signin w-100 m-auto">
       <img class="mx-auto my-auto py-3" src="logo2.png" alt="logo" width="250">
       <h1 class="h3 mb-3 fw-normal">Log in</h1>
@@ -40,23 +41,23 @@
         <div class="alert alert-danger" role="alert">
           <%= errorMessage %>
         </div>
-        <% } %>
-        <form action="/loggingin" method="post">
-          <div class="form-floating">
-            <input name='email' type="text" class="form-control" id="floatingInput" placeholder="Email Address">
-            <label for="floatingInput">Email address</label>
-          </div>
-          <div class="form-floating">
-            <input name='password' type='password' class="form-control" id="floatingPassword" placeholder="Password">
-            <label for="floatingPassword">Password</label>
-          </div>
-    
-          <!-- <div class="checkbox mb-3">
-            <label>
-              <input type="checkbox" value="remember-me"> Remember me
-            </label>
-          </div> -->
-          <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
-        </form>
+      <% } %>
+      <form action="/loggingin" method="post">
+        <div class="form-floating">
+          <input name='email' type="text" class="form-control" id="floatingInput" placeholder="Email Address">
+          <label for="floatingInput">Email address</label>
+        </div>
+        <div class="form-floating">
+          <input name='password' type='password' class="form-control" id="floatingPassword" placeholder="Password">
+          <label for="floatingPassword">Password</label>
+        </div>
+        <div class="forgot-password-link">
+          <a href="/changePassword">Forgot password?</a> 
+        </div>
+        <button class="w-100 btn btn-lg btn-primary" type="submit">Submit</button>
+      </form>
+  
     </main>
+    
+
   </body>

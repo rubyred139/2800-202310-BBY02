@@ -141,30 +141,30 @@ app.post('/signupSubmit', async (req, res) => {
     if (existingUser) {
       // email already taken, handle accordingly
       const errorMessage = 'Email already in use.';
-      res.render("signup", {errorMessage: errorMessage});
+      res.render("signup", { errorMessage: errorMessage });
       return;
     };
   };
 
 
-var hashedPassword = await bcrypt.hash(password, saltRounds);
+  var hashedPassword = await bcrypt.hash(password, saltRounds);
+//remove the security answer after we connect to the profile page, user will set their own security answer there
+  await userCollection.insertOne({ username: username, email: email, password: hashedPassword, securityAnswer: 'dog'});
+  console.log("Inserted user");
 
-await userCollection.insertOne({ username: username, email: email, password: hashedPassword, });
-console.log("Inserted user");
+  //create a session and redirect to main page
+  req.session.user = {
+    username: username,
+    email: email,
+  };
 
-//create a session and redirect to main page
-req.session.user = {
-  username: username,
-  email: email,
-};
+  //sets authentication to true 
+  req.session.authenticated = true;
 
-//sets authentication to true 
-req.session.authenticated = true;
+  //sets their username
+  req.session.username = username;
 
-//sets their username
-req.session.username = username;
-
-res.redirect('/main');
+  res.redirect('/main');
 
 });
 
@@ -214,6 +214,62 @@ app.post('/loggingin', async (req, res) => {
     return;
   }
 });
+
+app.get('/changePassword', (req, res) => {
+  res.render("changePassword", { errorMessage: ""});
+  
+});
+
+
+app.post('/changePassword', async (req, res) => {
+  const existingEmail = req.body.email;
+  const securityAnswer = req.body.securityAnswer;
+
+  const existingUser = await userCollection.findOne({ email: existingEmail, securityAnswer: securityAnswer });
+
+  if (!existingUser) {
+    console.log("invalid combination");
+    const errorMessage = "Incorrect answer to the security question.";
+    res.render('changePassword', { errorMessage: errorMessage });
+    return;
+  }
+
+  console.log("both inputs correct");
+
+    // Save email in session
+    req.session.email = existingEmail;
+
+  res.redirect('/resetPassword');
+
+});
+ 
+app.get('/resetPassword', (req, res) => {
+  const email = req.session.email;
+  res.render("resetPassword", {errorMessage: "", email: email});
+});
+
+app.post('/resetPassword', async (req, res) => {
+  const newPassword = req.body.password;
+  const confirmPassword = req.body.confirmPassword;
+  const email = req.session.email;  
+
+  if (newPassword !== confirmPassword) {
+    const errorMessage = 'Passwords do not match';
+    res.render('resetPassword', { errorMessage: errorMessage, email: email });
+    return;
+  }
+
+  // Update the user's password in the database
+  console.log('password is changed for user with this email: ', email);
+  const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
+  await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
+
+   
+  res.redirect('/login');
+});
+
+
+
 
 app.get('/main', sessionValidation, (req, res) => {
   res.render("main");

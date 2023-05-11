@@ -42,7 +42,7 @@ body {
   'opsz' 48
 }
 
-a {
+.back {
     position: absolute;
     top: 2%;
     left: 2%;
@@ -54,3 +54,5 @@ a {
  a:hover {
     color:rgb(52, 148, 204);
   }
+
+  
