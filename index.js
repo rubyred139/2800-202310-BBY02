@@ -1,10 +1,12 @@
 require("./utils.js");
 
-require("dotenv").config();
-const express = require("express");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
-const bcrypt = require("bcrypt");
+require('dotenv').config();
+const express = require('express');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
+const { MongoClient } = require('mongodb');
+const {ObjectId} = require('mongodb');
+const bcrypt = require('bcrypt');
 const { Configuration, OpenAIApi } = require("openai");
 const saltRounds = 12;
 
@@ -32,7 +34,10 @@ const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 
-var { database } = include("databaseConnection");
+const url = `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/${mongodb_database}`;
+const mongoClient = new MongoClient(url);
+
+var { database } = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
 
@@ -159,7 +164,7 @@ app.post('/signupSubmit', async (req, res) => {
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
 
-  await userCollection.insertOne({ username: username, email: email, password: hashedPassword, securityAnswer: 'dog'});
+  const result = await userCollection.insertOne({ username: username, email: email, password: hashedPassword, securityAnswer: 'dog'});
   console.log("Inserted user");
 
   //create a session and redirect to main page
@@ -174,7 +179,11 @@ app.post('/signupSubmit', async (req, res) => {
   //sets their username
   req.session.username = username;
 
-  res.redirect('/main');
+  //sets user's id in the user session
+  req.session._id = result.insertedId;
+
+
+  res.redirect('/quizWelcome');
 
 });
 
@@ -211,6 +220,7 @@ app.post('/loggingin', async (req, res) => {
     console.log("correct password");
     req.session.authenticated = true;
     req.session.username = result[0].username;
+    req.session._id = result[0]._id;
     req.session.cookie.maxAge = expireTime;
 
     res.redirect('/main');
@@ -277,7 +287,7 @@ app.post('/resetPassword', async (req, res) => {
 
 
 app.get('/quizWelcome', (req, res) => {
-  res.render("quizWelcome", { name: req.session.name });
+  res.render("quizWelcome", { name: req.session.username });
 })
 
 app.get("/quiz", (req, res) => {
@@ -303,12 +313,9 @@ app.post("/quiz", async (req, res) => {
   };
 
   try {
-    const result = await userCollection.updateOne(
-      { _id: ObjectId(userId) },
-      { $set: { quizAnswers: answers } }
-    );
-    console.log("Answers saved to database");
-    res.redirect("/members");
+    const result = await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { quizAnswers: answers } });
+    console.log('Answers saved to database');
+    res.redirect('/gachaPage');
   } catch (err) {
     console.error(err);
     res.status(500).send("Error saving quiz answers to database");

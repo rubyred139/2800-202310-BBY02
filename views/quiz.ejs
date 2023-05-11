@@ -5,87 +5,69 @@
 
   <form method="post" action="/quiz">
     <div class="form-group mb-4">
-      <h4 class="mb-3">Question 1: Why are you travelling?</h4>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question1" id="q1-option1" value="fun" required>
-        <label class="form-check-label" for="q1-option1">For fun</label>
+      <div class="card">
+        <h4 class="card-header text-center">Why are you travelling?</h4>
+        <div class="card-body">
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Fun" data-question="question1">Fun</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Graduation trip" data-question="question1">Graduation trip</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Family trip" data-question="question1">Family trip</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Honeymoon" data-question="question1">Honeymoon</button>
+          <input type="hidden" name="question1" id="question1-input">
+        </div>
       </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question1" id="q1-option2" value="grad">
-        <label class="form-check-label" for="q1-option2">Graduation trip</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question1" id="q1-option3" value="family">
-        <label class="form-check-label" for="q1-option3">Family trip</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question1" id="q1-option4" value="honeymoon">
-        <label class="form-check-label" for="q1-option4">Honeymoon</label>
-      </div>
-    </div>
-
-    <div class="form-group mb-4">
-      <h4 class="mb-3">Question 2: What type of destination do you want to go to?</h4>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question2" id="q2-option1" value="snowy" required>
-        <label class="form-check-label" for="q2-option1">Snowy</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question2" id="q2-option2" value="beach">
-        <label class="form-check-label" for="q2-option2">Beach</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question2" id="q2-option3" value="history">
-        <label class="form-check-label" for="q2-option3">Historic City</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question2" id="q2-option4" value="jungle">
-        <label class="form-check-label" for="q2-option4">Jungle</label>
-      </div>
-    </div>
-
-    <div class="form-group mb-4">
-      <h4 class="mb-3">Question 3: What month do you want to go travelling?</h4>
-      <select class="form-select" name="question3" required>
-        <option value="january">January</option>
-        <option value="february">February</option>
-        <option value="march">March</option>
-        <option value="april">April</option>
-        <option value="may">May</option>
-        <option value="june">June</option>
-        <option value="july">July</option>
-        <option value="august">August</option>
-        <option value="september">September</option>
-        <option value="october">October</option>
-        <option value="november">November</option>
-        <option value="december">December</option>
-      </select>
     </div>
     
-
     <div class="form-group mb-4">
-      <h4 class="mb-3">Question 4: What activity do you mainly want to do at your destination?</h4>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question4" id="q4-option1" value="sight seeing" required>
-        <label class="form-check-label" for="q4-option1">Sight seeing</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question4" id="q4-option2" value="nature">
-        <label class="form-check-label" for="q4-option2">Being in nature</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question4" id="q4-option3" value="food">
-        <label class="form-check-label" for="q4-option3">Trying new food</label>
-      </div>
-      <div class="form-check">
-        <input class="form-check-input" type="radio" name="question4" id="q4-option4" value="relaxing">
-        <label class="form-check-label" for="q4-option4">Relaxing</label>
+      <div class="card">
+        <h4 class="card-header text-center">What type of destination do you want to go to?</h4>
+        <div class="card-body">
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Snow views" data-question="question2">Snow views</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Beach" data-question="question2">Beach</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Historic city" data-question="question2">Historic City</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Jungle" data-question="question2">Jungle</button>
+          <input type="hidden" name="question2" id="question2-input">
+        </div>
       </div>
     </div>
-
+    
+    <div class="form-group mb-4">
+      <div class="card">
+        <h4 class="card-header text-center">What month do you want to go travelling?</h4>
+        <select class="form-select custom-select-md" size="4" id="quizQ3" multiple="multiple" name="question3" required>
+          <option value="January">January</option>
+          <option value="February">February</option>
+          <option value="March">March</option>
+          <option value="April">April</option>
+          <option value="May">May</option>
+          <option value="June">June</option>
+          <option value="July">July</option>
+          <option value="August">August</option>
+          <option value="September">September</option>
+          <option value="October">October</option>
+          <option value="November">November</option>
+          <option value="December">December</option>
+        </select>
+      </div>
+    </div>
+    
+    <div class="form-group mb-4">
+      <div class="card">
+        <h4 class="card-header text-center">Question 4: What activity do you mainly want to do at your destination?</h4>
+        <div class="card-body">
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Go sight seeing" data-question="question4">Go sight seeing</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Be in nature" data-question="question4">Be in nature</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Taste new food" data-question="question4">Taste new food</button>
+          <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Get relaxed" data-question="question4">Get relaxed</button>
+          <input type="hidden" name="question4" id="question4-input">
+        </div>
+      </div>
+    </div>
+    
     <input type="hidden" name="userId" value="<%= userId %>">
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 </div>
 
-<%- include("templates/footer") %>
+
+
+<script src="/js/quiz.js"></script>
