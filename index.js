@@ -276,13 +276,6 @@ app.post('/resetPassword', async (req, res) => {
 });
 
 
-
-
-app.get('/main', sessionValidation, (req, res) => {
-  res.render("main");
-});
-
-
 app.get('/quizWelcome', (req, res) => {
   res.render("quizWelcome", { name: req.session.name });
 })
@@ -332,7 +325,7 @@ app.get('/gachaPage', (req, res) => {
     res.render("gachaPage");
 })
 
-app.get("/main", (req, res) => {
+app.get("/main", sessionValidation, (req, res) => {
   var exname = "victor";
 
   userCollection
