@@ -27,7 +27,7 @@
         <label for="securityAnswerInput">Security Question: What is your favourite animal?</label>
         <input type="text" id="securityAnswerInput" class="form-control" name="securityAnswer" value="<%= user.securityAnswer %>">
     </div>
-    </fieldset>
+    </fieldset>      
     <div class="d-flex justify-content-end mt-2 mb-4">
       <button type="button" class="btn btn-secondary" onclick="editUserInfo()">Edit</button>
       <span style="width: 10px"></span>
@@ -41,18 +41,17 @@
 
   <fieldset class="mb-3" id="quizAnswersFields" disabled>
     <legend class="text-center">Your Travel Preferences</legend>
-    <div class="d-flex gap-1 justify-content-center fs-3">
-      <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill"><%= user.quizAnswers.question1 %></span>
+    <div class="d-flex flex-column align-items fs-2 mx-auto" style="max-width:400px">
+      <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill text-sm"><%= user.quizAnswers.question1 %></span>
       <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill"><%= user.quizAnswers.question2 %></span>
       <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill"><%= user.quizAnswers.question3 %></span>
       <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question4 %></span>
     </div>
   </fieldset>
   
-  <div class="d-flex justify-content-end mt-1">
-	<button type="button" class="btn btn-primary" onclick="location.href='/quiz'">Retake Quiz</button>
+  <div class="d-flex justify-content-end mt-1 ms-auto">
+    <button type="button" class="btn btn-primary" onclick="location.href='/quiz'">Retake Quiz</button>
   </div>
-  
   <div class="container my-5">
     <legend class="text-center">Bookmarked Countries</legend>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
