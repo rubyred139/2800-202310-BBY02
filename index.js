@@ -499,9 +499,10 @@ app.get("/gacha", async (req, res) => {
 
     // `I am going for a trip on ${q3-month} for ${q1-reason}. My ideal destination for the trip should have ${q2-type}. I want to ${q4-activity} when travel. Please recommend under-travelled countries meets the above mentioned criteria.
     try {
-        const confirmedCountries = await countryGenerator(prompt);
+
+        // const confirmedCountries = await countryGenerator(prompt);
         console.log('Confirmed countries here:', confirmedCountries);
-        res.render("gachaPage", { confirmedCountries });
+        res.render("gachaPage");
     } catch (error) {
         console.error('Error generating countries:', error);
         // Handle the error and send an appropriate response
