@@ -115,16 +115,17 @@ app.post('/signupSubmit', async (req, res) => {
   var username = req.body.username;
   var email = req.body.email;
   var password = req.body.password;
+  var securityAnswer = req.body.securityAnswer;
 
   const schema = Joi.object(
     {
       username: Joi.string().alphanum().max(20).required(),
       email: Joi.string().required(),
       password: Joi.string().required(),
-
+      securityAnswer: Joi.string().required(),
     });
 
-  const validationResult = schema.validate({ username, password, email });
+  const validationResult = schema.validate({ username, password, email, securityAnswer });
 
   if (validationResult.error != null) {
     const errorMessage = validationResult.error.message;
@@ -149,6 +150,12 @@ app.post('/signupSubmit', async (req, res) => {
       return;
     }
 
+    if (errorMessage.includes('"securityAnswer"')) { // added
+      const errorMessage = 'Security answer is required.'; // added
+      res.render("signup", { errorMessage: errorMessage });
+      return;
+    }
+
   } else {
     // check if user with the same email already exists
     const existingUser = await userCollection.findOne({ email: email });
@@ -164,7 +171,7 @@ app.post('/signupSubmit', async (req, res) => {
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
 
-  const result = await userCollection.insertOne({ username: username, email: email, password: hashedPassword, securityAnswer: 'dog'});
+  const result = await userCollection.insertOne({ username: username, email: email, password: hashedPassword, securityAnswer: securityAnswer});
   console.log("Inserted user");
 
   //create a session and redirect to main page
@@ -379,6 +386,39 @@ app.get("/main", sessionValidation, (req, res) => {
     });
 });
 
+app.get('/profile', async (req, res) => {
+  const db = database.db(mongodb_database);
+  const userCollection = db.collection('users');
+  const userId = req.session._id;
+  const user = await userCollection.findOne({_id: new ObjectId(userId)});
+  console.log(user);
+  res.render("profile", {user})
+});
+
+app.post('/updateProfile', async (req, res) => {
+  const userId = req.session._id;
+  const db = database.db(mongodb_database);
+  const userCollection = await db.collection('users');
+  const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+
+  const updatedFields = {
+    username: req.body.username ? req.body.username : user.username,
+    email: req.body.email ? req.body.email : user.email,
+    password: req.body.password ? await bcrypt.hash(req.body.password, 10) : user.password,
+    securityAnswer: req.body.securityAnswer ? req.body.securityAnswer : user.securityAnswer
+  };
+
+  const nonNullFields = {};
+  for (const [key, value] of Object.entries(updatedFields)) {
+    if (value !== null) {
+      nonNullFields[key] = value;
+    }
+  }
+
+  await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: nonNullFields });
+
+  res.redirect('/profile');
+});
 
 app.use(express.static(__dirname + "/public"));
 

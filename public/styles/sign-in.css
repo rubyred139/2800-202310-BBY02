@@ -32,6 +32,11 @@ body {
   border-top-right-radius: 0;
 }
 
+.form-signin input[type="securityQuestion"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
 
 .material-symbols-outlined {
   font-variation-settings:
