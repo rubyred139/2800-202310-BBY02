@@ -17,7 +17,6 @@ const MongoStore = require('connect-mongo');
 const { MongoClient } = require('mongodb');
 const {ObjectId} = require('mongodb');
 const bcrypt = require('bcrypt');
-const { Configuration, OpenAIApi } = require("openai");
 const saltRounds = 12;
 
 const app = express();
@@ -43,9 +42,6 @@ const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
 const node_session_secret = process.env.NODE_SESSION_SECRET;
-
-const url = `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/${mongodb_database}`;
-const mongoClient = new MongoClient(url);
 
 var { database } = include('databaseConnection');
 
