@@ -1,6 +1,16 @@
 require("./utils.js");
 
 require('dotenv').config();
+const url = require("url");
+const { Configuration, OpenAIApi } = require("openai");
+const config = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+  });
+
+const openai = new OpenAIApi(new Configuration({
+    apiKey: process.env.OPENAI_API_KEY
+}))
+
 const express = require('express');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
@@ -15,13 +25,13 @@ const app = express();
 app.use(express.json());
 
 const Joi = require("joi");
+const { count } = require("console");
 
 const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_KEY,
 });
-const openai = new OpenAIApi(configuration);
 
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 2000;
 
 
 const expireTime = 2 * 60 * 60 * 1000; //expires after 2 hr (minutes * seconds * millis)
@@ -40,6 +50,10 @@ const mongoClient = new MongoClient(url);
 var { database } = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
+const untrvl_countries = database.db(mongodb_database).collection('under-travelled_countries');
+ 
+var {database} = include('databaseConnection');
+
 
 app.set("view engine", "ejs");
 
@@ -52,8 +66,8 @@ var mongoStore = MongoStore.create({
   },
 });
 
-app.use(
-  session({
+
+app.use(session({ 
     secret: node_session_secret,
     store: mongoStore,
     saveUninitialized: false,
@@ -67,7 +81,6 @@ function isValidSession(req) {
   }
   return false;
 }
-
 function sessionValidation(req, res, next) {
   if (isValidSession(req)) {
     next();
@@ -76,6 +89,7 @@ function sessionValidation(req, res, next) {
     res.redirect('/');
   }
 }
+
 
 app.get('/', (req, res) => {
   res.render("landing");
@@ -338,7 +352,6 @@ app.get('/logout', (req, res) => {
 app.get('/gachaPage', (req, res) => {
     res.render("gachaPage");
 })
-
 app.get("/main", sessionValidation, (req, res) => {
   var username = req.session.username;
   console.log(username);
@@ -419,6 +432,88 @@ app.post('/updateProfile', async (req, res) => {
 
   res.redirect('/profile');
 });
+const prompt = `I am going for a trip on July for funs. My ideal destination for the trip should have beach. I want to go sightseeing when travel. Please recommend three under-travelled countries meets the above mentioned criteria.
+
+Return response in the following parsable JSON format:
+    
+        {
+            name: under-travelled countries that meets the above mentioned criteria,
+            location: the location of the recommended country,
+            descr: one sentence description of the courtry
+        }
+    
+`
+
+// Regenerate new response if any error in what chatGPT provided
+function parseCountriesData(response) {
+    let parsedResponse = {};    
+    try {
+        parsedResponse = JSON.parse(response);
+    } catch (error) {
+        console.error("Error parsing JSON data:", error);
+        // Regenerate new countries or handle the error as needed
+        countryGenerator(prompt);
+    }
+
+    return parsedResponse;
+}
+
+async function countryGenerator(prompt) {
+
+    try {
+        const response = await openai.createChatCompletion({
+            model: "gpt-3.5-turbo",
+            messages: [{ role: "user", content: prompt }]
+        });
+        const parsedResponse = parseCountriesData(response.data.choices[0].message.content);
+        console.log(parsedResponse)
+        const confirmedCountries = await checkCountries(parsedResponse);
+        return confirmedCountries;
+    } catch (error) {
+        console.error('Error generating countries:', error);
+        // Throw the error to be caught in the /gacha route
+        throw error;
+    }
+}
+
+// Double confirm that the countries chagGPT provided is under-travelled by cross-checking whether the countries exists in the   database
+async function checkCountries(countries) {
+    const confirmedCountries = [];
+  
+    for (let i = 0; i < countries.length; i++) {
+        const countryName = countries[i]["name"];
+
+        try {
+            const result = await untrvl_countries.findOne({ Country: countryName });
+            if (result) {
+                confirmedCountries.push(countries[i]);
+            }
+            // Print out the result if reaches to the end of the countries array
+            if (i === countries.length - 1) {
+                return confirmedCountries;
+            }
+        } catch (err) {
+                console.error('Error executing MongoDB query:', err);
+        }
+    }
+  }
+
+
+app.get("/gacha", async (req, res) => {
+
+    // `I am going for a trip on ${q3-month} for ${q1-reason}. My ideal destination for the trip should have ${q2-type}. I want to ${q4-activity} when travel. Please recommend under-travelled countries meets the above mentioned criteria.
+    try {
+        const confirmedCountries = await countryGenerator(prompt);
+        console.log('Confirmed countries here:', confirmedCountries);
+        res.render("gachaPage", { confirmedCountries });
+    } catch (error) {
+        console.error('Error generating countries:', error);
+        // Handle the error and send an appropriate response
+        res.status(500).send('Error generating countries');
+    }
+    // res.render("gachaPage");
+  });
+
 
 app.use(express.static(__dirname + "/public"));
 
