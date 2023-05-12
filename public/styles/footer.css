@@ -1,0 +1,23 @@
+
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' -25,
+  'opsz' 48
+}
+
+a:link {
+    color: black;
+  }
+  
+  a:visited {
+    color: black;
+  }
+  
+
+  .material-symbols-outlined:hover {
+    color: rgb(52, 148, 204);
+  }
+  
+  

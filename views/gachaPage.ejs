@@ -1,0 +1,127 @@
+<%- include("templates/header") %>
+
+<body>
+  <div class="d-flex gap-2 justify-content-center py-5 fs-3">
+
+
+    <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill">funs</span>
+    <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill">beach</span>
+
+    <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill">July</span>
+    <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill">go sightseeing</span>
+
+
+  </div>
+
+  <div class="container my-2">
+    <div class="p-2 text-center bg-primary-subtle rounded-4">
+
+      <h1 class="text-bodyfs-6" style="font-size: 1.2rem">Change your mind about the places you plan to go?</h1>
+
+      <div class="d-flex justify-content-center">
+        <span class="d-flex justify-content-center align-items-center mx-auto fs-6 btn btn-outline-primary rounded-pill">
+         Retake the quiz
+          <img src="./arrow_forward.png" height="70%"></img>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  
+    <div class="album py-3 ">
+      <div class="container">
+
+        <div class="list-group list-group-checkable d-grid gap-2 border-0">
+          <div id="newcard-goes-here" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+      
+                <div class="col">
+                  <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
+                  <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
+            
+                    <!-- <span class="d-block small opacity-50">With support text underneath to add more detail</span> -->
+                    <div class="card shadow-sm">
+                      <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                      <div class="card-body">
+                        <h2>
+                          Belize
+                        </h2>
+            
+                        <p class="card-text">
+                          Central America
+                          <br>
+                          A small country known for its beautiful beaches, coral reefs, and ancient Maya ruins.
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+            
+                        </div>
+                      </div>
+                    </div>            
+                  </label>
+                </div>
+             
+            <div class="col">
+              <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
+              <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
+
+                <div class="card shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                  <div class="card-body">
+                    <h2>
+                      Croatia
+                    </h2>
+
+                    <p class="card-text">
+                      Southeastern Europe
+                      <br>
+                      The crescent-shaped country features low mountains and highlands near the Adriatic coastline.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+
+                    </div>
+                  </div>
+                </div>            
+              </label>
+            </div>
+
+            <div class="col">
+              <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
+              <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
+
+                <div class="card shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                  <div class="card-body">
+                    <h2>
+                      Sri Lanka
+                    </h2>
+
+                    <p class="card-text">
+                      South Asia
+                      <br>
+                      A tropical paradise known for its stunning beaches, historic sites, and diverse wildlife.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                    </div>
+                  </div>
+                </div>            
+              </label>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+    <div class="d-flex align-items-center justify-content-center my-5 border">
+      <p class="fs-4 d-flex align-items-center justify-content-center m-3">You chose:  <span class="mx-3 px-2 bg-body-tertiary " id="user's_choice_goes_here"> name </span></p>
+      <input class="btn btn-success" type="submit" value="Submit">
+    </div>
+
+    <div class="d-flex gap-3 justify-content-center pb-5 mb-5">
+
+      <img src="./dices.png" class="btn btn-success pb-5" width="200"></button>
+    </div>
+
+  </body>
+
+<%- include("templates/footer") %>

@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
+
+body {
+  font-family: 'Comfortaa', cursive;
+
+} 
+
+#quizQ3 {
+  text-align: center;
+}
+
+.sizer {
+  max-width: 50%;
+  max-height: 50%;
+}
+.edit-profile-popup {
+  display: none;
+  /* popup styles */
+}
+
+.profile-header img {
+  width: 80px; /* Adjust the width and height as needed */
+  height: 80px;
+  border-radius: 50%; /* Creates a circular shape */
+  object-fit: cover; /* Ensures the image fills the circle without distortion */
+}
+
+#profileContainer {
+  margin-bottom: 200px;
+}
