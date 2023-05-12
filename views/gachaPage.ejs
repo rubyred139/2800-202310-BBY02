@@ -1,14 +1,14 @@
 <%- include("templates/header") %>
 
-<main>
+<body>
   <div class="d-flex gap-2 justify-content-center py-5 fs-3">
 
 
-    <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill">For funs</span>
-    <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill">Beachy</span>
+    <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill">funs</span>
+    <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill">beach</span>
 
     <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill">July</span>
-    <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill">Sightseeing</span>
+    <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill">go sightseeing</span>
 
 
   </div>
@@ -32,16 +32,45 @@
       <div class="container">
 
         <div class="list-group list-group-checkable d-grid gap-2 border-0">
-          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <div class="col">
+          <div id="newcard-goes-here" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <% let i=0; %>
+              <% for(i=0; i < confirmedCountries.length; i++) { %>              
+                <div class="col">
+                  <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
+                  <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
+            
+                    <!-- <span class="d-block small opacity-50">With support text underneath to add more detail</span> -->
+                    <div class="card shadow-sm">
+                      <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                      <div class="card-body">
+                        <h2>
+                          <%= confirmedCountries[i].name %>
+                        </h2>
+            
+                        <p class="card-text">
+                          <%= confirmedCountries[i].location %>
+                          <br>
+                          <%= confirmedCountries[i].descr %>
+                        </p>
+                        <div class="d-flex justify-content-between align-items-center">
+            
+                        </div>
+                      </div>
+                    </div>            
+                  </label>
+                </div>
+            <% } %>
+            <!-- <div class="col">
               <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
               <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
 
-                <!-- <span class="d-block small opacity-50">With support text underneath to add more detail</span> -->
                 <div class="card shadow-sm">
                   <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
                   <div class="card-body">
-                    <h2>Country name</h2>
+                    <h2>
+                      name
+                    </h2>
+
                     <p class="card-text">Location</p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
@@ -52,49 +81,8 @@
                   </div>
                 </div>            
               </label>
-            </div>
+            </div> -->
 
-            <div class="col">
-              <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios2" value="">
-              <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios2">
-
-                <!-- <span class="d-block small opacity-50">Some other text goes here</span> -->
-                <div class="card shadow-sm">
-                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                  <div class="card-body">
-                    <h2>Country name</h2>
-                    <p class="card-text">Location</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </label>
-            </div>
-
-            <div class="col">
-              <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios3" value="">
-              <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios3">
-
-                <!-- <span class="d-block small opacity-50">And we end with another snippet of text</span> -->
-                <div class="card shadow-sm">
-                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
-                  <div class="card-body">
-                    <h2>Country name</h2>
-                    <p class="card-text">Location</p>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-                      </div>
-
-                    </div>
-                  </div>
-                </div>
-              </label>
-            </div>
           </div>
 
         </div>
@@ -107,9 +95,9 @@
     </div>
     <div class="d-flex gap-2 justify-content-center">
 
-      <img src="./dices.png" class="btn btn-light" width="250"></button>
+      <img src="./dices.png" class="btn btn-light" width="250"></img>
     </div>
 
-  </main>
+  </body>
 
 <%- include("templates/footer") %>
