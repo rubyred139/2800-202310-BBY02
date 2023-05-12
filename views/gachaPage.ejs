@@ -33,8 +33,7 @@
 
         <div class="list-group list-group-checkable d-grid gap-2 border-0">
           <div id="newcard-goes-here" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-            <% let i=0; %>
-              <% for(i=0; i < confirmedCountries.length; i++) { %>              
+      
                 <div class="col">
                   <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
                   <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
@@ -44,13 +43,13 @@
                       <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
                       <div class="card-body">
                         <h2>
-                          <%= confirmedCountries[i].name %>
+                          Belize
                         </h2>
             
                         <p class="card-text">
-                          <%= confirmedCountries[i].location %>
+                          Central America
                           <br>
-                          <%= confirmedCountries[i].descr %>
+                          A small country known for its beautiful beaches, coral reefs, and ancient Maya ruins.
                         </p>
                         <div class="d-flex justify-content-between align-items-center">
             
@@ -59,8 +58,8 @@
                     </div>            
                   </label>
                 </div>
-            <% } %>
-            <!-- <div class="col">
+             
+            <div class="col">
               <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
               <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
 
@@ -68,10 +67,14 @@
                   <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
                   <div class="card-body">
                     <h2>
-                      name
+                      Croatia
                     </h2>
 
-                    <p class="card-text">Location</p>
+                    <p class="card-text">
+                      Southeastern Europe
+                      <br>
+                      The crescent-shaped country features low mountains and highlands near the Adriatic coastline.
+                    </p>
                     <div class="d-flex justify-content-between align-items-center">
                       <div class="btn-group">
                         <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
@@ -81,7 +84,34 @@
                   </div>
                 </div>            
               </label>
-            </div> -->
+            </div>
+
+            <div class="col">
+              <input class="list-group-item-check pe-none visually-hidden" type="radio" name="listGroupCheckableRadios" id="listGroupCheckableRadios1">
+              <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">
+
+                <div class="card shadow-sm">
+                  <svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"></rect><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg>
+                  <div class="card-body">
+                    <h2>
+                      Sri Lanka
+                    </h2>
+
+                    <p class="card-text">
+                      South Asia
+                      <br>
+                      A tropical paradise known for its stunning beaches, historic sites, and diverse wildlife.
+                    </p>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>            
+              </label>
+            </div>
 
           </div>
 
