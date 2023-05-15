@@ -278,6 +278,22 @@ app.post('/changePassword', async (req, res) => {
   res.redirect('/resetPassword');
 
 });
+
+async function getQuizAnswers() {
+  var email = req.session.email;
+  const result = await userCollection.find({ email: email })
+  .project({ quizAnswers: 1 })
+  .toArray()
+  const quizAnswers = result[0].quizAnswers;
+  return quizAnswers;
+}
+
+
+async function countryGenerator(quizAnswers) {
+  q1answer = quizAnswers.question1.toLowerCase();
+  q2answer = quizAnswers.question2.toLowerCase();
+  q3answer = quizAnswers.question3.toLowerCase();
+  q4answer = quizAnswers.question4.toLowerCase();
  
 app.get('/resetPassword', (req, res) => {
   const email = req.session.email;
@@ -434,11 +450,8 @@ Return response in the following parsable JSON format:
             name: under-travelled countries that meets the above mentioned criteria,
             location: the location of the recommended country,
             descr: one sentence description of the courtry
-        }]
-    
+        }]    
 `
-
-async function countryGenerator(prompt) {
   const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }]
@@ -461,23 +474,22 @@ async function checkCountries(countries) {
         }
         // Print out the result if reaches to the end of the countries array
         if (i === countries.length - 1) {
-          console.log(confirmedCountries)
+          // console.log(confirmedCountries)
         }
     } catch (err) {
-            console.error('Error executing MongoDB query:', err);
+        console.error('Error executing MongoDB query:', err);
     }
   }
   return confirmedCountries;
 }
 
 app.get("/gacha", async (req, res) => {
-
-    // `I am going for a trip on ${q3-month} for ${q1-reason}. My ideal destination for the trip should have ${q2-type}. I want to ${q4-activity} when travel. Please recommend under-travelled countries meets the above mentioned criteria.
-  const generatedCountries = await countryGenerator(prompt);
+  const quizAnswers = await getQuizAnswers();
+  const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
   
   console.log("confirmedCountry: " + confirmedCountries);
-  res.render("gacha", { confirmedCountries });
+  res.render("gacha", { confirmedCountries, quizAnswers });
 });
 
 
