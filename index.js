@@ -332,7 +332,7 @@ app.post("/quiz", async (req, res) => {
   try {
     const result = await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { quizAnswers: answers } });
     console.log('Answers saved to database');
-    res.redirect('/gachaPage');
+    res.redirect('/gacha');
   } catch (err) {
     console.error(err);
     res.status(500).send("Error saving quiz answers to database");
@@ -345,9 +345,7 @@ app.get('/logout', (req, res) => {
   res.redirect('/');
 });
 
-app.get('/gachaPage', (req, res) => {
-    res.render("gachaPage");
-})
+
 app.get("/main", sessionValidation, (req, res) => {
   var username = req.session.username;
   console.log(username);
@@ -479,7 +477,7 @@ app.get("/gacha", async (req, res) => {
   const confirmedCountries = await checkCountries(generatedCountries);
   
   console.log("confirmedCountry: " + confirmedCountries);
-  res.render("gachaPage", { confirmedCountries });
+  res.render("gacha", { confirmedCountries });
 });
 
 
