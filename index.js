@@ -279,22 +279,6 @@ app.post('/changePassword', async (req, res) => {
 
 });
 
-async function getQuizAnswers() {
-  var email = req.session.email;
-  const result = await userCollection.find({ email: email })
-  .project({ quizAnswers: 1 })
-  .toArray()
-  const quizAnswers = result[0].quizAnswers;
-  return quizAnswers;
-}
-
-
-async function countryGenerator(quizAnswers) {
-  q1answer = quizAnswers.question1.toLowerCase();
-  q2answer = quizAnswers.question2.toLowerCase();
-  q3answer = quizAnswers.question3.toLowerCase();
-  q4answer = quizAnswers.question4.toLowerCase();
- 
 app.get('/resetPassword', (req, res) => {
   const email = req.session.email;
   res.render("resetPassword", {errorMessage: "", email: email});
@@ -442,7 +426,24 @@ app.post('/updateProfile', async (req, res) => {
 
   res.redirect('/profile');
 });
-const prompt = `I am going for a trip on July for funs. My ideal destination for the trip should have beach. I want to go sightseeing when travel. Please recommend three under-travelled countries meets the above mentioned criteria.
+
+
+async function getQuizAnswers(username) {
+  const result = await userCollection.find({ username: username })
+  .project({ quizAnswers: 1 })
+  .toArray()
+  console.log(result)
+  const quizAnswers = result[0].quizAnswers;
+  return quizAnswers;
+}
+
+async function countryGenerator(quizAnswers) {
+  q1answer = quizAnswers.question1.toLowerCase();
+  q2answer = quizAnswers.question2.toLowerCase();
+  q3answer = quizAnswers.question3.toLowerCase();
+  q4answer = quizAnswers.question4.toLowerCase();
+
+const prompt = `I am going for a trip on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend three under-travelled countries meets the above mentioned criteria.
 
 Return response in the following parsable JSON format:
     
@@ -483,8 +484,8 @@ async function checkCountries(countries) {
   return confirmedCountries;
 }
 
-app.get("/gacha", async (req, res) => {
-  const quizAnswers = await getQuizAnswers();
+app.get("/gacha", sessionValidation, async (req, res) => {
+  const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
   
