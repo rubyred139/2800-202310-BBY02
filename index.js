@@ -70,83 +70,55 @@ const prompt = `I am going for a trip on July for funs. My ideal destination for
 
 Return response in the following parsable JSON format:
     
-        {
+        [{
             name: under-travelled countries that meets the above mentioned criteria,
             location: the location of the recommended country,
             descr: one sentence description of the courtry
-        }
+        }]
     
 `
 
-// Regenerate new response if any error in what chatGPT provided
-function parseCountriesData(response) {
-    let parsedResponse = {};    
-    try {
-        parsedResponse = JSON.parse(response);
-    } catch (error) {
-        console.error("Error parsing JSON data:", error);
-        // Regenerate new countries or handle the error as needed
-        countryGenerator(prompt);
-    }
-
-    return parsedResponse;
-}
-
 async function countryGenerator(prompt) {
+  const response = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages: [{ role: "user", content: prompt }]
+  })
+  const parsedResponse = JSON.parse(response.data.choices[0].message.content);
+  return parsedResponse;
 
-    try {
-        const response = await openai.createChatCompletion({
-            model: "gpt-3.5-turbo",
-            messages: [{ role: "user", content: prompt }]
-        });
-        const parsedResponse = parseCountriesData(response.data.choices[0].message.content);
-        console.log(parsedResponse)
-        const confirmedCountries = await checkCountries(parsedResponse);
-        return confirmedCountries;
-    } catch (error) {
-        console.error('Error generating countries:', error);
-        // Throw the error to be caught in the /gacha route
-        throw error;
-    }
 }
 
 // Double confirm that the countries chagGPT provided is under-travelled by cross-checking whether the countries exists in the   database
 async function checkCountries(countries) {
-    const confirmedCountries = [];
-  
-    for (let i = 0; i < countries.length; i++) {
-        const countryName = countries[i]["name"];
+  const confirmedCountries = [];
 
-        try {
-            const result = await untrvl_countries.findOne({ Country: countryName });
-            if (result) {
-                confirmedCountries.push(countries[i]);
-            }
-            // Print out the result if reaches to the end of the countries array
-            if (i === countries.length - 1) {
-                return confirmedCountries;
-            }
-        } catch (err) {
-                console.error('Error executing MongoDB query:', err);
+  for (let i = 0; i < countries.length; i++) {
+    const countryName = countries[i]["name"];
+    try {
+        const result = await untrvl_countries.findOne({ Country: countryName });
+        if (result) {
+          confirmedCountries.push(countries[i]);
         }
+        // Print out the result if reaches to the end of the countries array
+        if (i === countries.length - 1) {
+          console.log(confirmedCountries)
+        }
+    } catch (err) {
+            console.error('Error executing MongoDB query:', err);
     }
   }
-
+  return confirmedCountries;
+}
 
 app.get("/gacha", async (req, res) => {
 
     // `I am going for a trip on ${q3-month} for ${q1-reason}. My ideal destination for the trip should have ${q2-type}. I want to ${q4-activity} when travel. Please recommend under-travelled countries meets the above mentioned criteria.
-    try {
-        const confirmedCountries = await countryGenerator(prompt);
-        console.log('Confirmed countries here:', confirmedCountries);
-        res.render("gachaPage", { confirmedCountries });
-    } catch (error) {
-        console.error('Error generating countries:', error);
-        // Handle the error and send an appropriate response
-        res.status(500).send('Error generating countries');
-    }
-    // res.render("gachaPage");
-  });
+  const generatedCountries = await countryGenerator(prompt);
+  const confirmedCountries = await checkCountries(generatedCountries);
+  
+  console.log("confirmedCountry: " + confirmedCountries);
+  res.render("gachaPage", { confirmedCountries });
+});
 
 app.use(express.static(__dirname + "/public"));
 
