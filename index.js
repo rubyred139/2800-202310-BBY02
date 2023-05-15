@@ -33,6 +33,7 @@ const node_session_secret = process.env.NODE_SESSION_SECRET;
 
 var {database} = include('databaseConnection');
 
+const userCollection = database.db(mongodb_database).collection('users');
 const untrvl_countries = database.db(mongodb_database).collection('under-travelled_countries');
  
 
@@ -62,11 +63,23 @@ app.get('/', (req, res) => {
     res.send("Hello ADVENTOURs");
 });
 
-app.get('/gachaPage', (req, res) => {
-    res.render("gachaPage");
-})
+async function getQuizAnswers() {
+  var email = req.session.email;
+  const result = await userCollection.find({ email: email })
+  .project({ quizAnswers: 1 })
+  .toArray()
+  const quizAnswers = result[0].quizAnswers;
+  return quizAnswers;
+}
 
-const prompt = `I am going for a trip on July for funs. My ideal destination for the trip should have beach. I want to go sightseeing when travel. Please recommend three under-travelled countries meets the above mentioned criteria.
+
+async function countryGenerator(quizAnswers) {
+  q1answer = quizAnswers.question1.toLowerCase();
+  q2answer = quizAnswers.question2.toLowerCase();
+  q3answer = quizAnswers.question3.toLowerCase();
+  q4answer = quizAnswers.question4.toLowerCase();
+
+const prompt = `I am going for a trip on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend under-travelled countries meets the above mentioned criteria.
 
 Return response in the following parsable JSON format:
     
@@ -74,11 +87,8 @@ Return response in the following parsable JSON format:
             name: under-travelled countries that meets the above mentioned criteria,
             location: the location of the recommended country,
             descr: one sentence description of the courtry
-        }]
-    
+        }]    
 `
-
-async function countryGenerator(prompt) {
   const response = await openai.createChatCompletion({
       model: "gpt-3.5-turbo",
       messages: [{ role: "user", content: prompt }]
@@ -101,23 +111,22 @@ async function checkCountries(countries) {
         }
         // Print out the result if reaches to the end of the countries array
         if (i === countries.length - 1) {
-          console.log(confirmedCountries)
+          // console.log(confirmedCountries)
         }
     } catch (err) {
-            console.error('Error executing MongoDB query:', err);
+        console.error('Error executing MongoDB query:', err);
     }
   }
   return confirmedCountries;
 }
 
 app.get("/gacha", async (req, res) => {
-
-    // `I am going for a trip on ${q3-month} for ${q1-reason}. My ideal destination for the trip should have ${q2-type}. I want to ${q4-activity} when travel. Please recommend under-travelled countries meets the above mentioned criteria.
-  const generatedCountries = await countryGenerator(prompt);
+  const quizAnswers = await getQuizAnswers();
+  const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
   
   console.log("confirmedCountry: " + confirmedCountries);
-  res.render("gachaPage", { confirmedCountries });
+  res.render("gacha", { confirmedCountries, quizAnswers });
 });
 
 app.use(express.static(__dirname + "/public"));
