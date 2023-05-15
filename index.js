@@ -63,9 +63,8 @@ app.get('/', (req, res) => {
     res.send("Hello ADVENTOURs");
 });
 
-async function getQuizAnswers() {
-  var email = req.session.email;
-  const result = await userCollection.find({ email: email })
+async function getQuizAnswers(username) {
+  const result = await userCollection.find({ username: username })
   .project({ quizAnswers: 1 })
   .toArray()
   const quizAnswers = result[0].quizAnswers;
@@ -120,8 +119,8 @@ async function checkCountries(countries) {
   return confirmedCountries;
 }
 
-app.get("/gacha", async (req, res) => {
-  const quizAnswers = await getQuizAnswers();
+app.get("/gacha", sessionValidation, async (req, res) => {
+  const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
   
