@@ -69,8 +69,9 @@
                       <div class="d-flex justify-content-between align-items-center">
                       </div>
                       <div class="btn-group">
-                        <a href="/main/<%= confirmedCountries[i].name %>" type="button" class="btn btn-sm btn-outline-secondary read-more-btn">Read
-                          more</a>
+                        <form name="redirect" action="/main/<%= confirmedCountries[i].name %>" method="post">
+                          <button class="btn btn-sm btn-outline-secondary read-more-btn">Read more</button>
+                        </form>
                       </div>
                     </div>     
                   </div>       
@@ -100,7 +101,8 @@
 
       const readMoreBtns = document.querySelectorAll('.read-more-btn');
       readMoreBtns.forEach(btn => {
-        btn.addEventListener('click', e => {e.stopPropagation();
+        btn.addEventListener('click', e => {
+          e.stopPropagation();
         });
       });
       // document.getElementById('read-more-btn').addEventListener('click', function(event) {

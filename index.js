@@ -348,64 +348,65 @@ app.get('/logout', (req, res) => {
 });
 
 
-app.post("/main/:countryName", sessionValidation, (req, res) => {
-  var username = req.session.username;
-  console.log(username);
-  var countryName = req.params.countryName;
-  console.log(countryName)
-  
-  userCollection
-    .find({ username: username })
-    .project({ quizAnswers: 1 })
-    .toArray()
-    .then((result) => {
-      const userId = req.session._id;
-      const userEntry = result[0];
-      const answers = userEntry.quizAnswers;
+app.post("/main/:countryName", sessionValidation, async(req, res) => {
 
-      const response = openai.createCompletion({
-        model: "text-davinci-003",
-        prompt: `
-          A new traveller is going to Canada. The purpose of their trip is ${answers.question1}. They are going in ${answers.question3}. 
+  try {
+    const username = req.session.username;
+    console.log(username);
+    req.session.countryName = req.params.countryName;
+    console.log(req.session.countryName);
+    
+    const result = await userCollection.find({ username: username }).project({ quizAnswers: 1 }).toArray();
+
+    const userId = req.session._id;
+    const userEntry = result[0];
+    const answers = userEntry.quizAnswers;
+    
+    const countryResponse = await openai.createCompletion({
+      model: "text-davinci-003",
+      prompt: `
+        A new traveller is going to ${req.session.countryName}. The purpose of their trip is ${answers.question1}. They are going in ${answers.question3}. 
           
-          They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
+        They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
 
-          Based on the above information, provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, 
-          and one natural destination they would like.
+        Based on the above information, provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, 
+        and one natural destination they would like.
 
-          Return response in the following parsable JSON format:
+        Return response in the following parsable JSON format:
           
-          {
-            "quirkyFact" : "the quirky fact",
-            "businessFact" : "the business fact",
-            "natureFact" : "the natural fact",
-          }
-        `,
-        max_tokens: 1500,
-        temperature: 0,
-        top_p: 1.0,
-        frequency_penalty: 0.0,
-        presence_penalty: 0.0,
-      });
-
-      response.then((apiResponse) => {
-        const completion = apiResponse.data.choices[0].text;
-        const parsedResponse = JSON.parse(completion);
-        console.log(parsedResponse);
-        userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { promptAnswers: parsedResponse } });
-
-      });
-    })
-    .catch((error) => {
-      console.error(error);
-      res.sendStatus(500);
+        {
+          "quirkyFact" : "the quirky fact",
+          "businessFact" : "the business fact",
+          "natureFact" : "the natural fact",
+        }
+      `,
+      max_tokens: 1500,
+      temperature: 0,
+      top_p: 1.0,
+      frequency_penalty: 0.0,
+      presence_penalty: 0.0,
     });
+
+    const apiResponse = countryResponse.data;
+    const completion = apiResponse.choices[0].text;
+    console.log(completion);
+    const parsedResponse = JSON.parse(completion);
+    console.log(parsedResponse);
+
+    await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { promptAnswers: parsedResponse } });
+
+    res.redirect(`/main`);
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
 });
 
 app.get("/main", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
     const username = req.session.username;
+    const gachaCountry = req.session.countryName;
 
     console.log(username);
 
@@ -413,7 +414,7 @@ app.get("/main", sessionValidation, async (req, res) => {
     const facts = result.promptAnswers;
     console.log(facts);
 
-    res.render("main", { facts:facts });
+    res.render("main", { facts:facts, gachaCountry });
 
   } catch (error) {
     console.error(error);
