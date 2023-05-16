@@ -7,13 +7,13 @@ const duckDiv = document.getElementById('duck');
 startButton.addEventListener('click', function() {
     if (isClicked) {
         startButton.src='takeOff.png';
-        startButton.style.width='35px';
+        startButton.style.width='20';
         airplaneContainer.classList.toggle('show')
         isClicked = false;
       
     } else {
         startButton.src='landing.png';
-        startButton.style.width='40px';
+        startButton.style.width='30';
         isClicked = true;
     }     
     airplaneContainer.style.display = isClicked ? 'block' : 'none';
@@ -38,6 +38,7 @@ const colors = [
     confetti.classList.add('confetti');
     confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
     confetti.style.left = `${Math.random() * 100}%`;
+    confetti.style.zIndex = 2;
     container.appendChild(confetti);
 
     setTimeout(() => {
