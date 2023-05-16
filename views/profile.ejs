@@ -1,0 +1,134 @@
+<%- include("templates/header") %>
+
+<div class="container my-5 pb-4 gap-1" id="profileContainer">
+  <h1><%= user.username %>'s Profile</h1>
+  <div class="profile">
+	<div class="profile-header">
+	  <img src="cambodia.jpg" alt="Profile Picture">
+	</div>
+  </div>
+  
+  <form method="POST" action="/updateProfile">
+    <fieldset class="mb-3" id="personalInfoFields" disabled>
+      <legend class="text-center">Personal Information</legend>
+      <div class="form-group">
+        <label for="nameInput">Name</label>
+        <input type="text" id="nameInput" class="form-control" name="username" value="<%= user.username %>">
+      </div>
+      <div class="form-group">
+        <label for="emailInput">Email</label>
+        <input type="email" id="emailInput" class="form-control" name="email" value="<%= user.email %>" readonly disabled>
+      </div>
+      <div class="form-group">
+        <label for="passwordInput">Password</label>
+        <input type="password" id="passwordInput" class="form-control" name="password" placeholder="********">
+      </div>
+      <div class="form-group">
+        <label for="securityAnswerInput">Security Question: What is your favourite animal?</label>
+        <input type="text" id="securityAnswerInput" class="form-control" name="securityAnswer" value="<%= user.securityAnswer %>">
+    </div>
+    </fieldset>      
+    <div class="d-flex justify-content-end mt-2 mb-4">
+      <button type="button" class="btn btn-secondary" onclick="editUserInfo()">Edit</button>
+      <span style="width: 10px"></span>
+      <div id="saveCancelButtons" style="display: none;">
+        <button type="submit" class="btn btn-info">Save</button>
+        <span style="width: 10px"></span>
+        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+      </div>
+    </div>
+  </form>  
+
+  <fieldset class="mb-3" id="quizAnswersFields" disabled>
+    <legend class="text-center">Your Travel Preferences</legend>
+    <div class="d-flex flex-column align-items fs-2 mx-auto" style="max-width:400px">
+      <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill text-sm"><%= user.quizAnswers.question1 %></span>
+      <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill"><%= user.quizAnswers.question2 %></span>
+      <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill"><%= user.quizAnswers.question3 %></span>
+      <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question4 %></span>
+    </div>
+  </fieldset>
+  
+  <div class="d-flex justify-content-end mt-1 ms-auto">
+    <button type="button" class="btn btn-primary" onclick="location.href='/quiz'">Retake Quiz</button>
+  </div>
+  <div class="container my-5">
+    <legend class="text-center">Bookmarked Countries</legend>
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+      <div class="col">
+        <div class="card">
+          <img src="country1.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Croatia</h5>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <img src="cambodia.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Cambodia</h5>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card">
+          <img src="cuba.jpg" class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title">Cuba</h5>
+            <div class="btn-group">
+              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Repeat the above code for each bookmarked country -->
+    </div>
+  </div>
+  
+
+</div>
+
+<%- include("templates/footer") %>
+
+<script>
+  
+  function editUserInfo() {
+    document.getElementById('personalInfoFields').disabled = false;
+    document.getElementById('saveCancelButtons').style.display = 'block';
+  }
+  
+  function cancelEdit() {
+    document.getElementById('personalInfoFields').disabled = true;
+    document.getElementById('saveCancelButtons').style.display = 'none';
+    document.getElementById('nameInput').value = '<%= user.username %>';
+    document.getElementById('securityAnswerInput').value = '<%= user.securityAnswer %>';
+    document.getElementById('passwordInput').value = '';
+  }
+
+  const editProfileBtn = document.querySelector(".edit-profile-btn");
+  const editProfilePopup = document.querySelector(".edit-profile-popup");
+  const saveProfileBtn = document.querySelector(".save-profile-btn");
+  const profilePic = document.querySelector(".profile-header img");
+  const imageSelection = document.querySelectorAll(".image-selection img");
+
+  editProfileBtn.addEventListener("click", () => {
+  editProfilePopup.style.display = "block";
+});
+
+saveProfileBtn.addEventListener("click", () => {
+  // loop through imageSelection and find the one that is selected
+  // set profilePic src to the selected image src
+  // close the popup
+  editProfilePopup.style.display = "none";
+});
+
+</script>
+
+
