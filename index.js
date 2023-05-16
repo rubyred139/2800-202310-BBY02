@@ -377,7 +377,7 @@ app.post("/main/:countryName", sessionValidation, async(req, res) => {
         {
           "quirkyFact" : "the quirky fact",
           "businessFact" : "the business fact",
-          "natureFact" : "the natural fact",
+          "natureFact" : "the natural fact"
         }
       `,
       max_tokens: 1500,
