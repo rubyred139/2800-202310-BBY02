@@ -30,6 +30,8 @@ const configuration = new Configuration({
   apiKey: process.env.OPEN_AI_KEY,
 });
 
+const googleKey = process.env.GOOGLE_API_KEY;
+
 const port = process.env.PORT || 2000;
 
 
@@ -346,7 +348,7 @@ app.get('/logout', (req, res) => {
 });
 
 
-app.get("/main", sessionValidation, (req, res) => {
+app.post("/main", sessionValidation, (req, res) => {
   var username = req.session.username;
   console.log(username);
 
@@ -355,15 +357,19 @@ app.get("/main", sessionValidation, (req, res) => {
     .project({ quizAnswers: 1 })
     .toArray()
     .then((result) => {
+      const userId = req.session._id;
       const userEntry = result[0];
       const answers = userEntry.quizAnswers;
 
       const response = openai.createCompletion({
         model: "text-davinci-003",
         prompt: `
-          A new traveller is going to Canada. They are going ${answers.question1} in ${answers.question3}. They enjoy the ${answers.question2} and ${answers.question4}.
+          A new traveller is going to Canada. The purpose of their trip is ${answers.question1}. They are going in ${answers.question3}. 
+          
+          They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
 
-          Provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, and one natural destination they would like.
+          Based on the above information, provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, 
+          and one natural destination they would like.
 
           Return response in the following parsable JSON format:
           
@@ -384,7 +390,8 @@ app.get("/main", sessionValidation, (req, res) => {
         const completion = apiResponse.data.choices[0].text;
         const parsedResponse = JSON.parse(completion);
         console.log(parsedResponse);
-        res.render("main", { parsedResponse:parsedResponse, userEntry:userEntry });
+        userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { promptAnswers: parsedResponse } });
+
       });
     })
     .catch((error) => {
@@ -392,6 +399,25 @@ app.get("/main", sessionValidation, (req, res) => {
       res.sendStatus(500);
     });
 });
+
+app.get("/main", sessionValidation, async (req, res) => {
+  try {
+    const userId = req.session._id;
+    const username = req.session.username;
+    console.log(username);
+
+    const result = await userCollection.findOne({ _id: new ObjectId(userId) });
+    const facts = result.promptAnswers;
+    console.log(facts);
+
+    res.render("main", { facts:facts });
+
+  } catch (error) {
+    console.error(error);
+    res.sendStatus(500);
+  }
+});
+
 
 app.get('/profile', async (req, res) => {
   const db = database.db(mongodb_database);
