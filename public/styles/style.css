@@ -81,23 +81,38 @@ cursor:pointer;
 }
 
 #airplane-container {
-  display: none;
+  /* display: none; */         
   padding-top:2%;
-  pointer-events: none; /* Ensures the container does not intercept mouse events */
-}
-
+  pointer-events: none; 
+  animation: slideAnimation 4s linear infinite; 
+  overflow:hidden;
+} 
+/* 
 @keyframes slideAnimation {
+  
   0% {
-      transform: translateX(100%); /* Start from the right side */
+    transform: translateX(-50%);
   }
-  100% {
-      transform: translateX(-70%); /* Move to the left side */
+  
+  25% {
+    transform: translateX(-40%);
   }
-}
+  
 
-#airplane-container {
-  animation: slideAnimation 4s linear infinite; /* Animation properties */
-}
+  50% {
+    transform: translateX(-60%);
+  }
+
+  75% {
+    transform: translateX(-40%);
+  }
+  
+  100% {
+    transform: translateX(-50%);
+  }
+} */
+
+
 
 
 .confetti {
@@ -108,8 +123,9 @@ cursor:pointer;
   animation: confetti-fall 3s linear infinite;
   transform-origin: center;
   opacity: 0; /* Initially hidden */
-}
-
+  overflow: hidden;
+ }
+   
 @keyframes confetti-fall {
   0% {
     transform: translate(0, -100vh) rotate(0deg);
@@ -119,4 +135,4 @@ cursor:pointer;
     transform: translate(calc(-50vw + 50%), 100vh) rotate(360deg);
     opacity: 1;
   }
-}
+}  
