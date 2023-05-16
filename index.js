@@ -348,10 +348,12 @@ app.get('/logout', (req, res) => {
 });
 
 
-app.post("/main", sessionValidation, (req, res) => {
+app.get("/main/:countryName", sessionValidation, (req, res) => {
   var username = req.session.username;
   console.log(username);
-
+  var countryName = req.params.countryName;
+  console.log(countryName)
+  
   userCollection
     .find({ username: username })
     .project({ quizAnswers: 1 })

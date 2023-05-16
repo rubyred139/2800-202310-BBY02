@@ -69,7 +69,7 @@
                       <div class="d-flex justify-content-between align-items-center">
                       </div>
                       <div class="btn-group">
-                        <a href="/main" type="button" class="btn btn-sm btn-outline-secondary read-more-btn">Read
+                        <a href="/main/<%= confirmedCountries[i].name %>" type="button" class="btn btn-sm btn-outline-secondary read-more-btn">Read
                           more</a>
                       </div>
                     </div>     
@@ -103,7 +103,9 @@
         btn.addEventListener('click', e => {e.stopPropagation();
         });
       });
-
+      // document.getElementById('read-more-btn').addEventListener('click', function(event) {
+      //   const countryName = 
+      // })
     </script>
   </body>
 
