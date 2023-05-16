@@ -1,26 +1,33 @@
 <%- include("templates/header") %>
 
-  <body>
-    <div class="bg-primary-subtle">
-      <div class="p-3 mt-4 d-flex justify-content-center fs-3">Your profile preferences:</div>
-      <div class="d-flex gap-1 px-3 justify-content-center px-3 py-2 fs-4">
-        <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill">funs</span>
-        <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill">beach</span>
-        <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill">July</span>
-        <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill">go
-          sightseeing</span>
+<body>
+  <div class="bg-primary-subtle">
+    <div class="p-3 mt-4 d-flex justify-content-center fs-3">Your profile preferences:</div>
+    <div class="d-flex gap-1 px-3 justify-content-center px-3 py-2 fs-4">
+      <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill">
+        <%= quizAnswers.question1 %>
+      </span>
+      <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill">
+        <%= quizAnswers.question2 %>
+      </span>
 
-      </div>
-      <div class="d-flex justify-content-center mt-2 mb-2">
+      <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill">
+        <%= quizAnswers.question3 %>
+      </span>
+      <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill">
+        <%= quizAnswers.question4 %>
+      </span>
 
-        <span
-          class="d-flex justify-content-center align-items-center mx-auto fs-6 btn btn-outline-secondary rounded-pill">
-          Retake the quiz
-          <img src="./arrow_forward.png" height="70%"></img>
-        </span>
-
-      </div>
     </div>
+    <a href="/quizWelcome" type="button" class="d-flex justify-content-center mt-2 mb-2">
+      <span
+        class="d-flex justify-content-center align-items-center mx-auto fs-4 btn btn-outline-secondary rounded-pill m-3"> 
+        Retake the quiz
+        <img src="./arrow_forward.png" height="70%"></img>
+      </span>
+
+    </a>
+  </div>
 
     <div class="d-flex justify-content-center align-items-center pt-5">
       <h1 class="fw-bold fs-1">PICK A COUNTRY</h1>
@@ -62,8 +69,8 @@
                       <div class="d-flex justify-content-between align-items-center">
                       </div>
                       <div class="btn-group">
-                        <button type="button" class="btn btn-sm btn-outline-secondary read-more-btn">Read
-                          more</button>
+                        <a href="/main" type="button" class="btn btn-sm btn-outline-secondary read-more-btn">Read
+                          more</a>
                       </div>
                     </div>     
                   </div>       
@@ -77,18 +84,10 @@
       </div>
     </div>
 
+    <a class="d-flex gap-3 justify-content-center pb-5 m-5">
 
-
-    <div class="d-flex align-items-center justify-content-center my-5 border">
-      <p class="fs-4 d-flex align-items-center justify-content-center m-3">You chose: <span
-          class="mx-3 px-2 bg-body-tertiary " id="user's_choice_goes_here"> name </span></p>
-      <input class="btn btn-success" type="submit" value="Submit">
-    </div>
-
-    <div class="d-flex gap-3 justify-content-center pb-5 mb-5">
-
-      <img src="./dices.png" class="btn btn-success pb-5" width="200"></button>
-    </div>
+     <img id="dieButton" src="./dices.png" class="btn btn-outline-light" width="250"></img>
+    </a>
     
     <script>
       const cards = document.querySelectorAll('.card');

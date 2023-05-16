@@ -64,6 +64,17 @@ body {
   backface-visibility: hidden;
 }
 
+#dieButton {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  transition: transform 0.3s;
+
+}
+
+#dieButton:hover  {
+  transform: rotate(360deg);
+}
 #startButton:hover{
 cursor:pointer;
  
