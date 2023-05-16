@@ -3,7 +3,7 @@
 body {
   font-family: 'Comfortaa', cursive;
 
-} 
+}
 
 #quizQ3 {
   text-align: center;
@@ -13,16 +13,20 @@ body {
   max-width: 50%;
   max-height: 50%;
 }
+
 .edit-profile-popup {
   display: none;
   /* popup styles */
 }
 
 .profile-header img {
-  width: 80px; /* Adjust the width and height as needed */
+  width: 80px;
+  /* Adjust the width and height as needed */
   height: 80px;
-  border-radius: 50%; /* Creates a circular shape */
-  object-fit: cover; /* Ensures the image fills the circle without distortion */
+  border-radius: 50%;
+  /* Creates a circular shape */
+  object-fit: cover;
+  /* Ensures the image fills the circle without distortion */
 }
 
 #profileContainer {
@@ -51,13 +55,13 @@ body {
   display: none;
 }
 
-.card.flipped { 
+.card.flipped {
   transform: rotateY(180deg);
 
-}       
-       
-.card-front { 
-  top: 0;  
+}
+
+.card-front {
+  top: 0;
   left: 0;
   width: 100%;
   height: 100%;
@@ -72,46 +76,46 @@ body {
 
 }
 
-#dieButton:hover  {
+#dieButton:hover {
   transform: rotate(360deg);
 }
-#startButton:hover{
-cursor:pointer;
- 
+
+#startButton:hover {
+  cursor: pointer;
+
 }
 
 #airplane-container {
-  /* display: none; */         
-  padding-top:2%;
-  pointer-events: none; 
-  animation: slideAnimation 4s linear infinite; 
-  overflow:hidden;
-} 
-/* 
+  padding-top: 2%;
+  pointer-events: none;
+  animation: slideAnimation 4s linear infinite;
+  overflow: hidden;
+  display: inline-block;
+  /* background: red; */
+}
+
+#airplane-container.hidden {
+  display: none;
+}
+
+/*animation*/
 @keyframes slideAnimation {
-  
   0% {
-    transform: translateX(-50%);
-  }
-  
-  25% {
-    transform: translateX(-40%);
-  }
-  
-
-  50% {
-    transform: translateX(-60%);
+    transform: translateX(75%);
   }
 
-  75% {
-    transform: translateX(-40%);
+  40% {
+    transform: rotate(0deg);
   }
-  
+
+  70% {
+    transform: rotate(900deg);
+  }
+
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
-} */
-
+}
 
 
 
@@ -122,17 +126,19 @@ cursor:pointer;
   border-radius: 50%;
   animation: confetti-fall 3s linear infinite;
   transform-origin: center;
-  opacity: 0; /* Initially hidden */
+  opacity: 0;
+  /* Initially hidden */
   overflow: hidden;
- }
-   
+}
+
 @keyframes confetti-fall {
   0% {
     transform: translate(0, -100vh) rotate(0deg);
     opacity: 1;
   }
+
   100% {
     transform: translate(calc(-50vw + 50%), 100vh) rotate(360deg);
     opacity: 1;
   }
-}  
+}

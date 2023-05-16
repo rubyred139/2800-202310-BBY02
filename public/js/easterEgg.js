@@ -16,7 +16,7 @@ startButton.addEventListener('click', function() {
         startButton.style.width='30';
         isClicked = true;
     }     
-    airplaneContainer.style.display = isClicked ? 'block' : 'none';
+    airplaneContainer.style.display = isClicked ? 'inline-block' : 'none';
 });      
 
 //confetti 
@@ -59,6 +59,7 @@ const colors = [
   //audio
   const audio = new Audio('duckSound.mp4');
 
+  
 
 
   
