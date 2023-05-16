@@ -514,13 +514,30 @@ async function checkCountries(countries) {
   return confirmedCountries;
 }
 
+async function getImage(countries) {
+  const imageURLs = []
+  for (let i=0; i<countries.length; i++) {
+    const countryName = countries[i].name;
+    console.log(countryName)
+    const requestURL = `https://api.unsplash.com/search/photos?query=${countryName}&client_id=${process.env.UNSPLASH_ACCESSKEY}`
+    const response = await fetch(requestURL)
+  
+    const statusCode = response.status; 
+    console.log(statusCode)
+    const responseBody = await response.json(); 
+    const imageURL = responseBody.results[0].urls.regular
+    imageURLs.push(imageURL);
+  }
+  return imageURLs;
+}  
+
 app.get("/gacha", sessionValidation, async (req, res) => {
   const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
-  
+  const imageURLs = await getImage(confirmedCountries);
   console.log("confirmedCountry: " + confirmedCountries);
-  res.render("gacha", { confirmedCountries, quizAnswers });
+  res.render("gacha", { confirmedCountries, quizAnswers, imageURLs });
 });
 
 
