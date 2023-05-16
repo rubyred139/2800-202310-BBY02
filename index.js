@@ -242,7 +242,7 @@ app.post('/loggingin', async (req, res) => {
     req.session._id = result[0]._id;
     req.session.cookie.maxAge = expireTime;
 
-    res.redirect('/main');
+    res.redirect('/gacha');
     return;
   }
   else {
@@ -348,7 +348,7 @@ app.get('/logout', (req, res) => {
 });
 
 
-app.get("/main/:countryName", sessionValidation, (req, res) => {
+app.post("/main/:countryName", sessionValidation, (req, res) => {
   var username = req.session.username;
   console.log(username);
   var countryName = req.params.countryName;
@@ -406,6 +406,7 @@ app.get("/main", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
     const username = req.session.username;
+
     console.log(username);
 
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
