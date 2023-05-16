@@ -51,11 +51,11 @@ body {
   display: none;
 }
 
-.card.flipped {
+.card.flipped { 
   transform: rotateY(180deg);
 
-}
-
+}       
+       
 .card-front { 
   top: 0;  
   left: 0;
@@ -64,4 +64,48 @@ body {
   backface-visibility: hidden;
 }
 
+#startButton:hover{
+cursor:pointer;
+ 
+}
 
+#airplane-container {
+  display: none;
+  padding-top:2%;
+  pointer-events: none; /* Ensures the container does not intercept mouse events */
+}
+
+@keyframes slideAnimation {
+  0% {
+      transform: translateX(100%); /* Start from the right side */
+  }
+  100% {
+      transform: translateX(-70%); /* Move to the left side */
+  }
+}
+
+#airplane-container {
+  animation: slideAnimation 4s linear infinite; /* Animation properties */
+}
+
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  animation: confetti-fall 3s linear infinite;
+  transform-origin: center;
+  opacity: 0; /* Initially hidden */
+}
+
+@keyframes confetti-fall {
+  0% {
+    transform: translate(0, -100vh) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(-50vw + 50%), 100vh) rotate(360deg);
+    opacity: 1;
+  }
+}
