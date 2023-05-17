@@ -101,7 +101,7 @@ body {
 /*animation*/
 @keyframes slideAnimation {
   0% {
-    transform: translateX(75%);
+    transform: translateX(30%);
   }
 
   40% {
