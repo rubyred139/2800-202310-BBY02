@@ -537,9 +537,9 @@ async function countryGenerator(quizAnswers) {
   q2answer = quizAnswers.question2.toLowerCase();
   q3answer = quizAnswers.question3.toLowerCase();
   q4answer = quizAnswers.question4.toLowerCase();
+  // q5answer = quizAnswers.question5.toLowerCase();
 
-  const prompt = `I am going for a trip on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend three under-travelled countries meets the above mentioned criteria.
-
+const prompt = `I am planning for a trip on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend 10 not-so-popular countries meets the above mentioned criteria.
 Return response in the following parsable JSON format:
     
         [{
@@ -556,21 +556,22 @@ Return response in the following parsable JSON format:
   return parsedResponse;
 }
 
-// Double confirm that the countries chagGPT provided is under-travelled by cross-checking whether the countries exists in the   database
+// Double confirm that the countries chagGPT provided is under-travelled by cross-checking the under-travelled countries collection in the database
 async function checkCountries(countries) {
-  const confirmedCountries = [];
+  let confirmedCountries = [];
 
   for (let i = 0; i < countries.length; i++) {
     const countryName = countries[i]["name"];
     try {
-      const result = await untrvl_countries.findOne({ Country: countryName });
-      if (result) {
-        confirmedCountries.push(countries[i]);
-      }
-      // Print out the result if reaches to the end of the countries array
-      if (i === countries.length - 1) {
-        // console.log(confirmedCountries)
-      }
+        const result = await untrvl_countries.findOne({ Country: countryName });
+        if (result) {
+          confirmedCountries.push(countries[i]);
+        }
+
+        if (countries.length >= 3) {
+          // Slice the array to three if more than three countries pass the database verification
+          confirmedCountries = confirmedCountries.slice(0,3)
+        }
     } catch (err) {
       console.error("Error executing MongoDB query:", err);
     }
@@ -595,7 +596,7 @@ async function getImage(countries) {
   return imageURLs;
 }
 
-app.get("/gacha", sessionValidation, async (req, res) => {
+app.get("/gacha", sessionValidation, async (req, res) => { 
   const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
