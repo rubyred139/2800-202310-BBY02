@@ -28,12 +28,6 @@ app.use(express.json());
 const Joi = require("joi");
 const { count } = require("console");
 
-const configuration = new Configuration({
-  apiKey: process.env.OPEN_AI_KEY,
-});
-
-const googleKey = process.env.GOOGLE_API_KEY;
-
 const port = process.env.PORT || 2000;
 
 const expireTime = 2 * 60 * 60 * 1000; //expires after 2 hr (minutes * seconds * millis)
@@ -410,8 +404,9 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
           
         They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
 
-        Based on the above information, provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, 
-        and one natural destination they would like. 
+        Based on this information for this country, provide one quirky fun fact that the traveller would enjoy, one recommended local business, 
+        one natural destination they would like, a fact about the most popular activity here, a fact about the national dish of the country, and 
+        a fact about the most popular season to visit.
 
         Return the response in the following parsable JSON format:
 
@@ -419,16 +414,22 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
           {
             "quirkyFact" : "the quirky fact",
             "businessFact" : "the business fact",
-            "natureFact" : "the natural destination fact"
+            "natureFact" : "the natural destination fact",
+            "activityFact" : "the activity fact",
+            "dishFact" : "the national dish fact",
+            "popularFact" : "the popular times fact"
           },
           {
             "quirkyFactPlace" : "country name from quirkyFact",
             "businessFactPlace" : "business name from businessFact, country name",
-            "natureFactPlace" : "natural destination name from natureFact, country name"
+            "natureFactPlace" : "natural destination name from natureFact, country name",
+            "activityFactPlace" : "activity from activityFact",
+            "dishFactPlace" : "dish name from dishFact",
+            "popularFactPlace" : "season from popularFact, country name"
           }
         ]
       `,
-      max_tokens: 3000,
+      max_tokens: 4000,
       temperature: 0,
       top_p: 1.0,
       frequency_penalty: 0.0,
@@ -437,8 +438,6 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
 
     const apiResponse = await countryResponse.data;
     const completion = await apiResponse.choices[0].text;
-
-    console.log(completion);
 
     var trimmedCompletion = completion.trimStart();
     if (trimmedCompletion.startsWith("Answer:")) {
