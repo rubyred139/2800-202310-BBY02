@@ -537,9 +537,9 @@ async function countryGenerator(quizAnswers) {
   q2answer = quizAnswers.question2.toLowerCase();
   q3answer = quizAnswers.question3.toLowerCase();
   q4answer = quizAnswers.question4.toLowerCase();
-  // q5answer = quizAnswers.question5.toLowerCase();
+  q5answer = quizAnswers.question5.toLowerCase();
 
-const prompt = `I am planning for a trip on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend 10 not-so-popular countries meets the above mentioned criteria.
+const prompt = `I am planning for a trip to the ${q5answer} continent on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend 10 not-so-popular countries meets the above mentioned criteria.
 Return response in the following parsable JSON format:
     
         [{
