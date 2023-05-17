@@ -94,7 +94,11 @@ app.get("/", (req, res) => {
   res.render("landing");
 });
 
-app.get("/nosql-injection", async (req, res) => {
+app.get('/easterEgg' , (req, res) => {
+  res.render("easterEgg")
+})
+
+app.get('/nosql-injection', async (req, res) => {
   var username = req.query.user;
 
   if (!username) {
