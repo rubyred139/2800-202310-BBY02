@@ -28,12 +28,6 @@ app.use(express.json());
 const Joi = require("joi");
 const { count } = require("console");
 
-const configuration = new Configuration({
-  apiKey: process.env.OPEN_AI_KEY,
-});
-
-const googleKey = process.env.GOOGLE_API_KEY;
-
 const port = process.env.PORT || 2000;
 
 const expireTime = 2 * 60 * 60 * 1000; //expires after 2 hr (minutes * seconds * millis)
@@ -377,12 +371,22 @@ async function getFactImages(place) {
   for (const x in place) {
     var testFact = place[x];
     console.log(testFact);
-    const requestURL = `https://api.unsplash.com/search/photos?query=${testFact}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
-    const response = await fetch(requestURL);
-    const responseBody = await response.json();
 
-    const imageURL = responseBody.results[0].urls.regular;
-    factImageUrls.push(imageURL);
+    try {
+      const requestURL = `https://api.unsplash.com/search/photos?query=${testFact}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const response = await fetch(requestURL);
+      const responseBody = await response.json();
+      var imageURL = responseBody.results[0].urls.regular;
+      factImageUrls.push(imageURL);
+
+    } catch (err) {
+      console.log(err);
+      const defaultURL = `https://api.unsplash.com/search/photos?query=exploration&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const response = await fetch(defaultURL);
+      const responseBody = await response.json();
+      var imageURL = responseBody.results[0].urls.regular;
+      factImageUrls.push(imageURL);
+    }
   }
 
   return factImageUrls;
@@ -411,21 +415,28 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
           
         They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
 
-        Based on the above information, provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, 
-        and one natural destination they would like. 
+        Based on this information for this country, provide one quirky fun fact that the traveller would enjoy, one recommended local business, 
+        and one natural destination they would like, a fact about the most popular activity here, a fact about the national dish of the country, and 
+        a fact about the most popular season to visit.
 
-        Return response in the following parsable JSON format:
+        Return the response in the following parsable JSON format:
 
         [
           {
             "quirkyFact" : "the quirky fact",
             "businessFact" : "the business fact",
-            "natureFact" : "the natural destination fact"
+            "natureFact" : "the natural destination fact",
+            "activityFact" : "the activity fact",
+            "dishFact" : "the national dish fact",
+            "popularFact" : "the popular times fact"
           },
           {
             "quirkyFactPlace" : "country name from quirkyFact",
-            "businessFactPlace" : "business name from businessFact",
-            "natureFactPlace" : "natural destination name from natureFact"
+            "businessFactPlace" : "business name from businessFact, country name",
+            "natureFactPlace" : "natural destination name from natureFact, country name",
+            "activityFactPlace" : "activity from activityFact",
+            "dishFactPlace" : "dish name from dishFact",
+            "popularFactPlace" : "a month from the season in popularFact, country name"
           }
         ]
       `,
@@ -439,7 +450,15 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     const apiResponse = await countryResponse.data;
     const completion = await apiResponse.choices[0].text;
 
-    const parsedResponse = await JSON.parse(completion);
+    console.log(completion);
+
+    var trimmedCompletion = completion.trimStart();
+    if (trimmedCompletion.startsWith("Answer:")) {
+      trimmedCompletion = trimmedCompletion.replace("Answer:", "").trim();
+    }
+    console.log(trimmedCompletion);
+
+    const parsedResponse = JSON.parse(trimmedCompletion);
     console.log(parsedResponse);
     const resultFacts = parsedResponse[0];
     const resultFactNames = parsedResponse[1];
@@ -464,7 +483,6 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
 app.get("/main", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
-    const username = req.session.username;
     const gachaCountry = req.session.countryName;
 
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
