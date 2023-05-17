@@ -370,12 +370,22 @@ async function getFactImages(place) {
   for (const x in place) {
     var testFact = place[x];
     console.log(testFact);
-    const requestURL = `https://api.unsplash.com/search/photos?query=${testFact}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
-    const response = await fetch(requestURL);
-    const responseBody = await response.json();
 
-    const imageURL = responseBody.results[0].urls.regular;
-    factImageUrls.push(imageURL);
+    try {
+      const requestURL = `https://api.unsplash.com/search/photos?query=${testFact}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const response = await fetch(requestURL);
+      const responseBody = await response.json();
+      var imageURL = responseBody.results[0].urls.regular;
+      factImageUrls.push(imageURL);
+
+    } catch (err) {
+      console.log(err);
+      const defaultURL = `https://api.unsplash.com/search/photos?query=exploration&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const response = await fetch(defaultURL);
+      const responseBody = await response.json();
+      var imageURL = responseBody.results[0].urls.regular;
+      factImageUrls.push(imageURL);
+    }
   }
 
   return factImageUrls;
@@ -405,7 +415,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
         They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
 
         Based on this information for this country, provide one quirky fun fact that the traveller would enjoy, one recommended local business, 
-        one natural destination they would like, a fact about the most popular activity here, a fact about the national dish of the country, and 
+        and one natural destination they would like, a fact about the most popular activity here, a fact about the national dish of the country, and 
         a fact about the most popular season to visit.
 
         Return the response in the following parsable JSON format:
@@ -425,11 +435,11 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
             "natureFactPlace" : "natural destination name from natureFact, country name",
             "activityFactPlace" : "activity from activityFact",
             "dishFactPlace" : "dish name from dishFact",
-            "popularFactPlace" : "season from popularFact, country name"
+            "popularFactPlace" : "a month from the season in popularFact, country name"
           }
         ]
       `,
-      max_tokens: 4000,
+      max_tokens: 3000,
       temperature: 0,
       top_p: 1.0,
       frequency_penalty: 0.0,
@@ -438,6 +448,8 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
 
     const apiResponse = await countryResponse.data;
     const completion = await apiResponse.choices[0].text;
+
+    console.log(completion);
 
     var trimmedCompletion = completion.trimStart();
     if (trimmedCompletion.startsWith("Answer:")) {
