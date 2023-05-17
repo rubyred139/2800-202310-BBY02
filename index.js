@@ -350,6 +350,7 @@ app.post("/quiz", async (req, res) => {
     question2: req.body.question2,
     question3: req.body.question3,
     question4: req.body.question4,
+    question5: req.body.question5
   };
 
   try {
