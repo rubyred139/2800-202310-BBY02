@@ -413,7 +413,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
         Based on the above information, provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, 
         and one natural destination they would like. 
 
-        Return response in the following parsable JSON format:
+        Return the response in the following parsable JSON format:
 
         [
           {
@@ -423,8 +423,8 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
           },
           {
             "quirkyFactPlace" : "country name from quirkyFact",
-            "businessFactPlace" : "business name from businessFact",
-            "natureFactPlace" : "natural destination name from natureFact"
+            "businessFactPlace" : "business name from businessFact, country name",
+            "natureFactPlace" : "natural destination name from natureFact, country name"
           }
         ]
       `,
@@ -438,7 +438,15 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     const apiResponse = await countryResponse.data;
     const completion = await apiResponse.choices[0].text;
 
-    const parsedResponse = await JSON.parse(completion);
+    console.log(completion);
+
+    var trimmedCompletion = completion.trimStart();
+    if (trimmedCompletion.startsWith("Answer:")) {
+      trimmedCompletion = trimmedCompletion.replace("Answer:", "").trim();
+    }
+    console.log(trimmedCompletion);
+
+    const parsedResponse = JSON.parse(trimmedCompletion);
     console.log(parsedResponse);
     const resultFacts = parsedResponse[0];
     const resultFactNames = parsedResponse[1];
@@ -463,7 +471,6 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
 app.get("/main", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
-    const username = req.session.username;
     const gachaCountry = req.session.countryName;
 
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
