@@ -1,22 +1,24 @@
 require("./utils.js");
 
-require('dotenv').config();
+require("dotenv").config();
 const url = require("url");
 const { Configuration, OpenAIApi } = require("openai");
 const config = new Configuration({
+  apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(
+  new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
-  });
+  })
+);
 
-const openai = new OpenAIApi(new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
-}))
-
-const express = require('express');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const { MongoClient } = require('mongodb');
-const {ObjectId} = require('mongodb');
-const bcrypt = require('bcrypt');
+const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+const { MongoClient } = require("mongodb");
+const { ObjectId } = require("mongodb");
+const bcrypt = require("bcrypt");
 const saltRounds = 12;
 
 const app = express();
@@ -34,7 +36,6 @@ const googleKey = process.env.GOOGLE_API_KEY;
 
 const port = process.env.PORT || 2000;
 
-
 const expireTime = 2 * 60 * 60 * 1000; //expires after 2 hr (minutes * seconds * millis)
 
 const mongodb_host = process.env.MONGODB_HOST;
@@ -45,14 +46,15 @@ const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
 const node_session_secret = process.env.NODE_SESSION_SECRET;
 
-var { database } = include('databaseConnection');
+var { database } = include("databaseConnection");
 
-const userCollection = database.db(mongodb_database).collection('users');
-const untrvl_countries = database.db(mongodb_database).collection('under-travelled_countries');
+const userCollection = database.db(mongodb_database).collection("users");
+const untrvl_countries = database
+  .db(mongodb_database)
+  .collection("under-travelled_countries");
 const reviewsCollection = database.db(mongodb_database).collection('reviews');
- 
-var {database} = include('databaseConnection');
 
+var { database } = include("databaseConnection");
 
 app.set("view engine", "ejs");
 
@@ -65,8 +67,8 @@ var mongoStore = MongoStore.create({
   },
 });
 
-
-app.use(session({ 
+app.use(
+  session({
     secret: node_session_secret,
     store: mongoStore,
     saveUninitialized: false,
@@ -83,23 +85,22 @@ function isValidSession(req) {
 function sessionValidation(req, res, next) {
   if (isValidSession(req)) {
     next();
-  }
-  else {
-    res.redirect('/');
+  } else {
+    res.redirect("/");
   }
 }
 
-
-app.get('/', (req, res) => {
+app.get("/", (req, res) => {
   res.render("landing");
 });
 
-
-app.get('/nosql-injection', async (req, res) => {
+app.get("/nosql-injection", async (req, res) => {
   var username = req.query.user;
 
   if (!username) {
-    res.send(`<h3>no user provided - try /nosql-injection?user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`);
+    res.send(
+      `<h3>no user provided - try /nosql-injection?user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`
+    );
     return;
   }
   console.log("user: " + username);
@@ -109,36 +110,45 @@ app.get('/nosql-injection', async (req, res) => {
 
   if (validationResult.error != null) {
     console.log(validationResult.error);
-    res.send("<h1 style='color:darkred;'>A NoSQL injection attack was detected!!</h1>");
+    res.send(
+      "<h1 style='color:darkred;'>A NoSQL injection attack was detected!!</h1>"
+    );
     return;
   }
 
-  const result = await userCollection.find({ username: username }).project({ username: 1, password: 1, _id: 1 }).toArray();
+  const result = await userCollection
+    .find({ username: username })
+    .project({ username: 1, password: 1, _id: 1 })
+    .toArray();
 
   console.log(result);
 
   res.send(`<h1>Hello ${username}</h1>`);
 });
 
-app.get('/signup', (req, res) => {
+app.get("/signup", (req, res) => {
   res.render("signup", { errorMessage: "" });
 });
 
-app.post('/signupSubmit', async (req, res) => {
+app.post("/signupSubmit", async (req, res) => {
   var username = req.body.username;
   var email = req.body.email;
   var password = req.body.password;
   var securityAnswer = req.body.securityAnswer;
 
-  const schema = Joi.object(
-    {
-      username: Joi.string().alphanum().max(20).required(),
-      email: Joi.string().required(),
-      password: Joi.string().required(),
-      securityAnswer: Joi.string().required(),
-    });
+  const schema = Joi.object({
+    username: Joi.string().alphanum().max(20).required(),
+    email: Joi.string().required(),
+    password: Joi.string().required(),
+    securityAnswer: Joi.string().required(),
+  });
 
-  const validationResult = schema.validate({ username, password, email, securityAnswer });
+  const validationResult = schema.validate({
+    username,
+    password,
+    email,
+    securityAnswer,
+  });
 
   if (validationResult.error != null) {
     const errorMessage = validationResult.error.message;
@@ -146,45 +156,48 @@ app.post('/signupSubmit', async (req, res) => {
     console.log(validationResult.error);
 
     if (errorMessage.includes('"username"')) {
-      const errorMessage = 'Name is required.';
+      const errorMessage = "Name is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
 
     if (errorMessage.includes('"email"')) {
-      const errorMessage = 'Email is required.';
+      const errorMessage = "Email is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
 
     if (errorMessage.includes('"password"')) {
-      const errorMessage = 'Password is required.';
+      const errorMessage = "Password is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
 
-    if (errorMessage.includes('"securityAnswer"')) { // added
-      const errorMessage = 'Security answer is required.'; // added
+    if (errorMessage.includes('"securityAnswer"')) {
+      // added
+      const errorMessage = "Security answer is required."; // added
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
-
   } else {
     // check if user with the same email already exists
     const existingUser = await userCollection.findOne({ email: email });
     if (existingUser) {
       // email already taken, handle accordingly
-      const errorMessage = 'Email already in use.';
+      const errorMessage = "Email already in use.";
       res.render("signup", { errorMessage: errorMessage });
       return;
-    };
-  };
-
+    }
+  }
 
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
-
-  const result = await userCollection.insertOne({ username: username, email: email, password: hashedPassword, securityAnswer: securityAnswer});
+  const result = await userCollection.insertOne({
+    username: username,
+    email: email,
+    password: hashedPassword,
+    securityAnswer: securityAnswer,
+  });
   console.log("Inserted user");
 
   //create a session and redirect to main page
@@ -193,7 +206,7 @@ app.post('/signupSubmit', async (req, res) => {
     email: email,
   };
 
-  //sets authentication to true 
+  //sets authentication to true
   req.session.authenticated = true;
 
   //sets their username
@@ -202,38 +215,37 @@ app.post('/signupSubmit', async (req, res) => {
   //sets user's id in the user session
   req.session._id = result.insertedId;
 
-
-  res.redirect('/quizWelcome');
-
+  res.redirect("/quizWelcome");
 });
 
-
-app.get('/login', (req, res) => {
-  res.render("login", { errorMessage: "" , successMessage: ""});
+app.get("/login", (req, res) => {
+  res.render("login", { errorMessage: "", successMessage: "" });
 });
 
-app.post('/loggingin', async (req, res) => {
+app.post("/loggingin", async (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
-
 
   const schema = Joi.string().max(20).required();
   const validationResult = schema.validate(email, password);
   if (validationResult.error != null) {
     console.log(validationResult.error);
-    const errorMessage = 'User not found.';
-    res.render('login', { errorMessage: errorMessage, successMessage:"" });
+    const errorMessage = "User not found.";
+    res.render("login", { errorMessage: errorMessage, successMessage: "" });
     return;
   }
 
-  const result = await userCollection.find({ email: email }).project({ email: 1, password: 1, username: 1, _id: 1, }).toArray();
+  const result = await userCollection
+    .find({ email: email })
+    .project({ email: 1, password: 1, username: 1, _id: 1 })
+    .toArray();
 
   console.log(result);
 
   if (result.length != 1) {
     console.log("user not found");
-    const errorMessage = 'User not found.';
-    res.render('login', { errorMessage: errorMessage, successMessage: "" });
+    const errorMessage = "User not found.";
+    res.render("login", { errorMessage: errorMessage, successMessage: "" });
     return;
   }
   if (await bcrypt.compare(password, result[0].password)) {
@@ -243,72 +255,76 @@ app.post('/loggingin', async (req, res) => {
     req.session._id = result[0]._id;
     req.session.cookie.maxAge = expireTime;
 
-    res.redirect('/gacha');
+    res.redirect("/gacha");
     return;
-  }
-  else {
+  } else {
     console.log("incorrect password");
-    const errorMessage = 'Invalid email/password combination.';
-    res.render('login', { errorMessage: errorMessage, successMessage: "" });
+    const errorMessage = "Invalid email/password combination.";
+    res.render("login", { errorMessage: errorMessage, successMessage: "" });
     return;
   }
 });
 
-app.get('/changePassword', (req, res) => {
-  res.render("changePassword", { errorMessage: ""});
-  
+app.get("/changePassword", (req, res) => {
+  res.render("changePassword", { errorMessage: "" });
 });
 
-
-app.post('/changePassword', async (req, res) => {
+app.post("/changePassword", async (req, res) => {
   const existingEmail = req.body.email;
   const securityAnswer = req.body.securityAnswer;
 
-  const existingUser = await userCollection.findOne({ email: existingEmail, securityAnswer: securityAnswer });
+  const existingUser = await userCollection.findOne({
+    email: existingEmail,
+    securityAnswer: securityAnswer,
+  });
 
   if (!existingUser) {
     console.log("invalid combination");
     const errorMessage = "Incorrect answer to the security question.";
-    res.render('changePassword', { errorMessage: errorMessage });
+    res.render("changePassword", { errorMessage: errorMessage });
     return;
   }
 
   console.log("both inputs correct");
 
-    // Save email in session
-    req.session.email = existingEmail;
+  // Save email in session
+  req.session.email = existingEmail;
 
-  res.redirect('/resetPassword');
-
+  res.redirect("/resetPassword");
 });
 
-app.get('/resetPassword', (req, res) => {
+app.get("/resetPassword", (req, res) => {
   const email = req.session.email;
-  res.render("resetPassword", {errorMessage: "", email: email});
+  res.render("resetPassword", { errorMessage: "", email: email });
 });
 
-app.post('/resetPassword', async (req, res) => {
+app.post("/resetPassword", async (req, res) => {
   const newPassword = req.body.password;
   const confirmPassword = req.body.confirmPassword;
-  const email = req.session.email;  
+  const email = req.session.email;
 
   if (newPassword !== confirmPassword) {
-    const errorMessage = 'Passwords do not match';
-    res.render('resetPassword', { errorMessage: errorMessage, email: email });
+    const errorMessage = "Passwords do not match";
+    res.render("resetPassword", { errorMessage: errorMessage, email: email });
     return;
-  }
-  else {
+  } else {
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
-    await userCollection.updateOne({ email: email }, { $set: { password: hashedPassword } });
-    res.render('login', { successMessage: 'Your password has been changed successfully. Please log in again.', errorMessage: ""});
-    console.log('password is changed for user with this email: ', email);
+    await userCollection.updateOne(
+      { email: email },
+      { $set: { password: hashedPassword } }
+    );
+    res.render("login", {
+      successMessage:
+        "Your password has been changed successfully. Please log in again.",
+      errorMessage: "",
+    });
+    console.log("password is changed for user with this email: ", email);
   }
 });
 
-
-app.get('/quizWelcome', (req, res) => {
+app.get("/quizWelcome", (req, res) => {
   res.render("quizWelcome", { name: req.session.username });
-})
+});
 
 app.get("/quiz", (req, res) => {
   if (!req.session.authenticated) {
@@ -333,36 +349,56 @@ app.post("/quiz", async (req, res) => {
   };
 
   try {
-    const result = await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { quizAnswers: answers } });
-    console.log('Answers saved to database');
-    res.redirect('/gacha');
+    const result = await userCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      { $set: { quizAnswers: answers } }
+    );
+    console.log("Answers saved to database");
+    res.redirect("/gacha");
   } catch (err) {
     console.error(err);
     res.status(500).send("Error saving quiz answers to database");
   }
 });
 
-app.get('/logout', (req, res) => {
+app.get("/logout", (req, res) => {
   req.session.destroy();
   console.log("user logged out");
-  res.redirect('/');
+  res.redirect("/");
 });
 
+async function getFactImages(place) {
+  const factImageUrls = [];
+  for (const x in place) {
+    var testFact = place[x];
+    console.log(testFact);
+    const requestURL = `https://api.unsplash.com/search/photos?query=${testFact}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+    const response = await fetch(requestURL);
+    const responseBody = await response.json();
 
-app.post("/main/:countryName", sessionValidation, async(req, res) => {
+    const imageURL = responseBody.results[0].urls.regular;
+    factImageUrls.push(imageURL);
+  }
 
+  return factImageUrls;
+}
+
+app.post("/main/:countryName", sessionValidation, async (req, res) => {
   try {
     const username = req.session.username;
     console.log(username);
     req.session.countryName = req.params.countryName;
     console.log(req.session.countryName);
-    
-    const result = await userCollection.find({ username: username }).project({ quizAnswers: 1 }).toArray();
+
+    const result = await userCollection
+      .find({ username: username })
+      .project({ quizAnswers: 1 })
+      .toArray();
 
     const userId = req.session._id;
     const userEntry = result[0];
     const answers = userEntry.quizAnswers;
-    
+
     const countryResponse = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: `
@@ -371,30 +407,47 @@ app.post("/main/:countryName", sessionValidation, async(req, res) => {
         They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
 
         Based on the above information, provide one quirky fun fact about this country that the traveller would enjoy, one recommended local business for them, 
-        and one natural destination they would like.
+        and one natural destination they would like. 
 
         Return response in the following parsable JSON format:
-          
-        {
-          "quirkyFact" : "the quirky fact",
-          "businessFact" : "the business fact",
-          "natureFact" : "the natural fact"
-        }
+
+        [
+          {
+            "quirkyFact" : "the quirky fact",
+            "businessFact" : "the business fact",
+            "natureFact" : "the natural destination fact"
+          },
+          {
+            "quirkyFactPlace" : "country name from quirkyFact",
+            "businessFactPlace" : "business name from businessFact",
+            "natureFactPlace" : "natural destination name from natureFact"
+          }
+        ]
       `,
-      max_tokens: 1500,
+      max_tokens: 3000,
       temperature: 0,
       top_p: 1.0,
       frequency_penalty: 0.0,
       presence_penalty: 0.0,
     });
 
-    const apiResponse = countryResponse.data;
-    const completion = apiResponse.choices[0].text;
-    console.log(completion);
-    const parsedResponse = JSON.parse(completion);
-    console.log(parsedResponse);
+    const apiResponse = await countryResponse.data;
+    const completion = await apiResponse.choices[0].text;
 
-    await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: { promptAnswers: parsedResponse } });
+    const parsedResponse = await JSON.parse(completion);
+    console.log(parsedResponse);
+    const resultFacts = parsedResponse[0];
+    const resultFactNames = parsedResponse[1];
+
+    await userCollection.updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: {
+          promptAnswers: resultFacts,
+          promptAnswerPlaces: resultFactNames,
+        },
+      }
+    );
 
     res.redirect(`/main`);
   } catch (error) {
@@ -409,41 +462,44 @@ app.get("/main", sessionValidation, async (req, res) => {
     const username = req.session.username;
     const gachaCountry = req.session.countryName;
 
-    console.log(username);
-
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
     const facts = result.promptAnswers;
-    console.log(facts);
 
-    res.render("main", { facts:facts, gachaCountry });
+    const places = result.promptAnswerPlaces;
+    var imagesList = await getFactImages(places);
+    console.log(imagesList);
 
+    res.render("main", { facts: facts, gachaCountry, imagesList });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
 });
 
-
-app.get('/profile', async (req, res) => {
+app.get("/profile", async (req, res) => {
   const db = database.db(mongodb_database);
-  const userCollection = db.collection('users');
+  const userCollection = db.collection("users");
   const userId = req.session._id;
-  const user = await userCollection.findOne({_id: new ObjectId(userId)});
+  const user = await userCollection.findOne({ _id: new ObjectId(userId) });
   console.log(user);
-  res.render("profile", {user})
+  res.render("profile", { user });
 });
 
-app.post('/updateProfile', async (req, res) => {
+app.post("/updateProfile", async (req, res) => {
   const userId = req.session._id;
   const db = database.db(mongodb_database);
-  const userCollection = await db.collection('users');
+  const userCollection = await db.collection("users");
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
 
   const updatedFields = {
     username: req.body.username ? req.body.username : user.username,
     email: req.body.email ? req.body.email : user.email,
-    password: req.body.password ? await bcrypt.hash(req.body.password, 10) : user.password,
-    securityAnswer: req.body.securityAnswer ? req.body.securityAnswer : user.securityAnswer
+    password: req.body.password
+      ? await bcrypt.hash(req.body.password, 10)
+      : user.password,
+    securityAnswer: req.body.securityAnswer
+      ? req.body.securityAnswer
+      : user.securityAnswer,
   };
 
   const nonNullFields = {};
@@ -453,17 +509,20 @@ app.post('/updateProfile', async (req, res) => {
     }
   }
 
-  await userCollection.updateOne({ _id: new ObjectId(userId) }, { $set: nonNullFields });
+  await userCollection.updateOne(
+    { _id: new ObjectId(userId) },
+    { $set: nonNullFields }
+  );
 
-  res.redirect('/profile');
+  res.redirect("/profile");
 });
 
-
 async function getQuizAnswers(username) {
-  const result = await userCollection.find({ username: username })
-  .project({ quizAnswers: 1 })
-  .toArray()
-  console.log(result)
+  const result = await userCollection
+    .find({ username: username })
+    .project({ quizAnswers: 1 })
+    .toArray();
+  console.log(result);
   const quizAnswers = result[0].quizAnswers;
   return quizAnswers;
 }
@@ -474,7 +533,7 @@ async function countryGenerator(quizAnswers) {
   q3answer = quizAnswers.question3.toLowerCase();
   q4answer = quizAnswers.question4.toLowerCase();
 
-const prompt = `I am going for a trip on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend three under-travelled countries meets the above mentioned criteria.
+  const prompt = `I am going for a trip on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend three under-travelled countries meets the above mentioned criteria.
 
 Return response in the following parsable JSON format:
     
@@ -483,14 +542,13 @@ Return response in the following parsable JSON format:
             location: the location of the recommended country,
             descr: one sentence description of the courtry
         }]    
-`
+`;
   const response = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages: [{ role: "user", content: prompt }]
-  })
+    model: "gpt-3.5-turbo",
+    messages: [{ role: "user", content: prompt }],
+  });
   const parsedResponse = JSON.parse(response.data.choices[0].message.content);
   return parsedResponse;
-
 }
 
 // Double confirm that the countries chagGPT provided is under-travelled by cross-checking whether the countries exists in the   database
@@ -500,37 +558,37 @@ async function checkCountries(countries) {
   for (let i = 0; i < countries.length; i++) {
     const countryName = countries[i]["name"];
     try {
-        const result = await untrvl_countries.findOne({ Country: countryName });
-        if (result) {
-          confirmedCountries.push(countries[i]);
-        }
-        // Print out the result if reaches to the end of the countries array
-        if (i === countries.length - 1) {
-          // console.log(confirmedCountries)
-        }
+      const result = await untrvl_countries.findOne({ Country: countryName });
+      if (result) {
+        confirmedCountries.push(countries[i]);
+      }
+      // Print out the result if reaches to the end of the countries array
+      if (i === countries.length - 1) {
+        // console.log(confirmedCountries)
+      }
     } catch (err) {
-        console.error('Error executing MongoDB query:', err);
+      console.error("Error executing MongoDB query:", err);
     }
   }
   return confirmedCountries;
 }
 
 async function getImage(countries) {
-  const imageURLs = []
-  for (let i=0; i<countries.length; i++) {
+  const imageURLs = [];
+  for (let i = 0; i < countries.length; i++) {
     const countryName = countries[i].name;
-    console.log(countryName)
-    const requestURL = `https://api.unsplash.com/search/photos?query=${countryName}&client_id=${process.env.UNSPLASH_ACCESSKEY}`
-    const response = await fetch(requestURL)
-  
-    const statusCode = response.status; 
-    console.log(statusCode)
-    const responseBody = await response.json(); 
-    const imageURL = responseBody.results[0].urls.regular
+    console.log(countryName);
+    const requestURL = `https://api.unsplash.com/search/photos?query=${countryName}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+    const response = await fetch(requestURL);
+
+    const statusCode = response.status;
+    console.log(statusCode);
+    const responseBody = await response.json();
+    const imageURL = responseBody.results[0].urls.regular;
     imageURLs.push(imageURL);
   }
   return imageURLs;
-}  
+}
 
 app.get("/gacha", sessionValidation, async (req, res) => {
   const quizAnswers = await getQuizAnswers(req.session.username);
@@ -601,8 +659,7 @@ app.use(express.static(__dirname + "/public"));
 app.get("*", (req, res) => {
   res.status(404);
   res.send("Page not found - 404");
-})
+});
 
 app.listen(port, () => {
-  console.log("Node application listening on port " + port);
-}); 
+});
