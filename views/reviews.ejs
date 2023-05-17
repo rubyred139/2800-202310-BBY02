@@ -1,0 +1,32 @@
+<%- include("templates/header") %>
+
+<div class="container reviewsDiv text-center mt-4 mb-2">
+  <h1>Travel Stories</h1>
+  <div>
+    <p>Have you travelled to any hidden gems you think the world should know about? Tell us your travel story!<p>
+    <form method="get" action="/reviewForm">
+      <button type="submit" class="btn btn-outline-secondary mb-1">Leave a Review</button>
+    </form>
+  </div>
+</div>
+<div class="container mb-5 pb-5">
+  <% if (reviews.length === 0) { %>
+    <p>No reviews available.</p>
+  <% } else { %>
+    <% reviews.forEach((review) => { %>
+      <div class="card text-center mb-5">
+        <div class="card-body bg-success-subtle">
+          <h5 class="card-title"><%= review.title %></h5>
+          <p class="card-text">Country: <%= review.country %></p>
+          <p class="card-text">Season: <%= review.visitTime %></p>
+          <p class="card-text">Length: <%= review.tripLength %></p>
+          <p class="card-text">Reason for travel: <%= review.vacationType %></p>
+          <p class="card-text">Experience: <%= review.experience %></p>
+          <p class="card-text"><strong>Traveller: </strong> <%= review.userName %></p>
+        </div>
+      </div>
+    <% }); %>
+  <% } %>
+</div>
+
+<%- include("templates/footer") %>

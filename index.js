@@ -49,6 +49,7 @@ var { database } = include('databaseConnection');
 
 const userCollection = database.db(mongodb_database).collection('users');
 const untrvl_countries = database.db(mongodb_database).collection('under-travelled_countries');
+const reviewsCollection = database.db(mongodb_database).collection('reviews');
  
 var {database} = include('databaseConnection');
 
@@ -540,6 +541,60 @@ app.get("/gacha", sessionValidation, async (req, res) => {
   res.render("gacha", { confirmedCountries, quizAnswers, imageURLs });
 });
 
+app.get('/reviews', async (req, res) => {
+  try {
+    // Retrieve all reviews from the reviews collection
+    const reviews = await reviewsCollection.find({}).toArray();
+    
+    // Render the reviews page with the retrieved reviews
+    res.render('reviews', { reviews });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+app.get('/reviewForm', (req, res) => {
+  console.log(req.body);
+  var userId = req.session._id;
+  var name = req.session.username;
+  res.render("reviewForm", {name, userId});
+});
+
+app.post('/reviewForm', async (req, res) => {
+  // Get the user ID from the session
+  const userId = req.session.user_id;
+
+  // Create a review object with all form field values
+  const review = {
+    title: req.body.reviewTitle,
+    country: req.body.countryName,
+    visitTime: req.body.visitTime,
+    tripLength: req.body.tripLength,
+    vacationType: req.body.vacationType,
+    experience: req.body.experience,
+    userName: req.body.name,
+    userId: req.body.userId
+  };
+
+  console.log(review);
+
+  try {
+    // Save the review to the database
+    const result = await reviewsCollection.insertOne(review);
+    console.log(`Saved review to database with ID: ${result.insertedId}`);
+
+    // Redirect to the thank you page
+    res.redirect('/thankyou');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error saving data to database');
+  }
+});
+
+app.get("/thankyou", (req, res) => {
+  res.render("thankyou");
+})
 
 app.use(express.static(__dirname + "/public"));
 
