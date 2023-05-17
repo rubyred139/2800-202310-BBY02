@@ -34,9 +34,9 @@
                 <div class="d-flex flex-column">
                     <h3 class="fs-2">Interesting fact!</h3>
                     <p class="mb-0">
-                        <%= parsedResponse.quirkyFact %>
+                        <%= facts.quirkyFact %>
                     </p>
-                    <img class="mt-3 w-100" src="canada_city.jpg" alt="canada picture">
+                    <img class="mt-3 w-100" src="<%= imagesList[0] %>" alt="country image" />
                 </div>
             </div>
 
@@ -53,9 +53,9 @@
                 <div class="d-flex flex-column">
                     <h3 class="fs-2">Business fact!</h3>
                     <p class="mb-0">
-                        <%= parsedResponse.businessFact %>
+                        <%= facts.businessFact %>
                     </p>
-                    <img class="mt-3 w-100" src="beavertails.jpg" alt="beavertails">
+                    <img class="mt-3 w-100" src="<%= imagesList[1] %>" alt="business image" />
                 </div>
             </div>
 
@@ -71,16 +71,14 @@
                 <div class="d-flex flex-column">
                     <h3 class="fs-2">Nature fact!</h3>
                     <p class="mb-0">
-                        <%= parsedResponse.natureFact %>
+                        <%= facts.natureFact %>
                     </p>
-
-        <img class="mt-3 w-100" src="<%= imagesList[2] %>" alt="banff" />
-      </div>
-    </div>
-  </div>
-</div>
-
-    </div>
+                    <img class="mt-3 w-100" src="<%= imagesList[2] %>" alt="natural image" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
     <script src="/js/easterEgg.js"></script>
 
