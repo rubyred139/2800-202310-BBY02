@@ -43,12 +43,11 @@
 
             <div class="col">
 
-              <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">         
+              <!-- <label class="list-group-item btn btn-outline-warning rounded-3 py-3" for="listGroupCheckableRadios1">          -->
                 <!-- <span class="d-block small opacity-50">With support text underneath to add more detail</span> -->
-                <div class="card">
+                <div class="card btn btn-outline-warning">
                   <div class="card-body card-front">
-                    <!-- <p><%= imageURLs[i] %></p> -->
-                    <img src="<%= imageURLs[i] %>" width="100%" height="300px"> 
+                    <img src="<%= imageURLs[i] %>" width="100%" height="100%"> 
                     <!-- <svg class="bd-placeholder-img card-img-top" width="100%" height="300px"
                     xmlns= "<%= imageURLs[i] %>" role="img" aria-label="Placeholder: Thumbnail"
                     preserveAspectRatio="xMidYMid slice" focusable="false">
@@ -69,12 +68,12 @@
                     <div class="d-flex justify-content-between align-items-center">
                     </div>
                     <div class="btn-group">
-                      <a href="/main/<%= confirmedCountries[i].name %>" type="button" class="btn btn-sm btn-outline-secondary read-more-btn">Read
+                      <a href="/main/<%= confirmedCountries[i].name %>" type="button" class="btn btn-outline-primary read-more-btn">Read
                         more</a>
                     </div>
                   </div>     
                 </div>       
-              </label>
+              <!-- </label> -->
             </div>
           <% } %>
 
@@ -83,8 +82,7 @@
       </div>
     </div>
 
-    <a class="d-flex gap-3 justify-content-center pb-5 m-5">
-
+    <a  href="/gacha" class="d-flex gap-3 justify-content-center pb-5 m-5">
      <img id="dieButton" src="./dices.png" class="btn btn-outline-light" width="250"></img>
     </a>
     
