@@ -547,7 +547,7 @@ app.get("/bookmarks", sessionValidation, async(req, res) => {
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
 
   const gachaCountry = user.currentCountry;
-  const savedCountries = user.savedCountries;
+  const savedCountries = user.savedCountries || [];
   var isBookmarked = savedCountries.includes(gachaCountry) ? true : false;
 
   var countryImages = await getFactImages(savedCountries);
