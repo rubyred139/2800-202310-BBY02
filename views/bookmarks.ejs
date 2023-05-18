@@ -1,0 +1,32 @@
+<%- include("templates/header") %>
+
+<div class="py-5">
+  <legend class="text-center">Bookmarked Countries</legend>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+    <% for (let i=0; i < savedCountries.length; i++) { %>
+    <div class="col">
+      <div class="card">
+        <img src="<%= countryImages[i] %>" class="card-img-top" alt="..." />
+        <div class="card-body">
+          <h5 class="card-title"><%= savedCountries[i] %></h5>
+          <div class="btn-group">
+            <form action="/main/<%= savedCountries[i] %>" method="post">
+              <button type="submit" class="btn btn-sm btn-outline-secondary">
+                View
+              </button>
+            </form>
+            <form action="/removeBookmark" method="post">
+              <input type="hidden" name="remove" value="<%= savedCountries[i] %>">
+              <button type="submit" class="btn btn-sm btn-outline-secondary">
+                Remove
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include("templates/footer") %>

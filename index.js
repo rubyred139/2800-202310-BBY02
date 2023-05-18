@@ -513,7 +513,6 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
 
     const bookmarkedCountries = result.savedCountries || [];
 
-
     const gachaCountry = result.currentCountry;
 
     var isBookmarked;
@@ -543,6 +542,32 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
   }
 });
 
+app.get("/bookmarks", sessionValidation, async(req, res) => {
+  const userId = req.session._id;
+  const user = await userCollection.findOne({ _id: new ObjectId(userId) });
+
+  const gachaCountry = user.currentCountry;
+  const savedCountries = user.savedCountries;
+  var isBookmarked = savedCountries.includes(gachaCountry) ? true : false;
+
+  var countryImages = await getFactImages(savedCountries);
+
+  console.log(countryImages);
+
+  res.render("bookmarks", { savedCountries, countryImages, isBookmarked });
+});
+
+app.post("/removeBookmark", async(req,res) => {
+  const userId = req.session._id;
+  const removedCountry = req.body.remove;
+
+  await userCollection.updateOne(
+    { _id: new ObjectId(userId) },
+    { $pull: { savedCountries: removedCountry } }
+  );
+
+  res.redirect("/bookmarks");
+})
 
 app.get("/profile", async (req, res) => {
   const db = database.db(mongodb_database);
