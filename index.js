@@ -380,7 +380,7 @@ async function getFactImages(place) {
 
     } catch (err) {
       console.log(err);
-      const defaultURL = `https://api.unsplash.com/search/photos?query=exploration&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const defaultURL = `https://api.unsplash.com/search/photos?query=airplane&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
       const response = await fetch(defaultURL);
       const responseBody = await response.json();
       var imageURL = responseBody.results[0].urls.regular;
@@ -407,6 +407,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     const userEntry = result[0];
     const answers = userEntry.quizAnswers;
 
+    // note to improve prompt again, some answers are a bit weird
     const countryResponse = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: `
@@ -415,8 +416,8 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
         They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
 
         Based on this information for this country, provide one quirky fun fact that the traveller would enjoy, one recommended local business, 
-        and one natural destination they would like, a fact about the most popular activity here, a fact about the national dish of the country, and 
-        a fact about the most popular season to visit.
+        and one natural destination they would like, a recommend activity to do here, a fact about the national dish of the country, and 
+        a fact about what is the official language. Each fact should be descriptive.
 
         Return the response in the following parsable JSON format:
 
@@ -427,15 +428,15 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
             "natureFact" : "the natural destination fact",
             "activityFact" : "the activity fact",
             "dishFact" : "the national dish fact",
-            "popularFact" : "the popular times fact"
+            "languageFact" : "the popular times fact"
           },
           {
-            "quirkyFactPlace" : "country name from quirkyFact",
-            "businessFactPlace" : "business name from businessFact, country name",
-            "natureFactPlace" : "natural destination name from natureFact, country name",
-            "activityFactPlace" : "activity from activityFact",
-            "dishFactPlace" : "dish name from dishFact",
-            "popularFactPlace" : "a month from the season in popularFact, country name"
+            "quirkyFactTitle" : "country name from quirkyFact",
+            "businessFactTitle" : "business name from businessFact, country name",
+            "natureFactTitle" : "natural destination name from natureFact, country name",
+            "activityFactTitle" : "activity from activityFact or if activity is at a location, then the location name",
+            "dishFactTitle" : "dish name from dishFact",
+            "languageFactTitle" : "the language, and the word language"
           }
         ]
       `,
@@ -454,6 +455,8 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     var trimmedCompletion = completion.trimStart();
     if (trimmedCompletion.startsWith("Answer:")) {
       trimmedCompletion = trimmedCompletion.replace("Answer:", "").trim();
+    } else if (trimmedCompletion.startsWith("Response:")) {
+      trimmedCompletion = trimmedCompletion.replace("Response:", "").trim();
     }
     console.log(trimmedCompletion);
 

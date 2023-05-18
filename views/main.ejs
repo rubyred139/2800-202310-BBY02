@@ -1,143 +1,191 @@
 <%- include("templates/header") %>
 
 <div class="container px-4 py-5" id="featured-3">
-  <h2 class="pb-2 border-bottom"><%= gachaCountry %></h2>
+    <h2 class="pb-2 border-bottom">
+        <%= gachaCountry %>
+        <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+            <span class="material-symbols-outlined" onclick="bookmark('<%= gachaCountry %>')">
+                bookmark
+            </span>
+        </div>
+    </h2>
+</div>
 
-
-        
-        
-        <!--easter egg part shows here-->
+    <!--easter egg part shows here-->
     <div id="airplane-container" class="hidden">
-        <img src="coolDuck.png" width="150" id="airplane-image">
-        <img src="wind.gif" width="90">
+      <img src="coolDuck.png" width="150" id="airplane-image" />
+      <img src="wind.gif" width="90" />
     </div>
 
-        <div id="confetti-container">
-        </div>
-        <!--easter egg part ends here-->
+    <div id="confetti-container"></div>
+    <!--easter egg part ends here-->
 
-        <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
-
-            <div class="col d-flex align-items-start">
-                <div
-                    class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+    <div class="row g-4 py-5 row-cols-1 row-cols-lg-3">
+      <div class="col d-flex align-items-start">
+        <div
+          class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        >
+          <!-- <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                         class="bi bi-flag" viewBox="0 0 16 16">
                         <path
                             d="M14.778.085A.5.5 0 0 1 15 .5V8a.5.5 0 0 1-.314.464L14.5 8l.186.464-.003.001-.006.003-.023.009a12.435 12.435 0 0 1-.397.15c-.264.095-.631.223-1.047.35-.816.252-1.879.523-2.71.523-.847 0-1.548-.28-2.158-.525l-.028-.01C7.68 8.71 7.14 8.5 6.5 8.5c-.7 0-1.638.23-2.437.477A19.626 19.626 0 0 0 3 9.342V15.5a.5.5 0 0 1-1 0V.5a.5.5 0 0 1 1 0v.282c.226-.079.496-.17.79-.26C4.606.272 5.67 0 6.5 0c.84 0 1.524.277 2.121.519l.043.018C9.286.788 9.828 1 10.5 1c.7 0 1.638-.23 2.437-.477a19.587 19.587 0 0 0 1.349-.476l.019-.007.004-.002h.001M14 1.221c-.22.078-.48.167-.766.255-.81.252-1.872.523-2.734.523-.886 0-1.592-.286-2.203-.534l-.008-.003C7.662 1.21 7.139 1 6.5 1c-.669 0-1.606.229-2.415.478A21.294 21.294 0 0 0 3 1.845v6.433c.22-.078.48-.167.766-.255C4.576 7.77 5.638 7.5 6.5 7.5c.847 0 1.548.28 2.158.525l.028.01C9.32 8.29 9.86 8.5 10.5 8.5c.668 0 1.606-.229 2.415-.478A21.317 21.317 0 0 0 14 7.655V1.222z" />
                     </svg> -->
-                    <!--easter egg icon-->
-                    <div id="startButton-container">
-                        <img id="startButton" src="/takeOff.png" width="20">
-                    </div>
-                </div>
-                <div class="d-flex flex-column">
-                    <h3 class="fs-2">Interesting fact!</h3>
-                    <p class="mb-0">
-                        <%= facts.quirkyFact %>
-                    </p>
-                    <img class="mt-3 w-100" src="<%= imagesList[0] %>" alt="country image" />
-                </div>
-            </div>
-
-
-            <div class="col d-flex align-items-start">
-                <div
-                    class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-shop" viewBox="0 0 16 16">
-                        <path
-                            d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z" />
-                    </svg>
-                </div>
-                <div class="d-flex flex-column">
-                    <h3 class="fs-2">Business fact!</h3>
-                    <p class="mb-0">
-                        <%= facts.businessFact %>
-                    </p>
-                    <img class="mt-3 w-100" src="<%= imagesList[1] %>" alt="business image" />
-                </div>
-            </div>
-
-            <div class="col d-flex align-items-start">
-                <div
-                    class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-tree" viewBox="0 0 16 16">
-                        <path
-                            d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z" />
-                    </svg>
-                </div>
-                <div class="d-flex flex-column">
-                    <h3 class="fs-2">Nature fact!</h3>
-                    <p class="mb-0">
-                        <%= facts.natureFact %>
-                    </p>
-                    <img class="mt-3 w-100" src="<%= imagesList[2] %>" alt="natural image" />
-                </div>
-            </div>
-
-            <div class="col d-flex align-items-start">
-                <div
-                    class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-tree" viewBox="0 0 16 16">
-                        <path
-                            d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z" />
-                    </svg>
-                </div>
-                <div class="d-flex flex-column">
-                    <h3 class="fs-2">Recommended activities</h3>
-                    <p class="mb-0">
-                        <%= facts.activityFact %>
-                    </p>
-                    <img class="mt-3 w-100" src="<%= imagesList[3] %>" alt="activity image" />
-                </div>
-            </div>
-
-            <div class="col d-flex align-items-start">
-                <div
-                    class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-tree" viewBox="0 0 16 16">
-                        <path
-                            d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z" />
-                    </svg>
-                </div>
-                <div class="d-flex flex-column">
-                    <h3 class="fs-2">National dish</h3>
-                    <p class="mb-0">
-                        <%= facts.dishFact %>
-                    </p>
-                    <img class="mt-3 w-100" src="<%= imagesList[4] %>" alt="dish image" />
-                </div>
-            </div>
-
-            <div class="col d-flex align-items-start">
-                <div
-                    class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
-                        class="bi bi-tree" viewBox="0 0 16 16">
-                        <path
-                            d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z" />
-                    </svg>
-                </div>
-                <div class="d-flex flex-column">
-                    <h3 class="fs-2">Popular travel seasons</h3>
-                    <p class="mb-0">
-                        <%= facts.popularFact %>
-                    </p>
-                    <img class="mt-3 w-100" src="<%= imagesList[5] %>" alt="seasons image" />
-                </div>
-            </div>
-
-
-
+          <!--easter egg icon-->
+          <div id="startButton-container">
+            <img id="startButton" src="/takeOff.png" width="20" />
+          </div>
         </div>
-    </div>
+        <div class="d-flex flex-column">
+          <h3 class="fs-2">Interesting fact!</h3>
+          <p class="mb-0"><%= facts.quirkyFact %></p>
+          <img
+            class="mt-3 w-100"
+            src="<%= imagesList[0] %>"
+            alt="country image"
+          />
+        </div>
+      </div>
 
+      <div class="col d-flex align-items-start">
+        <div
+          class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-shop"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M2.97 1.35A1 1 0 0 1 3.73 1h8.54a1 1 0 0 1 .76.35l2.609 3.044A1.5 1.5 0 0 1 16 5.37v.255a2.375 2.375 0 0 1-4.25 1.458A2.371 2.371 0 0 1 9.875 8 2.37 2.37 0 0 1 8 7.083 2.37 2.37 0 0 1 6.125 8a2.37 2.37 0 0 1-1.875-.917A2.375 2.375 0 0 1 0 5.625V5.37a1.5 1.5 0 0 1 .361-.976l2.61-3.045zm1.78 4.275a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0 1.375 1.375 0 1 0 2.75 0V5.37a.5.5 0 0 0-.12-.325L12.27 2H3.73L1.12 5.045A.5.5 0 0 0 1 5.37v.255a1.375 1.375 0 0 0 2.75 0 .5.5 0 0 1 1 0zM1.5 8.5A.5.5 0 0 1 2 9v6h1v-5a1 1 0 0 1 1-1h3a1 1 0 0 1 1 1v5h6V9a.5.5 0 0 1 1 0v6h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1V9a.5.5 0 0 1 .5-.5zM4 15h3v-5H4v5zm5-5a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-2a1 1 0 0 1-1-1v-3zm3 0h-2v3h2v-3z"
+            />
+          </svg>
+        </div>
+        <div class="d-flex flex-column">
+          <h3 class="fs-2">Business fact!</h3>
+          <p class="mb-0"><%= facts.businessFact %></p>
+          <img
+            class="mt-3 w-100"
+            src="<%= imagesList[1] %>"
+            alt="business image"
+          />
+        </div>
+      </div>
+
+      <div class="col d-flex align-items-start">
+        <div
+          class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-tree"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z"
+            />
+          </svg>
+        </div>
+        <div class="d-flex flex-column">
+          <h3 class="fs-2">Nature fact!</h3>
+          <p class="mb-0"><%= facts.natureFact %></p>
+          <img
+            class="mt-3 w-100"
+            src="<%= imagesList[2] %>"
+            alt="natural image"
+          />
+        </div>
+      </div>
+
+      <div class="col d-flex align-items-start">
+        <div
+          class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-tree"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z"
+            />
+          </svg>
+        </div>
+        <div class="d-flex flex-column">
+          <h3 class="fs-2">Recommended activities</h3>
+          <p class="mb-0"><%= facts.activityFact %></p>
+          <img
+            class="mt-3 w-100"
+            src="<%= imagesList[3] %>"
+            alt="activity image"
+          />
+        </div>
+      </div>
+
+      <div class="col d-flex align-items-start">
+        <div
+          class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-tree"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z"
+            />
+          </svg>
+        </div>
+        <div class="d-flex flex-column">
+          <h3 class="fs-2">National dish</h3>
+          <p class="mb-0"><%= facts.dishFact %></p>
+          <img class="mt-3 w-100" src="<%= imagesList[4] %>" alt="dish image" />
+        </div>
+      </div>
+
+      <div class="col d-flex align-items-start">
+        <div
+          class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            fill="currentColor"
+            class="bi bi-tree"
+            viewBox="0 0 16 16"
+          >
+            <path
+              d="M8.416.223a.5.5 0 0 0-.832 0l-3 4.5A.5.5 0 0 0 5 5.5h.098L3.076 8.735A.5.5 0 0 0 3.5 9.5h.191l-1.638 3.276a.5.5 0 0 0 .447.724H7V16h2v-2.5h4.5a.5.5 0 0 0 .447-.724L12.31 9.5h.191a.5.5 0 0 0 .424-.765L10.902 5.5H11a.5.5 0 0 0 .416-.777l-3-4.5zM6.437 4.758A.5.5 0 0 0 6 4.5h-.066L8 1.401 10.066 4.5H10a.5.5 0 0 0-.424.765L11.598 8.5H11.5a.5.5 0 0 0-.447.724L12.69 12.5H3.309l1.638-3.276A.5.5 0 0 0 4.5 8.5h-.098l2.022-3.235a.5.5 0 0 0 .013-.507z"
+            />
+          </svg>
+        </div>
+        <div class="d-flex flex-column">
+          <h3 class="fs-2">Languages</h3>
+          <p class="mb-0"><%= facts.languageFact %></p>
+          <img
+            class="mt-3 w-100"
+            src="<%= imagesList[5] %>"
+            alt="seasons image"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script src="/js/easterEgg.js"></script>
+<script src="/js/bookmark.js"></script>
 
 <%- include("templates/footer") %>
