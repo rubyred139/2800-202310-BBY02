@@ -4,9 +4,15 @@
     <h2 class="pb-2 border-bottom">
         <%= gachaCountry %>
         <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-            <span class="material-symbols-outlined" onclick="bookmark('<%= gachaCountry %>')">
-                bookmark
-            </span>
+            <form action='/bookmark' method="post">
+              <button type="submit" class="bookmark-button">
+                <span class="material-symbols-outlined <%= isBookmarked ? 'bookmark-colour' : '' %>">
+                  bookmark
+                </span>
+                
+              </button>
+              
+            </form>
         </div>
     </h2>
 </div>
@@ -186,6 +192,5 @@
 </div>
 
 <script src="/js/easterEgg.js"></script>
-<script src="/js/bookmark.js"></script>
 
 <%- include("templates/footer") %>

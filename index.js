@@ -396,7 +396,8 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     const username = req.session.username;
     console.log(username);
     req.session.countryName = req.params.countryName;
-    console.log(req.session.countryName);
+    var currentCountry = req.session.countryName;
+    console.log(currentCountry);
 
     const result = await userCollection
       .find({ username: username })
@@ -450,18 +451,14 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     const apiResponse = await countryResponse.data;
     const completion = await apiResponse.choices[0].text;
 
-    console.log(completion);
-
     var trimmedCompletion = completion.trimStart();
     if (trimmedCompletion.startsWith("Answer:")) {
       trimmedCompletion = trimmedCompletion.replace("Answer:", "").trim();
     } else if (trimmedCompletion.startsWith("Response:")) {
       trimmedCompletion = trimmedCompletion.replace("Response:", "").trim();
     }
-    console.log(trimmedCompletion);
 
     const parsedResponse = JSON.parse(trimmedCompletion);
-    console.log(parsedResponse);
     const resultFacts = parsedResponse[0];
     const resultFactNames = parsedResponse[1];
 
@@ -470,6 +467,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
       {
         $set: {
           promptAnswers: resultFacts,
+          currentCountry: currentCountry,
           promptAnswerPlaces: resultFactNames,
         },
       }
@@ -485,21 +483,62 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
 app.get("/main", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
-    const gachaCountry = req.session.countryName;
+    var isBookmarked = req.session.isBookmarked;
 
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
+
+    const gachaCountry = result.currentCountry;
+    
     const facts = result.promptAnswers;
 
     const places = result.promptAnswerPlaces;
     var imagesList = await getFactImages(places);
-    console.log(imagesList);
 
-    res.render("main", { facts: facts, gachaCountry, imagesList });
+    res.render("main", { facts: facts, gachaCountry, imagesList, isBookmarked });
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
 });
+
+app.post("/bookmark", sessionValidation, async (req, res) => {
+  try {
+    const userId = req.session._id;
+
+    const result = await userCollection.findOne({ _id: new ObjectId(userId) });
+
+    const bookmarkedCountries = result.savedCountries || [];
+
+
+    const gachaCountry = result.currentCountry;
+
+    var isBookmarked;
+
+    if (bookmarkedCountries.includes(gachaCountry)) {
+      // Remove bookmark
+      await userCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $pull: { savedCountries: gachaCountry } }
+      );
+      isBookmarked = false;
+    } else {
+      // Add bookmark
+      await userCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $push: { savedCountries: gachaCountry } }
+      );
+      isBookmarked = true;
+    }
+
+    req.session.isBookmarked = isBookmarked; 
+
+
+    res.redirect("/main");
+  } catch (error) {
+    console.error(error);
+  }
+});
+
 
 app.get("/profile", async (req, res) => {
   const db = database.db(mongodb_database);
