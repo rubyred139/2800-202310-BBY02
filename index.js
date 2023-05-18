@@ -489,7 +489,7 @@ app.get("/main", sessionValidation, async (req, res) => {
 
     const gachaCountry = result.currentCountry;
 
-    const savedCountries = result.savedCountries;
+    const savedCountries = result.savedCountries || [];
 
     var isBookmarked = savedCountries.includes(gachaCountry) ? true : false;
 
