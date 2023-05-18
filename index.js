@@ -484,12 +484,15 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
 app.get("/main", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
-    var isBookmarked = req.session.isBookmarked;
 
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
 
     const gachaCountry = result.currentCountry;
-    
+
+    const savedCountries = result.savedCountries;
+
+    var isBookmarked = savedCountries.includes(gachaCountry) ? true : false;
+
     const facts = result.promptAnswers;
 
     const places = result.promptAnswerPlaces;
