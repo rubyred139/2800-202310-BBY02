@@ -693,6 +693,7 @@ app.get("/gacha", sessionValidation, (req, res) => {
   res.render("loading"); 
 });
 app.get("/gachapage", sessionValidation, async (req, res) => { 
+  const name = req.session.username;
   const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
@@ -703,7 +704,7 @@ app.get("/gachapage", sessionValidation, async (req, res) => {
     flipVisibility = "d-none";
   }
   const imageURLs = await getImage(confirmedCountries);
-  res.render("gacha", {confirmedCountries, quizAnswers, imageURLs, cardVisibility,flipVisibility})
+  res.render("gacha", {name, confirmedCountries, quizAnswers, imageURLs, cardVisibility,flipVisibility})
 });
 
 app.get('/reviews', async (req, res) => {
