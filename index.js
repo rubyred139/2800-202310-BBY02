@@ -557,15 +557,16 @@ async function countryGenerator(quizAnswers) {
   q4answer = quizAnswers.question4.toLowerCase();
   q5answer = quizAnswers.question5.toLowerCase();
 
-const prompt = `I am planning for a trip to the ${q5answer} continent on ${q3answer} for ${q1answer}. My ideal destination for the trip should have ${q2answer}. I want to ${q4answer} when travel. Please recommend 10 not-so-popular countries meets the above mentioned criteria.
-Return response in the following parsable JSON format:
-    
-        [{
-            name: under-travelled countries that meets the above mentioned criteria,
-            location: the location of the recommended country,
-            descr: one sentence description of the courtry
-        }]    
-`;
+  const prompt = `I am planning a ${q1answer} trip in January and looking for a country in ${q5answer} that offers ${q2answer}. I want to ${q4answer} during my travels. Can you recommend 5 lesser-known countries on the ${q5answer} continent that meet these criteria? If there are fewer than 5 countries that meet the criteria, please provide any available options. If there is none, just return empty JSON.
+
+  Return response in the following parsable JSON format only,     
+    [{
+        name: country that meets the above mentioned criteria,
+        location: the location of the recommended country,,
+        descr: one sentence description of the courtry
+    }]    
+  `;
+  console.log(prompt)
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: prompt }],
@@ -585,9 +586,13 @@ async function checkCountries(countries) {
         if (result) {
           confirmedCountries.push(countries[i]);
         }
-
         if (countries.length >= 3) {
           // Slice the array to three if more than three countries pass the database verification
+          function getRandom3Countries() {
+            const shuffledArray = confirmedCountries.sort(() => Math.random() - 0.5);
+            return shuffledArray.slice(0, 3);
+          }
+          getRandom3Countries();
           confirmedCountries = confirmedCountries.slice(0,3)
         }
     } catch (err) {
@@ -618,9 +623,15 @@ app.get("/gacha", sessionValidation, async (req, res) => {
   const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
+  let cardVisibility = "d-none";
+  let flipVisibility = "d-block";
+  if (confirmedCountries.length === 0 ){
+    cardVisibility = "d-block";
+    flipVisibility = "d-none";
+  }
   const imageURLs = await getImage(confirmedCountries);
   console.log("confirmedCountry: " + confirmedCountries);
-  res.render("gacha", { confirmedCountries, quizAnswers, imageURLs });
+  res.render("gacha", { confirmedCountries, quizAnswers, imageURLs, cardVisibility, flipVisibility});
 });
 
 app.get('/reviews', async (req, res) => {
@@ -686,4 +697,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, () => {
+  console.log("Port listening on " + port)
 });
