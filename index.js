@@ -557,7 +557,7 @@ async function countryGenerator(quizAnswers) {
   q4answer = quizAnswers.question4.toLowerCase();
   q5answer = quizAnswers.question5.toLowerCase();
 
-  const prompt = `I am planning a ${q1answer} trip in January and looking for a country in ${q5answer} that offers ${q2answer}. I want to ${q4answer} during my travels. Can you recommend 5 lesser-known countries on the ${q5answer} continent that meet these criteria? If there are fewer than 5 countries that meet the criteria, please provide any available options. If there is none, just return empty JSON.
+  const prompt = `I am planning a ${q1answer} trip in January and looking for a country in ${q5answer} that offers ${q2answer}. I want to ${q4answer} during my travels. Can you recommend 5 lesser-known countries that are safe to travel on the ${q5answer} continent that meet these criteria? If there are fewer than 5 countries that meet the criteria, please provide any available options. If there is none, just return empty JSON.
 
   Return response in the following parsable JSON format only,     
     [{
@@ -619,7 +619,10 @@ async function getImage(countries) {
   return imageURLs;
 }
 
-app.get("/gacha", sessionValidation, async (req, res) => { 
+app.get("/gacha", sessionValidation, (req, res) => {
+  res.render("loading"); 
+});
+app.get("/gachapage", sessionValidation, async (req, res) => { 
   const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
@@ -630,8 +633,7 @@ app.get("/gacha", sessionValidation, async (req, res) => {
     flipVisibility = "d-none";
   }
   const imageURLs = await getImage(confirmedCountries);
-  console.log("confirmedCountry: " + confirmedCountries);
-  res.render("gacha", { confirmedCountries, quizAnswers, imageURLs, cardVisibility, flipVisibility});
+  res.render("gacha", {confirmedCountries, quizAnswers, imageURLs, cardVisibility,flipVisibility})
 });
 
 app.get('/reviews', async (req, res) => {
