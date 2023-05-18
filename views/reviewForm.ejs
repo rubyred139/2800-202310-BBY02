@@ -1,23 +1,28 @@
 <%- include("templates/header") %>
-
-<div class="container mb-5">
+<a class="back" href="/reviews" style="display: flex;">
+  <p class="material-symbols-outlined">
+    arrow_back_ios
+    </span>
+    <p>Back</p>
+</a>
+<div class="container py-5 mt-1 mb-5">
   <br>
   <h1>Tell Us About Your Trip</h1>
   <br>
   <form method="post" action="/reviewForm">
     <div class="form-group">
       <label for="reviewTitle">Review Title</label>
-      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle">
+      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" required>
       <br>
     </div>
     <div class="form-group">
       <label for="countryName">Country Name</label>
-      <input type="text" class="form-control" id="countryName" name="countryName">
+      <input type="text" class="form-control" id="countryName" name="countryName" required>
       <br>
     </div>
     <div class="form-group">
       <label for="visitTime">When did you visit?</label>
-      <select class="form-control" id="visitTime" name="visitTime">
+      <select class="form-select" id="visitTime" name="visitTime" required>
         <option>Spring</option>
         <option>Summer</option>
         <option>Fall</option>
@@ -27,7 +32,7 @@
     </div>
     <div class="form-group">
       <label for="tripLength">How long was your trip?</label>
-      <select class="form-control" id="tripLength" name="tripLength">
+      <select class="form-select" id="tripLength" name="tripLength" required>
         <option>1-3 days</option>
         <option>4-7 days</option>
         <option>8-14 days</option>
@@ -37,7 +42,7 @@
     </div>
     <div class="form-group">
       <label for="vacationType">What type of vacation did you have?</label>
-      <select class="form-control" id="vacationType" name="vacationType">
+      <select class="form-select" id="vacationType" name="vacationType" required>
         <option>Relaxing getaway</option>
         <option>Adventure trip</option>
         <option>Cultural exploration</option>
@@ -50,7 +55,7 @@
     </div>
     <div class="form-group">
       <label for="experience">Tell us about your experience</label>
-      <textarea class="form-control" id="experience" name="experience" rows="3"></textarea>
+      <textarea class="form-control" id="experience" name="experience" rows="3" required></textarea>
     </div>
     <br>
     <div class="d-flex justify-content-end mb-5">
