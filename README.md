@@ -18,11 +18,14 @@ Install:
 
 Credits:
 CSS Framework- Bootstrap 5.3
-Google Material Icons- (https://fonts.google.com/icons) 
 Font- https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap
+Google Material Icons- (https://fonts.google.com/icons) 
+Bootstrap Icons - https://icons.getbootstrap.com/?q=eat 
+Flaticon created by Iconjam - https://www.flaticon.com/free-icons/backpack (activity icon)
+Flaticon created by Freepik - https://www.flaticon.com/free-icons/restaurant (food icon)
+Flaticon created by Luvdat - https://www.flaticon.com/free-icons/dices (Dices icon)
 Logo Creation- made using Canva
 Easter Egg image - made using Canva
- Dices icons created by Luvdat - Flaticon, https://www.flaticon.com/free-icons/dices"
 Sound effects- mashup https://www.youtube.com/watch?v=aqCxlxclyzo&pp=ygUKZHVjayBzb3VuZA%3D%3D and https://www.youtube.com/watch?v=Uj93hicGDNc&t=116s
 
 

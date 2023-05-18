@@ -638,9 +638,17 @@ app.get('/reviews', async (req, res) => {
   try {
     // Retrieve all reviews from the reviews collection
     const reviews = await reviewsCollection.find({}).toArray();
-    
-    // Render the reviews page with the retrieved reviews
-    res.render('reviews', { reviews });
+    console.log("Reviews:", reviews);
+
+    // Retrieve the user's ID from the session
+    const userId = req.session._id;
+
+    // Retrieve the user's reviews from the reviews collection
+    const myReviews = await reviewsCollection.find({ userId }).toArray();
+    console.log("My Reviews:", myReviews);
+
+    // Render the reviews page with the retrieved reviews and user's reviews
+    res.render('reviews', { reviews, myReviews });
   } catch (error) {
     console.error(error);
     res.status(500).send('Internal Server Error');
@@ -688,6 +696,98 @@ app.post('/reviewForm', async (req, res) => {
 app.get("/thankyou", (req, res) => {
   res.render("thankyou");
 })
+
+// Delete Review Route
+app.get('/deleteReview', async (req, res) => {
+  const reviewId = req.query.id;
+  
+  try {
+    // Delete the review from the database
+    const result = await reviewsCollection.deleteOne({ _id: new ObjectId(reviewId) });
+    console.log(`Deleted review from database with ID: ${reviewId}`);
+
+    // Redirect to the reviews page
+    res.redirect('/reviews');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting review from database');
+  }
+});
+
+// Update Review Route (render the update form)
+app.get('/updateReview', async (req, res) => {
+  const reviewId = req.query.id;
+  console.log("ID: ", reviewId);
+  
+  try {
+    // Retrieve the review from the database
+    const review = await reviewsCollection.findOne({ _id: new ObjectId(reviewId) });
+    console.log('Review:', review);
+    console.log("ID: ", reviewId);
+
+    // Render the update review form with the retrieved review
+    res.render('updateReview', { review });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error retrieving review from database');
+  }
+});
+
+// Update Review Route (handle the form submission)
+app.post('/updateReview', async (req, res) => {
+  const reviewId = req.query.id;
+
+  // Create an updated review object with form field values
+  const updatedReview = {
+    title: req.body.reviewTitle,
+    country: req.body.countryName,
+    visitTime: req.body.visitTime,
+    tripLength: req.body.tripLength,
+    vacationType: req.body.vacationType,
+    experience: req.body.experience,
+    userName: req.body.name,
+    userId: req.body.userId
+  };
+
+  try {
+    // Update the review in the database
+    const result = await reviewsCollection.updateOne({ _id: new ObjectId(reviewId) }, { $set: updatedReview });
+    console.log(`Updated review in database with ID: ${reviewId}`);
+
+    // Redirect to the reviews page
+    res.redirect('/reviews');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error updating review in database');
+  }
+});
+
+app.get('/searchReviews', async (req, res) => {
+  try {
+    // Retrieve the country query from the URL parameters
+    const country = req.query.country;
+
+    // Create a case-insensitive regex pattern for the country search
+    const countryRegex = new RegExp(country, 'i');
+
+    // Retrieve all reviews from the reviews collection, filtered by the specified country
+    const reviews = await reviewsCollection.find({ country: countryRegex }).toArray();
+    console.log("Reviews:", reviews);
+
+    // Retrieve the user's ID from the session
+    const userId = req.session._id;
+
+    // Retrieve the user's reviews from the reviews collection
+    const myReviews = await reviewsCollection.find({ userId }).toArray();
+    console.log("My Reviews:", myReviews);
+
+    // Render the reviews page with the retrieved reviews and user's reviews
+    res.render('reviews', { reviews, myReviews });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 app.use(express.static(__dirname + "/public"));
 
