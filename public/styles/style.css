@@ -14,24 +14,27 @@ body {
   max-height: 50%;
 }
 
-.edit-profile-popup {
-  display: none;
-  /* popup styles */
-}
-
-.profile-header img {
-  width: 80px;
-  /* Adjust the width and height as needed */
-  height: 80px;
-  border-radius: 50%;
-  /* Creates a circular shape */
-  object-fit: cover;
-  /* Ensures the image fills the circle without distortion */
-}
-
+/*** Profile page styling ***/
 #profileContainer {
   margin-bottom: 200px;
 }
+
+#imageSelectionModal.modal-backdrop {
+  display: none;
+}
+
+#imageSelectionModal.show {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+#imageSelectionModal .modal-dialog {
+  pointer-events: auto;
+}
+
+.image-option.selected {
+  border: 2px solid blue; 
+}
+/*** End of profile page styling ***/
 
 .card {
   position: relative;

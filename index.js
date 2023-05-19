@@ -19,6 +19,7 @@ const MongoStore = require("connect-mongo");
 const { MongoClient } = require("mongodb");
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
+const path = require('path');
 const saltRounds = 12;
 
 const app = express();
@@ -195,6 +196,7 @@ app.post("/signupSubmit", async (req, res) => {
     email: email,
     password: hashedPassword,
     securityAnswer: securityAnswer,
+    profilePicture: "profilepic3.png"
   });
   console.log("Inserted user");
 
@@ -593,6 +595,9 @@ app.post("/updateProfile", async (req, res) => {
     securityAnswer: req.body.securityAnswer
       ? req.body.securityAnswer
       : user.securityAnswer,
+      profilePicture: req.body.profilePicture
+      ? path.basename(req.body.profilePicture) // Extract only the filename
+      : user.profilePicture,
   };
 
   const nonNullFields = {};

@@ -1,46 +1,83 @@
 <%- include("templates/header") %>
-
-<div class="container my-5 pb-4 gap-1" id="profileContainer">
-  <h1><%= user.username %>'s Profile</h1>
-  <div class="profile">
-	<div class="profile-header">
-	  <img src="cambodia.jpg" alt="Profile Picture">
-	</div>
+<div class="rounded-top text-white d-flex flex-row" style="background-color: powderblue; height: 150px;">
+  <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
+    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center shadow-4-strong" style="width: 150px; height: 150px; margin: 0 auto; position: relative;">
+      <img id="profilePic" class="rounded-circle profile-pic" alt="avatar2" src="<%= user.profilePicture %>" style="width: 150px; height: 150px;">
+      <button type="button" class="btn edit-profile-btn" data-bs-toggle="modal" data-bs-target="#imageSelectionModal" style="position: absolute; bottom: -5px; right: -5px;">
+        <span class="material-symbols-outlined">add_circle</span>
+      </button>
+    </div>
   </div>
-  
+  <div class="ms-2" style="margin-top: 80px;">
+    <h1 style="color: white;"><strong><%= user.username %>'s Profile</strong></h1>
+  </div>
+</div>
+
+<!-- Image Selection Modal -->
+<div class="modal fade" id="imageSelectionModal" tabindex="-1" aria-labelledby="imageSelectionModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="imageSelectionModalLabel">Select Profile Picture</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="image-selection d-flex justify-content-center flex-wrap">
+          <img src="profilepic1.png" id="profilepic1.png" class="rounded-circle image-option selected" style="width: 150px; height: 150px;">
+          <img src="profilepic2.png" id="profilepic2.png" class="rounded-circle image-option" style="width: 150px; height: 150px;">
+          <img src="profilepic3.png" id="profilepic3.png" class="rounded-circle image-option" style="width: 150px; height: 150px;">
+          <img src="profilepic4.png" id="profilepic4.png" class="rounded-circle image-option" style="width: 150px; height: 150px;">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <form method="POST" action="/updateProfile">
+          <input type="hidden" name="profilePicture" id="selectedImage" value="">
+          <button type="submit" class="btn btn-secondary text-light save-profile-btn" data-bs-dismiss="modal">Save</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container my-5 pt-2 pb-4 gap-1" id="profileContainer">
   <form method="POST" action="/updateProfile">
     <fieldset class="mb-3" id="personalInfoFields" disabled>
-      <legend class="text-center">Personal Information</legend>
-      <div class="form-group">
+      <legend class="text-center"><span class="material-symbols-outlined">person</span>Personal Information</legend>
+      <div class="form-group" style="margin-bottom: 10px;">
         <label for="nameInput">Name</label>
         <input type="text" id="nameInput" class="form-control" name="username" value="<%= user.username %>">
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 10px;">
         <label for="emailInput">Email</label>
         <input type="email" id="emailInput" class="form-control" name="email" value="<%= user.email %>" readonly disabled>
       </div>
-      <div class="form-group">
+      <br>
+      <hr>
+      <legend class="text-center"><span class="material-symbols-outlined">lock</span>Password and Security</legend>
+      <div class="form-group" style="margin-bottom: 10px;">
         <label for="passwordInput">Password</label>
         <input type="password" id="passwordInput" class="form-control" name="password" placeholder="********">
       </div>
-      <div class="form-group">
+      <div class="form-group" style="margin-bottom: 10px;">
         <label for="securityAnswerInput">Security Question: What is your favourite animal?</label>
         <input type="text" id="securityAnswerInput" class="form-control" name="securityAnswer" value="<%= user.securityAnswer %>">
-    </div>
-    </fieldset>      
+      </div>
+    </fieldset>
+    
     <div class="d-flex justify-content-end mt-2 mb-4">
-      <button type="button" class="btn btn-secondary" onclick="editUserInfo()">Edit</button>
+      <button type="button" id="editProfBtn" class="btn btn-outline-secondary" onclick="editUserInfo()">Edit</button>
       <span style="width: 10px"></span>
       <div id="saveCancelButtons" style="display: none;">
-        <button type="submit" class="btn btn-info">Save</button>
+        <button type="submit" class="btn btn-secondary text-light">Save</button>
         <span style="width: 10px"></span>
-        <button type="button" class="btn btn-secondary" onclick="cancelEdit()">Cancel</button>
+        <button type="button" class="btn btn-outline-secondary" onclick="cancelEdit()">Cancel</button>
       </div>
     </div>
-  </form>  
-
+  </form>
+  <hr>
   <fieldset class="mb-3" id="quizAnswersFields" disabled>
-    <legend class="text-center">Your Travel Preferences</legend>
+    <legend class="text-center">Travel Preferences</legend>
     <div class="d-flex flex-column align-items fs-2 mx-auto" style="max-width:400px">
       <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill text-sm"><%= user.quizAnswers.question1 %></span>
       <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill"><%= user.quizAnswers.question2 %></span>
@@ -51,62 +88,20 @@
   </fieldset>
   
   <div class="d-flex justify-content-end mt-1 ms-auto">
-    <button type="button" class="btn btn-primary" onclick="location.href='/quiz'">Retake Quiz</button>
+    <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz'">Retake Quiz</button>
   </div>
-  <div class="container my-5">
-    <legend class="text-center">Bookmarked Countries</legend>
-    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-      <div class="col">
-        <div class="card">
-          <img src="country1.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Croatia</h5>
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="cambodia.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Cambodia</h5>
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="card">
-          <img src="cuba.jpg" class="card-img-top" alt="...">
-          <div class="card-body">
-            <h5 class="card-title">Cuba</h5>
-            <div class="btn-group">
-              <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Repeat the above code for each bookmarked country -->
-    </div>
-  </div>
-  
-
 </div>
 
-<%- include("templates/footer") %>
-
 <script>
-  
   function editUserInfo() {
     document.getElementById('personalInfoFields').disabled = false;
     document.getElementById('saveCancelButtons').style.display = 'block';
+    document.getElementById('editProfBtn').style.display = 'none';
   }
-  
+
   function cancelEdit() {
     document.getElementById('personalInfoFields').disabled = true;
+    document.getElementById('editProfBtn').style.display = 'block';
     document.getElementById('saveCancelButtons').style.display = 'none';
     document.getElementById('nameInput').value = '<%= user.username %>';
     document.getElementById('securityAnswerInput').value = '<%= user.securityAnswer %>';
@@ -114,22 +109,81 @@
   }
 
   const editProfileBtn = document.querySelector(".edit-profile-btn");
-  const editProfilePopup = document.querySelector(".edit-profile-popup");
   const saveProfileBtn = document.querySelector(".save-profile-btn");
-  const profilePic = document.querySelector(".profile-header img");
-  const imageSelection = document.querySelectorAll(".image-selection img");
+  const profilePic = document.querySelector(".profile-pic");
+  const imageOptions = document.querySelectorAll(".image-option");
+  const imageSelectionModal = document.getElementById("imageSelectionModal");
 
   editProfileBtn.addEventListener("click", () => {
-  editProfilePopup.style.display = "block";
-});
+    // Show the modal
+    imageSelectionModal.classList.add("show");
+    imageSelectionModal.style.display = "block";
+    document.body.style.overflow = "hidden";
+  });
 
-saveProfileBtn.addEventListener("click", () => {
-  // loop through imageSelection and find the one that is selected
-  // set profilePic src to the selected image src
-  // close the popup
-  editProfilePopup.style.display = "none";
-});
+  saveProfileBtn.addEventListener("click", () => {
+    // Loop through imageOptions and find the selected image
+    let selectedImageSrc = "";
+    imageOptions.forEach((image) => {
+      if (image.classList.contains("selected")) {
+        selectedImageSrc = image.src;
+      }
+    });
 
+    // Set the profile picture source to the selected image
+    profilePic.src = selectedImageSrc;
+
+    // Close the modal
+    imageSelectionModal.classList.remove("show");
+    imageSelectionModal.style.display = "none";
+    document.body.style.overflow = "auto";
+  });
+
+  const currentProfilePicSrc = profilePic.src;
+
+  imageOptions.forEach((image) => {
+    // Check if the current image's source matches the user's profile picture source
+    if (image.src === currentProfilePicSrc) {
+      image.classList.add("selected");
+    } else {
+      image.classList.remove("selected"); // Remove "selected" class from other images
+    }
+    image.addEventListener("click", () => {
+      // Remove the "selected" class from all image options
+      imageOptions.forEach((option) => {
+        option.classList.remove("selected");
+      });
+
+      // Add the "selected" class to the clicked image
+      image.classList.add("selected");
+
+      // Set the selected image source
+      selectedImageSrc = image.src;
+    });
+  });
+
+  // Set the profile picture source to the selected image
+  const selectedImageInput = document.getElementById('selectedImage');
+  let selectedImageSrc = profilePic.src; // Initialize with default image source
+
+  imageOptions.forEach((imageOption) => {
+    imageOption.addEventListener('click', () => {
+      // Remove 'selected' class from all options
+      imageOptions.forEach((option) => option.classList.remove('selected'));
+      // Add 'selected' class to the clicked option
+      imageOption.classList.add('selected');
+      // Set the value of the hidden input field to the selected image name
+      selectedImageInput.value = imageOption.src;
+      // Set the selected image source
+      selectedImageSrc = imageOption.src;
+    });
+  });
+
+  // Set the profile picture source to the selected image
+  profilePic.src = selectedImageSrc;
 </script>
+
+<%- include("templates/footer") %>
+
 
 
