@@ -1,0 +1,78 @@
+<%- include("templates/header") %>
+
+<div class="container reviewsDiv text-center mt-4 mb-2">
+  <h1>Travel Stories</h1>
+  <div>
+    <p>Have you travelled to any hidden gems you think the world should know about? Tell us your travel story!<p>
+    <form method="get" action="/reviewForm">
+      <button type="submit" class="btn btn-outline-secondary mb-1">Leave a Review</button>
+    </form>
+  </div>
+</div>
+
+<!-- Search Bar -->
+<div class="input-group mb-3">
+  <input type="text" class="form-control" id="searchInput" placeholder="Search by Country" aria-label="Search" aria-describedby="searchButton">
+  <button class="btn btn-outline-secondary" type="button" id="clearButton"><i class="material-symbols-outlined">close</i></button>
+  <button class="btn btn-outline-secondary" type="button" id="searchButton">Search</button>
+</div>
+
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" id="reviewTabs" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link active text-dark" id="allReviewsTab" data-bs-toggle="tab" data-bs-target="#allReviews" type="button" role="tab" aria-controls="allReviews" aria-selected="true">All Reviews</button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link text-dark" id="myReviewsTab" data-bs-toggle="tab" data-bs-target="#myReviews" type="button" role="tab" aria-controls="myReviews" aria-selected="false">My Reviews</button>
+  </li>
+</ul>
+
+<!-- Tab content -->
+<div class="tab-content" id="reviewTabContent">
+  <!-- All Reviews Tab -->
+  <div class="tab-pane fade show active" id="allReviews" role="tabpanel" aria-labelledby="allReviewsTab">
+    <% if (reviews.length === 0) { %>
+      <p>No reviews available.</p>
+    <% } else { %>
+      <% reviews.forEach((review) => { %>
+        <div class="card text-center mb-5">
+          <div class="card-body bg-success-subtle">
+            <h5 class="card-title"><%= review.title %></h5>
+            <p class="card-text">Country: <%= review.country %></p>
+            <p class="card-text">Season: <%= review.visitTime %></p>
+            <p class="card-text">Length: <%= review.tripLength %></p>
+            <p class="card-text">Reason for travel: <%= review.vacationType %></p>
+            <p class="card-text">Experience: <%= review.experience %></p>
+            <p class="card-text"><strong>Traveller: </strong> <%= review.userName %></p>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+
+  <!-- My Reviews Tab -->
+  <div class="tab-pane fade" id="myReviews" role="tabpanel" aria-labelledby="myReviewsTab">
+    <% if (myReviews.length === 0) { %>
+      <p>You have no reviews.</p>
+    <% } else { %>
+      <% myReviews.forEach((review) => { %>
+        <div class="card text-center mb-5">
+          <div class="card-body bg-success-subtle">
+            <h5 class="card-title"><%= review.title %></h5>
+            <p class="card-text">Country: <%= review.country %></p>
+            <p class="card-text">Season: <%= review.visitTime %></p>
+            <p class="card-text">Length: <%= review.tripLength %></p>
+            <p class="card-text">Reason for travel: <%= review.vacationType %></p>
+            <p class="card-text">Experience: <%= review.experience %></p>
+            <p class="card-text"><strong>Traveller: </strong> <%= review.userName %></p>
+            <a href="/deleteReview?id=<%= review._id %>" class="btn btn-secondary text-light">Delete</a>
+            <a href="/updateReview?id=<%= review._id %>" class="btn btn-light text-dark">Update</a>
+          </div>
+        </div>
+      <% }); %>
+    <% } %>
+  </div>
+</div>
+<br><br>
+<script src="/js/reviews.js"></script>
+<%- include("templates/footer") %>

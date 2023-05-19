@@ -41,3 +41,7 @@
   margin-right: 50px;
   
 }
+
+.dropdown-toggle.dropdown-toggle-no-caret::after {
+  display: none;
+}
