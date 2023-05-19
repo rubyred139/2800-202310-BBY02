@@ -33,7 +33,7 @@ Landing Page images-
 1. Sibenik, Croatia Photo by Assedrani Official  from Pexels: https://www.pexels.com/photo/aerial-shot-of-sibenik-croatia-13385470/
 2. Krong Siem Reap, Cambodia Photo by Lukas Kloeppel: https://www.pexels.com/photo/silhouette-of-trees-near-body-of-water-2416576/
 3. Havana, Cuba Photo by Sophia: https://www.pexels.com/photo/colorful-historic-buildings-in-city-square-5211643/
-
+Featurette gifs made using Canva 
 
 AI and API Usage:
 OpenAI 
