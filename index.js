@@ -255,7 +255,7 @@ app.post("/loggingin", async (req, res) => {
     req.session._id = result[0]._id;
     req.session.cookie.maxAge = expireTime;
 
-    res.redirect("/gacha");
+    res.redirect("/gachaLoading");
     return;
   } else {
     console.log("incorrect password");
@@ -355,7 +355,7 @@ app.post("/quiz", async (req, res) => {
       { $set: { quizAnswers: answers } }
     );
     console.log("Answers saved to database");
-    res.redirect("/gacha");
+    res.redirect("/gachaLoading");
   } catch (err) {
     console.error(err);
     res.status(500).send("Error saving quiz answers to database");
@@ -476,11 +476,15 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
       }
     );
 
-    res.redirect(`/main`);
+    res.redirect(`/mainLoading`);
   } catch (error) {
     console.error(error);
     res.sendStatus(500);
   }
+});
+
+app.get("/mainLoading", sessionValidation, (req, res) => {
+  res.render("mainLoading"); 
 });
 
 app.get("/main", sessionValidation, async (req, res) => {
@@ -694,10 +698,10 @@ async function getImage(countries) {
   return imageURLs;
 }
 
-app.get("/gacha", sessionValidation, (req, res) => {
-  res.render("loading"); 
+app.get("/gachaLoading", sessionValidation, (req, res) => {
+  res.render("gachaLoading"); 
 });
-app.get("/gachapage", sessionValidation, async (req, res) => { 
+app.get("/gacha", sessionValidation, async (req, res) => { 
   const name = req.session.username;
   const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
