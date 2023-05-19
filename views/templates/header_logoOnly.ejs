@@ -30,11 +30,57 @@
     <nav class="navbar navbar-expand-lg bg-body-tertiary rounded" aria-label="Eleventh navbar example">
       <div class="container-fluid">
   
-        <div class="d-flex">
-          <a class="navbar-brand" href="#">
+        <a class="nav-link text-center d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+          <span class="material-symbols-outlined">
+            logout
+          </span>
+        </a>
+
+
+        <div class="d-flex mx-auto">
+          <div class="navbar-brand">
             <img src="logo2.png" alt="Logo" width="30">
             AdvenTour
+          </div>
+        </div>
+
+        <div class="profile">
+          <a class="nav-link" href="/profile">
+            <span class="material-symbols-outlined">
+              account_circle
+            </span>
           </a>
         </div>
+
+     
+        <div class="d-none d-lg-block">
+          <a class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Profile</a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="/profile">View Profile</a></li>
+              <li><a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">Logout</a></li>
+            </ul>
+          </a>
+        </div>
+       
       </div>
-    </nav>
+    </nav>    
+
+      <!--modal to ask user if they are sure they want to log out-->
+  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="logoutModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="logoutModalLabel">Logout</h5>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to log out?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <a href="/logout" class="btn btn-primary" style="color: white" ;>Logout</a>
+      </div>
+    </div>
+  </div>
+</div>
