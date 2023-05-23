@@ -3,9 +3,6 @@ require("./utils.js");
 require("dotenv").config();
 // const url = require("url");
 const { Configuration, OpenAIApi } = require("openai");
-const config = new Configuration({ // backup API key
-  apiKey: process.env.OPENAI_API_KEY,
-});
 
 const openai = new OpenAIApi(
   new Configuration({
@@ -89,7 +86,7 @@ app.get("/", (req, res) => {
   res.render("landing");
 });
 
-app.get('/easterEgg' , (req, res) => {
+app.get('/easterEgg', (req, res) => {
   res.render("easterEgg")
 })
 
@@ -368,6 +365,7 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
+// Isolate keywords from chatGPT response and uses them to search for and return related images
 async function getFactImages(place) {
   const factImageUrls = [];
   for (const x in place) {
@@ -381,6 +379,7 @@ async function getFactImages(place) {
       var imageURL = responseBody.results[0].urls.regular;
       factImageUrls.push(imageURL);
 
+      // If no images available from search, a default picture will be used instead
     } catch (err) {
       console.log(err);
       const defaultURL = `https://api.unsplash.com/search/photos?query=airplane&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
@@ -394,6 +393,7 @@ async function getFactImages(place) {
   return factImageUrls;
 }
 
+// Generates a response from chatGPT, then answers are parsed and stored in mongoDB database
 app.post("/main/:countryName", sessionValidation, async (req, res) => {
   try {
     const username = req.session.username;
@@ -411,7 +411,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     const userEntry = result[0];
     const answers = userEntry.quizAnswers;
 
-    // note to improve prompt again, some answers are a bit weird
+    // Prompt for chatGPT using quiz answers and selected country
     const countryResponse = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: `
@@ -451,9 +451,11 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
       presence_penalty: 0.0,
     });
 
-    const apiResponse = await countryResponse.data;
-    const completion = await apiResponse.choices[0].text;
+    // ChatGPT response is retrieved 
+    const apiResponse = countryResponse.data;
+    const completion = apiResponse.choices[0].text;
 
+    // Response is trimmed in cases where String "Answer: " or "Reponse: " is added to response by chatGPT
     var trimmedCompletion = completion.trimStart();
     if (trimmedCompletion.startsWith("Answer:")) {
       trimmedCompletion = trimmedCompletion.replace("Answer:", "").trim();
@@ -461,6 +463,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
       trimmedCompletion = trimmedCompletion.replace("Response:", "").trim();
     }
 
+    // Trimmed response is seperated and seperated in mongoDB database
     const parsedResponse = JSON.parse(trimmedCompletion);
     const resultFacts = parsedResponse[0];
     const resultFactNames = parsedResponse[1];
@@ -517,11 +520,13 @@ function sendEmail() {
   });
 }
 
-
+// Loading wheel for main page
 app.get("/mainLoading", sessionValidation, (req, res) => {
-  res.render("mainLoading"); 
+  res.render("mainLoading");
 });
 
+
+// Main page of the app
 app.get("/main", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
@@ -546,6 +551,7 @@ app.get("/main", sessionValidation, async (req, res) => {
   }
 });
 
+// Saves/deletes a country to/from the database when bookmark button is clicked
 app.post("/bookmark", sessionValidation, async (req, res) => {
   try {
     const userId = req.session._id;
@@ -559,14 +565,14 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
     var isBookmarked;
 
     if (bookmarkedCountries.includes(gachaCountry)) {
-      // Remove bookmark
+      // Removes bookmark
       await userCollection.updateOne(
         { _id: new ObjectId(userId) },
         { $pull: { savedCountries: gachaCountry } }
       );
       isBookmarked = false;
     } else {
-      // Add bookmark
+      // Adds bookmark
       await userCollection.updateOne(
         { _id: new ObjectId(userId) },
         { $push: { savedCountries: gachaCountry } }
@@ -574,7 +580,7 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
       isBookmarked = true;
     }
 
-    req.session.isBookmarked = isBookmarked; 
+    req.session.isBookmarked = isBookmarked;
 
 
     res.redirect("/main");
@@ -583,7 +589,8 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
   }
 });
 
-app.get("/bookmarks", sessionValidation, async(req, res) => {
+// Bookmarks page of the app
+app.get("/bookmarks", sessionValidation, async (req, res) => {
   const userId = req.session._id;
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
 
@@ -598,7 +605,8 @@ app.get("/bookmarks", sessionValidation, async(req, res) => {
   res.render("bookmarks", { savedCountries, countryImages, isBookmarked });
 });
 
-app.post("/removeBookmark", async(req,res) => {
+// Removes bookmarks from the database when "remove" is pressed on bookmarks page
+app.post("/removeBookmark", async (req, res) => {
   const userId = req.session._id;
   const removedCountry = req.body.remove;
 
@@ -634,7 +642,7 @@ app.post("/updateProfile", async (req, res) => {
     securityAnswer: req.body.securityAnswer
       ? req.body.securityAnswer
       : user.securityAnswer,
-      profilePicture: req.body.profilePicture
+    profilePicture: req.body.profilePicture
       ? path.basename(req.body.profilePicture) // Extract only the filename
       : user.profilePicture,
   };
@@ -696,19 +704,19 @@ async function checkCountries(countries) {
   for (let i = 0; i < countries.length; i++) {
     const countryName = countries[i]["name"];
     try {
-        const result = await untrvl_countries.findOne({ Country: countryName });
-        if (result) {
-          confirmedCountries.push(countries[i]);
+      const result = await untrvl_countries.findOne({ Country: countryName });
+      if (result) {
+        confirmedCountries.push(countries[i]);
+      }
+      if (countries.length >= 3) {
+        // Slice the array to three if more than three countries pass the database verification
+        function getRandom3Countries() {
+          const shuffledArray = confirmedCountries.sort(() => Math.random() - 0.5);
+          return shuffledArray.slice(0, 3);
         }
-        if (countries.length >= 3) {
-          // Slice the array to three if more than three countries pass the database verification
-          function getRandom3Countries() {
-            const shuffledArray = confirmedCountries.sort(() => Math.random() - 0.5);
-            return shuffledArray.slice(0, 3);
-          }
-          getRandom3Countries();
-          confirmedCountries = confirmedCountries.slice(0,3)
-        }
+        getRandom3Countries();
+        confirmedCountries = confirmedCountries.slice(0, 3)
+      }
     } catch (err) {
       console.error("Error executing MongoDB query:", err);
     }
@@ -734,21 +742,21 @@ async function getImage(countries) {
 }
 
 app.get("/gachaLoading", sessionValidation, (req, res) => {
-  res.render("gachaLoading"); 
+  res.render("gachaLoading");
 });
-app.get("/gacha", sessionValidation, async (req, res) => { 
+app.get("/gacha", sessionValidation, async (req, res) => {
   const name = req.session.username;
   const quizAnswers = await getQuizAnswers(req.session.username);
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
   let cardVisibility = "d-none";
   let flipVisibility = "d-block";
-  if (confirmedCountries.length === 0 ){
+  if (confirmedCountries.length === 0) {
     cardVisibility = "d-block";
     flipVisibility = "d-none";
   }
   const imageURLs = await getImage(confirmedCountries);
-  res.render("gacha", {name, confirmedCountries, quizAnswers, imageURLs, cardVisibility,flipVisibility})
+  res.render("gacha", { name, confirmedCountries, quizAnswers, imageURLs, cardVisibility, flipVisibility })
 });
 
 app.get('/reviews', async (req, res) => {
@@ -776,7 +784,7 @@ app.get('/reviewForm', (req, res) => {
   console.log(req.body);
   var userId = req.session._id;
   var name = req.session.username;
-  res.render("reviewForm", {name, userId});
+  res.render("reviewForm", { name, userId });
 });
 
 app.post('/reviewForm', async (req, res) => {
@@ -817,7 +825,7 @@ app.get("/thankyou", (req, res) => {
 // Delete Review Route
 app.get('/deleteReview', async (req, res) => {
   const reviewId = req.query.id;
-  
+
   try {
     // Delete the review from the database
     const result = await reviewsCollection.deleteOne({ _id: new ObjectId(reviewId) });
@@ -835,7 +843,7 @@ app.get('/deleteReview', async (req, res) => {
 app.get('/updateReview', async (req, res) => {
   const reviewId = req.query.id;
   console.log("ID: ", reviewId);
-  
+
   try {
     // Retrieve the review from the database
     const review = await reviewsCollection.findOne({ _id: new ObjectId(reviewId) });
