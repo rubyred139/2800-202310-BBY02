@@ -1,9 +1,9 @@
 require("./utils.js");
 
 require("dotenv").config();
-const url = require("url");
+// const url = require("url");
 const { Configuration, OpenAIApi } = require("openai");
-const config = new Configuration({
+const config = new Configuration({ // backup API key
   apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -12,11 +12,11 @@ const openai = new OpenAIApi(
     apiKey: process.env.OPENAI_API_KEY,
   })
 );
-
+const nodemailer = require('nodemailer');
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const { MongoClient } = require("mongodb");
+// const { MongoClient } = require("mongodb");
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const path = require('path');
@@ -27,7 +27,7 @@ const app = express();
 app.use(express.json());
 
 const Joi = require("joi");
-const { count } = require("console");
+// const { count } = require("console");
 
 const port = process.env.PORT || 2000;
 
@@ -482,6 +482,41 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     res.sendStatus(500);
   }
 });
+
+// Notification
+function sendEmail() {
+
+
+
+  // Create a transporter object with your SMTP configuration
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.zoho.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.ZOHO_USER,
+      pass: process.env.ZOHO_PSWD
+    }
+  });
+
+  // Define the email options
+  const mailOptions = {
+    from: process.env.ZOHO_USER,
+    to: 'adventourservice@zohomail.com',
+    subject: 'Hello from Node.js',
+    text: 'This is a test email from Node.js using Nodemailer'
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+}
+
 
 app.get("/mainLoading", sessionValidation, (req, res) => {
   res.render("mainLoading"); 
