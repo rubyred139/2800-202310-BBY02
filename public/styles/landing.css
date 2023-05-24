@@ -87,6 +87,6 @@ body {
 
 @media (max-width: 767px) {
   #myCarousel .carousel-item {
-      max-height: 400px; 
+    max-height: 400px;
   }
 }

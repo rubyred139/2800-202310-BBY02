@@ -2,7 +2,6 @@
 
 body {
   font-family: 'Comfortaa', cursive;
-
 }
 
 #quizQ3 {
@@ -30,7 +29,6 @@ body {
 .image-option.selected {
   border: 2px solid blue;
 }
-
 /*** End of profile page styling ***/
 
 .card {
@@ -38,7 +36,6 @@ body {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.5s ease-in-out;
-
 }
 
 .card-back {
@@ -57,7 +54,6 @@ body {
 
 .card.flipped {
   transform: rotateY(180deg);
-
 }
 
 .card-front {
@@ -73,7 +69,6 @@ body {
   display: inline-block;
   overflow: hidden;
   transition: transform 0.3s;
-
 }
 
 #dieButton:hover {
@@ -82,7 +77,6 @@ body {
 
 #startButton:hover {
   cursor: pointer;
-
 }
 
 #airplane-container {
@@ -91,7 +85,6 @@ body {
   animation: slideAnimation 4s linear infinite;
   overflow: hidden;
   display: inline-block;
-  /* background: red; */
 }
 
 #airplane-container.hidden {
@@ -116,8 +109,6 @@ body {
     transform: translateX(-100%);
   }
 }
-
-
 
 .confetti {
   position: absolute;
