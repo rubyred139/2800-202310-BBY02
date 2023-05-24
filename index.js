@@ -514,7 +514,7 @@ function sendEmail(username, useremail, country, date) {
     <p><a href="http://txirvpjzag.eu09.qoddiapp.com/reviewForm">Click here to add your review</a></p>
     
     <p>AdvenTour</p>
-    <img src="logo.png">
+    <img src="/logo.png">
     `
   };
 
