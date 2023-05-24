@@ -632,8 +632,13 @@ app.get("/profile", async (req, res) => {
   const userId = req.session._id;
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
   console.log(user);
-  res.render("profile", { user });
+
+  // Check if the user has completed the travel quiz
+  const hasCompletedQuiz = user.quizAnswers && Object.values(user.quizAnswers).every(answer => answer !== '');
+
+  res.render("profile", { user, hasCompletedQuiz });
 });
+
 
 app.post("/updateProfile", async (req, res) => {
   const userId = req.session._id;
@@ -920,7 +925,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.get("*", (req, res) => {
   res.status(404);
-  res.send("Page not found - 404");
+  res.render("404");
 });
 
 app.listen(port, () => {

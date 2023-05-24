@@ -152,3 +152,20 @@ body {
   text-decoration: none;
 }
 
+/* 404 page styling */
+.error-page {
+  background-image: url('/404.jpg');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.error-page .container {
+  text-align: center;
+}
+
+#heading404 {
+  font-size: 40pt;
+}

@@ -86,18 +86,27 @@
   <hr>
   <fieldset class="mb-3" id="quizAnswersFields" disabled>
     <legend class="text-center">Travel Preferences</legend>
-    <div class="d-flex flex-column align-items fs-2 mx-auto" style="max-width:400px">
-      <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill text-sm"><%= user.quizAnswers.question1 %></span>
-      <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill"><%= user.quizAnswers.question2 %></span>
-      <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill"><%= user.quizAnswers.question3 %></span>
-      <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question4 %></span>
-      <span id="quiz5-answer-goes-here" class="badge bg-success-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question5 %></span>
-    </div>
-  </fieldset>
+    <% if (user.quizAnswers) { %>
+      <div class="d-flex flex-column align-items fs-2 mx-auto" style="max-width:400px">
+        <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill text-sm"><%= user.quizAnswers.question1 %></span>
+        <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill"><%= user.quizAnswers.question2 %></span>
+        <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill"><%= user.quizAnswers.question3 %></span>
+        <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question4 %></span>
+        <span id="quiz5-answer-goes-here" class="badge bg-success-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question5 %></span>
+      </div>
+    <% } else { %>
+      <div class="text-center">You have not selected your travel preferences.</div>
+    <% } %>
+  </fieldset>  
   
   <div class="d-flex justify-content-end mt-1 mb-5 pb-5 ms-auto">
-    <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz'">Retake Quiz</button>
+    <% if (hasCompletedQuiz) { %>
+      <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz'">Retake Quiz</button>
+    <% } else { %>
+      <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz'">Take Quiz</button>
+    <% } %>
   </div>
+  
 </div>
 
 <script>
