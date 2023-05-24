@@ -45,3 +45,13 @@
 .dropdown-toggle.dropdown-toggle-no-caret::after {
   display: none;
 }
+
+.custom-btn-primary{
+  color: white;
+  background-color: #5895f2;
+}
+
+.custom-btn-primary:hover {
+  color: white;
+  background-color: #2979f0;
+}

@@ -79,20 +79,11 @@ body {
   background-color: #5895f2;
 }
 
-.custom-btn-outline-primary {
-  color: #5895f2;
-  border-color: #5895f2;
-}
-
 .custom-btn-primary:hover {
   color: white;
   background-color: #2979f0;
 }
 
-.custom-btn-outline-primary:hover {
-  color: white;
-  background-color: #3b82ed;
-}
 
 @media (max-width: 767px) {
   #myCarousel .carousel-item {
