@@ -28,8 +28,9 @@ body {
 }
 
 .image-option.selected {
-  border: 2px solid blue; 
+  border: 2px solid blue;
 }
+
 /*** End of profile page styling ***/
 
 .card {
@@ -168,4 +169,14 @@ body {
 
 #heading404 {
   font-size: 40pt;
+}
+
+.custom-btn-primary {
+  color: white;
+  background-color: #5895f2;
+}
+
+.custom-btn-primary:hover {
+  color: white;
+  background-color: #2979f0;
 }
