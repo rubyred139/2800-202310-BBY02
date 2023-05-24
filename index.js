@@ -784,9 +784,11 @@ app.get('/reviews', async (req, res) => {
 
 app.get('/reviewForm', (req, res) => {
   console.log(req.body);
+  var country = req.query.country;
+  console.log(country);
   var userId = req.session._id;
   var name = req.session.username;
-  res.render("reviewForm", { name, userId });
+  res.render("reviewForm", { name, userId, country });
 });
 
 app.post('/reviewForm', async (req, res) => {
