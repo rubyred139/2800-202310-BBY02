@@ -382,7 +382,7 @@ async function getFactImages(place) {
       // If no images available from search, a default picture will be used instead
     } catch (err) {
       console.log(err);
-      const defaultURL = `https://api.unsplash.com/search/photos?query=airplane&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const defaultURL = `https://api.unsplash.com/search/photos?query=continental-breakfast&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
       const response = await fetch(defaultURL);
       const responseBody = await response.json();
       var imageURL = responseBody.results[0].urls.regular;
@@ -415,9 +415,9 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     const countryResponse = await openai.createCompletion({
       model: "text-davinci-003",
       prompt: `
-        A new traveller is going to ${req.session.countryName}. The purpose of their trip is ${answers.question1}. They are going in ${answers.question3}. 
+        A new traveller is going to ${req.session.countryName}. The purpose of their trip is for ${answers.question1}. They are going in ${answers.question3}. 
           
-        They would prefer to travel to a ${answers.question2} and their preferred actitives are to ${answers.question4}.
+        They would prefer to travel to a ${answers.question2} environment and their preferred activities are to ${answers.question4}.
 
         Based on this information for this country, provide one quirky fun fact that the traveller would enjoy, one recommended local business, 
         and one natural destination they would like, a recommend activity to do here, a fact about the national dish of the country, and 
@@ -444,7 +444,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
           }
         ]
       `,
-      max_tokens: 3000,
+      max_tokens: 2000,
       temperature: 0,
       top_p: 1.0,
       frequency_penalty: 0.0,
