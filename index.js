@@ -1,9 +1,9 @@
 require("./utils.js");
 
 require("dotenv").config();
-const url = require("url");
+// const url = require("url");
 const { Configuration, OpenAIApi } = require("openai");
-const config = new Configuration({
+const config = new Configuration({ // backup API key
   apiKey: process.env.OPENAI_API_KEY,
 });
 
@@ -12,11 +12,11 @@ const openai = new OpenAIApi(
     apiKey: process.env.OPENAI_API_KEY,
   })
 );
-
+const nodemailer = require('nodemailer');
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-const { MongoClient } = require("mongodb");
+// const { MongoClient } = require("mongodb");
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const path = require('path');
@@ -27,7 +27,7 @@ const app = express();
 app.use(express.json());
 
 const Joi = require("joi");
-const { count } = require("console");
+// const { count } = require("console");
 
 const port = process.env.PORT || 2000;
 
@@ -196,7 +196,8 @@ app.post("/signupSubmit", async (req, res) => {
     email: email,
     password: hashedPassword,
     securityAnswer: securityAnswer,
-    profilePicture: "profilepic3.png"
+    profilePicture: "profilepic3.png",
+    emailNotifications: true, // Default value for email notification preference
   });
   console.log("Inserted user");
 
@@ -483,6 +484,41 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
   }
 });
 
+// Notification
+function sendEmail() {
+
+
+
+  // Create a transporter object with your SMTP configuration
+  const transporter = nodemailer.createTransport({
+    host: 'smtp.zoho.com',
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.ZOHO_USER,
+      pass: process.env.ZOHO_PSWD
+    }
+  });
+
+  // Define the email options
+  const mailOptions = {
+    from: process.env.ZOHO_USER,
+    to: 'adventourservice@zohomail.com',
+    subject: 'Hello from Node.js',
+    text: 'This is a test email from Node.js using Nodemailer'
+  };
+
+  // Send the email
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log('Error:', error);
+    } else {
+      console.log('Email sent:', info.response);
+    }
+  });
+}
+
+
 app.get("/mainLoading", sessionValidation, (req, res) => {
   res.render("mainLoading"); 
 });
@@ -576,8 +612,6 @@ app.post("/removeBookmark", async(req,res) => {
 })
 
 app.get("/profile", async (req, res) => {
-  const db = database.db(mongodb_database);
-  const userCollection = db.collection("users");
   const userId = req.session._id;
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
   console.log(user);
@@ -586,23 +620,16 @@ app.get("/profile", async (req, res) => {
 
 app.post("/updateProfile", async (req, res) => {
   const userId = req.session._id;
-  const db = database.db(mongodb_database);
-  const userCollection = await db.collection("users");
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
 
   const updatedFields = {
     username: req.body.username ? req.body.username : user.username,
     email: req.body.email ? req.body.email : user.email,
-    password: req.body.password
-      ? await bcrypt.hash(req.body.password, 10)
-      : user.password,
-    securityAnswer: req.body.securityAnswer
-      ? req.body.securityAnswer
-      : user.securityAnswer,
-      profilePicture: req.body.profilePicture
-      ? path.basename(req.body.profilePicture) // Extract only the filename
-      : user.profilePicture,
-  };
+    password: req.body.password ? await bcrypt.hash(req.body.password, 10) : user.password,
+    securityAnswer: req.body.securityAnswer ? req.body.securityAnswer : user.securityAnswer,
+    profilePicture: req.body.profilePicture ? path.basename(req.body.profilePicture) : user.profilePicture,
+    emailNotifications: req.body.emailNotifications === 'on', // Convert checkbox value to boolean
+  };  
 
   const nonNullFields = {};
   for (const [key, value] of Object.entries(updatedFields)) {

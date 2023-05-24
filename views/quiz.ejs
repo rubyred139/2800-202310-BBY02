@@ -1,12 +1,21 @@
-<%- include("templates/header") %>
+<%- include("templates/header_logoOnly") %>
 
-<div class="container py-5">
+<div class="container py-5 text-center">
   <h1 class="display-4 mb-4">Preference Quiz</h1>
+
+  <a class="back" href="javascript:history.back()" style="display: flex;">
+    <div class="d-flex align-items-center">
+      <p class="material-symbols-outlined">
+        arrow_back_ios
+      </p>
+      <p>Back</p>
+    </div>   
+  </a>
 
   <form method="post" action="/quiz">
     <div class="form-group mb-4">
-      <div class="card">
-        <h4 class="card-header text-center">Why are you travelling?</h4>
+      <div class="card bg">
+        <h4 class="card-header text-center bg-success-subtle">Why are you travelling?</h4>
         <div class="card-body">
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Fun" data-question="question1">Fun</button>
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Graduation trip" data-question="question1">Graduation trip</button>
@@ -19,7 +28,7 @@
     
     <div class="form-group mb-4">
       <div class="card">
-        <h4 class="card-header text-center">What type of destination do you want to go to?</h4>
+        <h4 class="card-header text-center bg-success-subtle">What type of destination do you want to go to?</h4>
         <div class="card-body">
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Snow views" data-question="question2">Snow views</button>
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Beach" data-question="question2">Beach</button>
@@ -32,7 +41,7 @@
     
     <div class="form-group mb-4">
       <div class="card">
-        <h4 class="card-header text-center">What month do you want to go travelling?</h4>
+        <h4 class="card-header text-center bg-success-subtle">What month do you want to go travelling?</h4>
         <select class="form-select custom-select-md" size="4" id="quizQ3" multiple="multiple" name="question3" required>
           <option value="January">January</option>
           <option value="February">February</option>
@@ -51,8 +60,8 @@
     </div>
     
     <div class="form-group mb-4">
-      <div class="card">
-        <h4 class="card-header text-center">Question 4: What activity do you mainly want to do at your destination?</h4>
+      <div class="card bg">
+        <h4 class="card-header text-center bg-success-subtle">What activity do you mainly want to do at your destination?</h4>
         <div class="card-body">
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Go sight seeing" data-question="question4">Go sight seeing</button>
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Be in nature" data-question="question4">Be in nature</button>
@@ -65,7 +74,7 @@
 
     <div class="form-group mb-4">
       <div class="card">
-        <h4 class="card-header text-center">Question 5: Which continent do you want to travel to?</h4>
+        <h4 class="card-header text-center bg-success-subtle">Which continent do you want to travel to?</h4>
         <div class="card-body">
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Africa" data-question="question5">Africa</button>
           <button type="button" class="btn btn-outline-secondary option-btn d-block mb-2 mx-auto" data-value="Asia" data-question="question5">Asia</button>
@@ -79,7 +88,7 @@
     </div>
     
     <input type="hidden" name="userId" value="<%= userId %>">
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-outline-secondary">Submit</button>
   </form>
 </div>
 

@@ -19,6 +19,7 @@
     "express-session": "^1.17.3",
     "install": "^0.13.0",
     "joi": "^17.9.2",
+    "nodemailer": "^6.9.2",
     "nodemon": "^2.0.22",
     "openai": "^3.2.1"
   }

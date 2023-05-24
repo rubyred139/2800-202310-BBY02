@@ -15,6 +15,7 @@ Install:
 -bcrypt
 -joi
 -ejs
+-nodemailer
 
 Credits:
 CSS Framework- Bootstrap 5.3
@@ -26,7 +27,8 @@ Flaticon created by Freepik - https://www.flaticon.com/free-icons/restaurant (fo
 Flaticon created by Luvdat - https://www.flaticon.com/free-icons/dices (Dices icon)
 Logo Creation- made using Canva
 Easter Egg image - made using Canva
-Sound effects- mashup https://www.youtube.com/watch?v=aqCxlxclyzo&pp=ygUKZHVjayBzb3VuZA%3D%3D and https://www.youtube.com/watch?v=Uj93hicGDNc&t=116s
+Sound effects - mashup https://www.youtube.com/watch?v=aqCxlxclyzo&pp=ygUKZHVjayBzb3VuZA%3D%3D and https://www.youtube.com/watch?v=Uj93hicGDNc&t=116s
+Loading wheel - https://codepen.io/ivillamil/pen/xxaEdB
 
 
 Landing Page images-
