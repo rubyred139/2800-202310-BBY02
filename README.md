@@ -25,6 +25,7 @@ Bootstrap Icons - https://icons.getbootstrap.com/?q=eat
 Flaticon created by Iconjam - https://www.flaticon.com/free-icons/backpack (activity icon)
 Flaticon created by Freepik - https://www.flaticon.com/free-icons/restaurant (food icon)
 Flaticon created by Luvdat - https://www.flaticon.com/free-icons/dices (Dices icon)
+Flaticon created by Freepik -https://www.flaticon.com/free-icons/language (language icon)
 Logo Creation- made using Canva
 Easter Egg image - made using Canva
 Sound effects - mashup https://www.youtube.com/watch?v=aqCxlxclyzo&pp=ygUKZHVjayBzb3VuZA%3D%3D and https://www.youtube.com/watch?v=Uj93hicGDNc&t=116s
