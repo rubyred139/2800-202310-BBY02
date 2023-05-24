@@ -40,7 +40,7 @@
   </div>
 </div>
 
-<div class="container my-5 pt-2 pb-4 gap-1" id="profileContainer">
+<div class="container my-5 pt-2  gap-1" id="profileContainer">
   <form method="POST" action="/updateProfile">
     <fieldset class="mb-3" id="personalInfoFields" disabled>
       <legend class="text-center"><span class="material-symbols-outlined">person</span>Personal Information</legend>
@@ -63,9 +63,17 @@
         <label for="securityAnswerInput">Security Question: What is your favourite animal?</label>
         <input type="text" id="securityAnswerInput" class="form-control" name="securityAnswer" value="<%= user.securityAnswer %>">
       </div>
+      <br>
+      <hr>
+      <legend class="text-center"><span class="material-symbols-outlined">notifications</span>Notification Settings</legend>
+        <div class="form-group">
+          <label for="emailNotifications">Do you want to receive email notifications to remind you to post a review of your travels?</label>
+          <input type="checkbox" id="emailNotifications" name="emailNotifications" <% if (user.emailNotifications) { %>checked<% } %>>
+        </div>
+      </div>
     </fieldset>
     
-    <div class="d-flex justify-content-end mt-2 mb-4">
+    <div class="d-flex justify-content-end mb-4">
       <button type="button" id="editProfBtn" class="btn btn-outline-secondary" onclick="editUserInfo()">Edit</button>
       <span style="width: 10px"></span>
       <div id="saveCancelButtons" style="display: none;">
@@ -87,7 +95,7 @@
     </div>
   </fieldset>
   
-  <div class="d-flex justify-content-end mt-1 ms-auto">
+  <div class="d-flex justify-content-end mt-1 mb-5 pb-5 ms-auto">
     <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz'">Retake Quiz</button>
   </div>
 </div>

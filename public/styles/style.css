@@ -15,10 +15,6 @@ body {
 }
 
 /*** Profile page styling ***/
-#profileContainer {
-  margin-bottom: 200px;
-}
-
 #imageSelectionModal.modal-backdrop {
   display: none;
 }

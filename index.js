@@ -196,7 +196,8 @@ app.post("/signupSubmit", async (req, res) => {
     email: email,
     password: hashedPassword,
     securityAnswer: securityAnswer,
-    profilePicture: "profilepic3.png"
+    profilePicture: "profilepic3.png",
+    emailNotifications: true, // Default value for email notification preference
   });
   console.log("Inserted user");
 
@@ -611,8 +612,6 @@ app.post("/removeBookmark", async(req,res) => {
 })
 
 app.get("/profile", async (req, res) => {
-  const db = database.db(mongodb_database);
-  const userCollection = db.collection("users");
   const userId = req.session._id;
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
   console.log(user);
@@ -621,23 +620,16 @@ app.get("/profile", async (req, res) => {
 
 app.post("/updateProfile", async (req, res) => {
   const userId = req.session._id;
-  const db = database.db(mongodb_database);
-  const userCollection = await db.collection("users");
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
 
   const updatedFields = {
     username: req.body.username ? req.body.username : user.username,
     email: req.body.email ? req.body.email : user.email,
-    password: req.body.password
-      ? await bcrypt.hash(req.body.password, 10)
-      : user.password,
-    securityAnswer: req.body.securityAnswer
-      ? req.body.securityAnswer
-      : user.securityAnswer,
-      profilePicture: req.body.profilePicture
-      ? path.basename(req.body.profilePicture) // Extract only the filename
-      : user.profilePicture,
-  };
+    password: req.body.password ? await bcrypt.hash(req.body.password, 10) : user.password,
+    securityAnswer: req.body.securityAnswer ? req.body.securityAnswer : user.securityAnswer,
+    profilePicture: req.body.profilePicture ? path.basename(req.body.profilePicture) : user.profilePicture,
+    emailNotifications: req.body.emailNotifications === 'on', // Convert checkbox value to boolean
+  };  
 
   const nonNullFields = {};
   for (const [key, value] of Object.entries(updatedFields)) {
