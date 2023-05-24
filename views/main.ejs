@@ -1,18 +1,24 @@
 <%- include("templates/header") %>
 
 <div class="container px-4 py-5" id="featured-3">
-    <h2 class="pb-2 border-bottom">
-        <%= gachaCountry %>
-        <div class="icon-square text-body-emphasis d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
-            <form action='/bookmark' method="post">
-              <button type="submit" class="bookmark-button">
-                <span class="material-symbols-outlined <%= isBookmarked ? 'bookmark-colour' : '' %>">
-                  bookmark
-                </span>
-              </button>
-            </form>
-        </div>
-    </h2>
+  <h2 class="pb-2 border-bottom">
+    <%= gachaCountry %>
+    <div class="d-inline-flex">
+      <form action="/bookmark" method="post">
+        <button type="submit" class="bookmark-button">
+          <span class="material-symbols-outlined <%= isBookmarked ? 'bookmark-colour' : '' %>">
+            bookmark
+          </span>
+        </button>
+      </form>
+    </div>
+    <div class="d-inline-flex float-end">
+      <form action="/reviews" method="get">
+        <input type="hidden" name="country" value="<%= gachaCountry %>">
+        <button type="submit" class="btn btn-sm btn-info">Visited before? Submit your review here!</button>
+      </form> 
+    </div>  
+  </h2>
 </div>
 
     <!--easter egg part shows here-->
