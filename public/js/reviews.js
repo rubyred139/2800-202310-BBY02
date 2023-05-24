@@ -1,4 +1,3 @@
-  // Search button click event
   document.addEventListener('DOMContentLoaded', () => {
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
@@ -31,5 +30,17 @@
 
       // Redirect to the same page without the search query parameter
       window.location.href = '/reviews';
+    });  
+    const deleteReviewButtons = document.querySelectorAll("[data-bs-target='#deleteModal']");
+    const deleteReviewBtn = document.getElementById("deleteReviewBtn");
+  
+    deleteReviewButtons.forEach((button) => {
+      button.addEventListener("click", function() {
+        const reviewId = this.getAttribute("data-review-id");
+        deleteReviewBtn.setAttribute("href", `/deleteReview?id=${reviewId}`);
+      });
     });
   });
+  
+
+ 

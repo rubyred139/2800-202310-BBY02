@@ -623,13 +623,13 @@ app.get("/main", sessionValidation, async (req, res) => {
     res.render("main", { facts: facts, gachaCountry, imagesList, isBookmarked });
   } catch (error) {
     console.error(error);
-    res.redirect("/no-country");
+    res.redirect("/noCountry");
   }
 });
 
 // Loads this page when no country has been selected
-app.get("/no-country", sessionValidation, (req, res) => {
-  res.render("no-country");
+app.get("/noCountry", sessionValidation, (req, res) => {
+  res.render("noCountry");
 });
 
 // Saves/deletes a country to/from the database when bookmark button is clicked

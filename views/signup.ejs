@@ -38,19 +38,19 @@
           <% } %>
           <form action="/signupSubmit" method="post">
             <div class="form-floating">
-              <input name='username' type='text' class="form-control" id="floatingUsername" placeholder="Username">
+              <input name='username' type='text' class="form-control" id="floatingUsername" placeholder="Username" maxlength="50" pattern="[a-zA-Z0-9\s]+">
               <label for="floatingUsername">Username</label>
             </div>
             <div class="form-floating">
-              <input name='email' type="text" class="form-control" id="floatingInput" placeholder="Email Address">
+              <input name='email' type="text" class="form-control" id="floatingInput" placeholder="Email Address" maxlength="100">
               <label for="floatingInput">Email address</label>
             </div>
             <div class="form-floating">
-              <input name='password' type='text' class="form-control" id="floatingPassword" placeholder="Password">
+              <input name='password' type='text' class="form-control" id="floatingPassword" placeholder="Password" maxlength="100">
               <label for="floatingPassword">Password</label>
             </div>
             <div class="form-floating">
-              <input name='securityAnswer' type='text' class="form-control" id="floatingSecurityQuestion" placeholder="Security Question">
+              <input name='securityAnswer' type='text' class="form-control" id="floatingSecurityQuestion" placeholder="Security Question" maxlength="50">
               <label for="floatingSecurityQuestion">What is your favourite animal?</label>
             </div>                        
             <button class="w-100 btn btn-lg custom-btn-primary" type="submit">Submit</button>
