@@ -821,6 +821,12 @@ app.get("/gachaLoading", sessionValidation, (req, res) => {
 app.get("/gacha", sessionValidation, async (req, res) => {
   const name = req.session.username;
   const quizAnswers = await getQuizAnswers(req.session.username);
+
+  // Check if the user has completed the quiz
+  if (!quizAnswers || quizAnswers.length === 0) {
+    return res.redirect("/completeQuiz");
+  }
+
   const generatedCountries = await countryGenerator(quizAnswers);
   const confirmedCountries = await checkCountries(generatedCountries);
   let cardVisibility = "d-none";
@@ -831,6 +837,11 @@ app.get("/gacha", sessionValidation, async (req, res) => {
   }
   const imageURLs = await getImage(confirmedCountries);
   res.render("gacha", { name, confirmedCountries, quizAnswers, imageURLs, cardVisibility, flipVisibility })
+});
+
+// Loads this page when no country has been selected
+app.get("/completeQuiz", sessionValidation, (req, res) => {
+  res.render("completeQuiz");
 });
 
 app.get('/reviews', async (req, res) => {
