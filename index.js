@@ -127,10 +127,10 @@ app.get("/signup", (req, res) => {
 });
 
 app.post("/signupSubmit", async (req, res) => {
-  var username = req.body.username;
-  var email = req.body.email;
-  var password = req.body.password;
-  var securityAnswer = req.body.securityAnswer;
+  var username = req.body.username.trim();
+  var email = req.body.email.trim();
+  var password = req.body.password.trim();
+  var securityAnswer = req.body.securityAnswer.trim();
 
   const schema = Joi.object({
     username: Joi.string().alphanum().max(20).required(),
@@ -221,8 +221,8 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/loggingin", async (req, res) => {
-  var email = req.body.email;
-  var password = req.body.password;
+  var email = req.body.email.trim();
+  var password = req.body.password.trim();
 
   const schema = Joi.string().required();
   const validationResult = schema.validate(email, password);
@@ -268,8 +268,8 @@ app.get("/changePassword", (req, res) => {
 });
 
 app.post("/changePassword", async (req, res) => {
-  const existingEmail = req.body.email;
-  const securityAnswer = req.body.securityAnswer;
+  const existingEmail = req.body.email.trim();
+  const securityAnswer = req.body.securityAnswer.trim();
 
   const existingUser = await userCollection.findOne({
     email: existingEmail,
@@ -297,9 +297,9 @@ app.get("/resetPassword", (req, res) => {
 });
 
 app.post("/resetPassword", async (req, res) => {
-  const newPassword = req.body.password;
-  const confirmPassword = req.body.confirmPassword;
-  const email = req.session.email;
+  const newPassword = req.body.password.trim();
+  const confirmPassword = req.body.confirmPassword.trim();
+  const email = req.session.email.trim();
 
   if (newPassword !== confirmPassword) {
     const errorMessage = "Passwords do not match";
@@ -866,7 +866,7 @@ app.get('/reviews', async (req, res) => {
   }
 });
 
-app.get('/reviewForm', (req, res) => {
+app.get('/reviewForm', sessionValidation, (req, res) => {
   console.log(req.body);
   var country = req.query.country;
   console.log(country);
