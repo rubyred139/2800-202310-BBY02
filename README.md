@@ -1,12 +1,19 @@
 ## AdvenTour
-
 Developed by Ruby Chen, Gagan Heer, Victor Fung, Angela Yu. 
 
-## General Info
-Our team is developing an app called AdvenTour to help travellers discover unique and authentic experiences in places experiencing under-tourism using AI.
+## Project Description
+The goal of AdvenTour is to help travelers discover unique and authentic experiences in places experiencing under-tourism using AI. 
 
-We will be using a dataset from Kaggle.
+## Technologies Used
+Frontend: Bootstrap 5.3 
 
+Backend: Node, EJS, JavaScript, CSS
+
+Database: https://www.kaggle.com/datasets/abdulhamitcelik/international-tourism-receipts 
+
+## Table of Contents
+
+## How to Install and Run AdvenTour
 Install:
 -express
 -express-session
@@ -17,6 +24,9 @@ Install:
 -ejs
 -nodemailer
 
+## How to Use AdvenTour 
+
+## Credits, References, Licenses
 Credits:
 CSS Framework- Bootstrap 5.3
 Font- https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap
@@ -38,7 +48,10 @@ Landing Page images-
 3. Havana, Cuba Photo by Sophia: https://www.pexels.com/photo/colorful-historic-buildings-in-city-square-5211643/
 Featurette gifs made using Canva 
 
+## Use of AI Services 
 AI and API Usage:
 OpenAI 
 Unsplash (image generator) 
+
+## Contact Information
 
