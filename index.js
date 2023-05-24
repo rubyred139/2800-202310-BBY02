@@ -770,6 +770,7 @@ app.get("/gacha", sessionValidation, async (req, res) => {
 
 app.get('/reviews', async (req, res) => {
   try {
+
     // Retrieve all reviews from the reviews collection
     const reviews = await reviewsCollection.find({}).toArray();
     console.log("Reviews:", reviews);
