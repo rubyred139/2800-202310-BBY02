@@ -541,14 +541,23 @@ app.get("/main", sessionValidation, async (req, res) => {
 
     const facts = result.promptAnswers;
 
+    if (facts.length === 0) {
+      throw new Error("No facts available.");
+    }
+
     const places = result.promptAnswerPlaces;
     var imagesList = await getFactImages(places);
 
     res.render("main", { facts: facts, gachaCountry, imagesList, isBookmarked });
   } catch (error) {
     console.error(error);
-    res.sendStatus(500);
+    res.redirect("/no-country");
   }
+});
+
+
+app.get("/no-country", sessionValidation, (req, res) => {
+  res.render("no-country");
 });
 
 // Saves/deletes a country to/from the database when bookmark button is clicked
