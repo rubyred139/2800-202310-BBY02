@@ -547,14 +547,17 @@ app.post("/markCountry", async(req, res) => {
         }
       }
     }
-
     if (recordExists) {
-      await userCollection.replaceOne(
-        { _id: new ObjectId(userId) },
-        { $push: { markedCountry: { countryName: markedCountry, endDate: endDate }} }
+      try {
+      await userCollection.updateOne(
+        { _id: new ObjectId(userId), "markedCountry.countryName": markedCountry },
+        { $set: { "markedCountry.$.endDate": endDate } }
       );
+      res.redirect("/bookmarks");
+      } catch(error) {
+        console.error(error)
+      }
     } else {
-
       await userCollection.updateOne(
         { _id: new ObjectId(userId) },
         { $push: { markedCountry: { countryName: markedCountry, endDate: endDate }} }
