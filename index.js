@@ -483,11 +483,9 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
   }
 });
 
+
 // Notification
-function sendEmail() {
-
-
-
+function sendEmail(username, useremail, country, date) {
   // Create a transporter object with your SMTP configuration
   const transporter = nodemailer.createTransport({
     host: 'smtp.zoho.com',
@@ -502,9 +500,17 @@ function sendEmail() {
   // Define the email options
   const mailOptions = {
     from: process.env.ZOHO_USER,
-    to: 'adventourservice@zohomail.com',
-    subject: 'Hello from Node.js',
-    text: 'This is a test email from Node.js using Nodemailer'
+    to: useremail,
+    subject: `Share your review of ${country} on AdvenTour`,
+    html: `
+    <p>Hi ${username},</p>
+
+    <p>I hope you had a wonderful trip in ${country}! Share your experiences with us now! </p>
+    <p><a href="http://txirvpjzag.eu09.qoddiapp.com/reviewForm">Click here to add your review</a></p>
+    
+    <p>AdvenTour</p>
+    <img src="logo.png">
+    `
   };
 
   // Send the email
@@ -516,6 +522,67 @@ function sendEmail() {
     }
   });
 }
+app.post("/markCountry", async(req, res) => {
+  try {
+    const userId = req.session._id;
+    const result = await userCollection.findOne({ _id: new ObjectId(userId) });
+    const markedCountries = result.markedCountry || []
+
+    const markedCountry = req.body.mark
+    const endDate = req.body.endDate
+
+    // Add marked country
+    let recordExists = false;
+    if (markedCountries.length !==0) {
+      for (let i=0; i<markedCountries.length; i++) {
+        let record = markedCountries[i]
+        if (record.countryName === markedCountry){
+          recordExists = true;
+          break;
+        }
+      }
+    }
+
+    if (recordExists) {
+      await userCollection.replaceOne(
+        { _id: new ObjectId(userId) },
+        { $push: { markedCountry: { countryName: markedCountry, endDate: endDate }} }
+      );
+    } else {
+
+      await userCollection.updateOne(
+        { _id: new ObjectId(userId) },
+        { $push: { markedCountry: { countryName: markedCountry, endDate: endDate }} }
+      );
+      res.redirect("/bookmarks");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+})
+
+app.get("/notification", async(req, res) =>{
+  try {
+    const userEmail = req.session.user.email
+    const userName = req.session.user.username
+    const userId = req.session._id;
+    const result = await userCollection.findOne({ _id: new ObjectId(userId) });
+    const emailNotification = result.emailNotifications
+    const markedCountries = result.markedCountry
+
+    // If user allows for email notification, loop through the array of the mark countries and send email
+    if (emailNotification) {
+      for (let i=0; i<markedCountries.length; i++) {
+        const countryName = markedCountries[i].countryName
+        const date = markedCountries[i].endDate
+        sendEmail(userName, userEmail, countryName, date)
+      }
+    }
+
+  } catch (error) {
+    console.error(error);
+  }
+})
 
 
 app.get("/mainLoading", sessionValidation, (req, res) => {
