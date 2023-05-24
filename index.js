@@ -403,6 +403,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
     var currentCountry = req.session.countryName;
     console.log(currentCountry);
 
+    // Retrieve quiz answers from database
     const result = await userCollection
       .find({ username: username })
       .project({ quizAnswers: 1 })
@@ -556,7 +557,7 @@ app.get("/main", sessionValidation, async (req, res) => {
   }
 });
 
-
+// Loads this page when no country has been selected
 app.get("/no-country", sessionValidation, (req, res) => {
   res.render("no-country");
 });
