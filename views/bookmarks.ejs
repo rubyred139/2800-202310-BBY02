@@ -21,12 +21,106 @@
                 Remove
               </button>
             </form>
+            <!-- <form action="/markCountry" method="post"> -->
+              <input type="hidden" name="mark" value="<%= savedCountries[i] %>">
+              <button id="notification-prompt" class="btn btn-sm btn-outline-secondary">
+                Mark for next trip
+              </button>
+            </form> 
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--Modal-->
+
+    <div id="modal" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4>Mark <%= savedCountries[i] %> for your next trip?</h4>
+            <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button> -->
+          </div>
+          <div class="modal-body">
+            <form id="myForm" action="/markCountry" method="post">
+              <div class="form-group g-3">
+                <div class="row" >
+                  <input type="hidden" name="mark" value="<%= savedCountries[i] %>">
+                </div>
+                <div class="row">
+                  <div class="col-auto">
+                    <label for="date" class="col-form-label">Start date of your trip :</label>
+                  </div>
+                  <div class="col-auto">
+                    <input type="date" class="form-control" id="startDate" name="startDate" required>
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col-auto">
+                    <label for="date" class="col-form-label">End date of your trip :</label>
+                  </div>
+                  <div class="col-auto">
+                    <input type="date" class="form-control" id="endDate" name="endDate" required>
+                  </div>
+                </div>
+              </div>
+              <input type="submit" value="Submit" class="btn btn-primary my-3">
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Submission Modal -->
+    <div id="submissionModal" class="modal">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Submission Status</h5>
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+          </div>
+          <div class="modal-body">
+            <p id="submissionStatus"></p>
           </div>
         </div>
       </div>
     </div>
     <% } %>
   </div>
+
 </div>
 
+<script>
+
+  // Get the modal element
+  const modal = document.getElementById('modal');
+
+  // Get the button that opens the modal
+  const openModalBtn = document.getElementById('notification-prompt');
+
+  // Function to open the modal
+  function openModal() {
+    $(modal).modal('show');
+  }
+  // Event listener for opening the modal
+  openModalBtn.addEventListener('click', openModal);
+
+  // Get the submission modal element
+  // const submissionModal = document.getElementById('submissionModal');
+
+  // Function to open the submission modal
+  // function openSubmissionModal(status) {
+  //   const submissionStatus = document.getElementById('submit');
+  //   submissionStatus.textContent = status;
+  //   $(submissionModal).modal('show');
+  // }
+
+  // Get the form element
+  // const form = document.getElementById('myForm');
+
+  // Event listener for form submission
+  // form.addEventListener('submit', function(event) {
+    // Show the submission modal with success message
+  //   openSubmissionModal('Form submitted successfully');
+  // });
+</script>
 <%- include("templates/footer") %>
