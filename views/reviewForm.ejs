@@ -12,12 +12,12 @@
   <form method="post" action="/reviewForm">
     <div class="form-group">
       <label for="reviewTitle">Review Title</label>
-      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" required>
+      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" maxlength="50" required>
       <br>
     </div>
     <div class="form-group">
       <label for="countryName">Country Name</label>
-      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= country %>" required>
+      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= country %>" maxlength="50" pattern="[a-zA-Z0-9\s]+" required>
       <br>
     </div>
     <div class="form-group">
@@ -55,7 +55,7 @@
     </div>
     <div class="form-group">
       <label for="experience">Tell us about your experience</label>
-      <textarea class="form-control" id="experience" name="experience" rows="3" required></textarea>
+      <textarea class="form-control" id="experience" name="experience" rows="3" maxlength="800" required></textarea>
     </div>
     <br>
     <div class="d-flex justify-content-end mb-5">

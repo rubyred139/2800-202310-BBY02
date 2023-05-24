@@ -10,11 +10,11 @@
   <form method="POST" action="/updateReview?id=<%= review._id %>">
     <div class="mb-3">
       <label for="reviewTitle" class="form-label">Review Title</label>
-      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="<%= review.title %>" required>
+      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="<%= review.title %>" maxlength="50" required>
     </div>
     <div class="mb-3">
       <label for="countryName" class="form-label">Country</label>
-      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= review.country %>" required>
+      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= review.country %>" maxlength="50" pattern="[a-zA-Z0-9\s]+" required >
     </div>
     <div class="mb-3">
       <label for="visitTime" class="form-label">Season</label>
