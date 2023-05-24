@@ -227,7 +227,7 @@ app.post("/loggingin", async (req, res) => {
   var email = req.body.email;
   var password = req.body.password;
 
-  const schema = Joi.string().max(20).required();
+  const schema = Joi.string().required();
   const validationResult = schema.validate(email, password);
   if (validationResult.error != null) {
     console.log(validationResult.error);
