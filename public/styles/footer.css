@@ -2,10 +2,11 @@
 .material-symbols-outlined {
   font-variation-settings:
   'FILL' 0,
-  'wght' 400,
+  'wght' 300,
   'GRAD' -25,
-  'opsz' 48
+  'opsz' 40
 }
+
 
 a:link {
     color: black;
@@ -20,4 +21,33 @@ a:link {
     color: rgb(52, 148, 204);
   }
   
-  
+  .link{
+    text-align: center;
+    display: inline-block;
+    text-decoration: none;
+  }
+        
+  .link:hover{
+    color: rgb(52, 148, 204);
+  }
+
+  .link i{
+    display:block;
+  }
+
+
+  .label {
+    margin-top: -8px;
+    font-size: 9pt
+  } 
+
+  @media (min-width: 992px) {
+    .footer {
+        padding-left: 400px; 
+        padding-right: 400px;
+    }
+
+    .d-flex.justify-content-between {
+        justify-content: center;
+    }
+}
