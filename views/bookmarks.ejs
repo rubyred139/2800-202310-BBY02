@@ -19,18 +19,12 @@
               </button>
             </form>
             <form action="/removeBookmark" method="post">
-              <input
-                type="hidden"
-                name="remove"
-                value="<%= savedCountries[i] %>"
-              />
-              <button
-                type="submit"
-                class="btn btn-sm btn-outline-secondary remove"
-              >
+              <input type="hidden" name="remove" value="<%= savedCountries[i] %>" />
+              <button type="button" class="btn btn-sm btn-outline-secondary remove" data-bs-toggle="modal" data-bs-target="#removeBookmarkModal">
                 Remove
               </button>
             </form>
+            
             <!-- <form action="/markCountry" method="post"> -->
             <input type="hidden" name="mark" value="<%= savedCountries[i] %>" />
             <button
@@ -88,22 +82,30 @@
         </div>
       </div>
     </div>
-    <!-- Submission Modal -->
-    <!-- <div id="submissionModal" class="modal">
+
+    <!-- Remove bookmark confirmation Modal -->
+    <div class="modal fade" id="removeBookmarkModal" tabindex="-1" aria-labelledby="removeBookmarkModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Submission Status</h5>
-            <button type="button" class="close" data-dismiss="modal">
-              &times;
-            </button>
+            <h5 class="modal-title" id="removeBookmarkModalLabel">Confirm Delete</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <p id="submissionStatus"></p>
+            <p>Are you sure you want to remove this country from your bookmarks?</p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          
+          <form action="/removeBookmark" method="post">
+            <input type="hidden" name="remove" value="<%= savedCountries[i] %>" />
+            <button type="submit" id="removeBookmarkConfirm" class="btn btn-danger">Remove</button>
+          </form>
           </div>
         </div>
       </div>
-    </div> -->
+    </div>
+    
     <% } %>
   </div>
 </div>
@@ -138,5 +140,13 @@
   openModalBtn.forEach(function (button) {
     button.addEventListener("click", openModal);
   });
+
+  // Add a click event listener to the "Remove" button in the remove bookmark modal
+    const removeBookmarkConfirmBtn = document.querySelector("#removeBookmarkConfirm");
+    if (removeBookmarkConfirmBtn) {
+      removeBookmarkConfirmBtn.addEventListener("click", function() {
+        document.querySelector("#removeBookmarkModal form").submit();
+      });
+}
 </script>
 <%- include("templates/footer") %>
