@@ -396,8 +396,10 @@ app.get("/quizWelcome", (req, res) => {
   res.render("quizWelcome", { name: req.session.username });
 });
 
+// Render the quiz page if user is authenticated
 app.get("/quiz", (req, res) => {
   if (!req.session.authenticated) {
+    // Redirect to the landing page if not authenticated
     res.redirect("/");
   } else {
     const name = req.session.name;
@@ -406,10 +408,8 @@ app.get("/quiz", (req, res) => {
   }
 });
 
+// Save the user's preference quiz answers
 app.post("/quiz", async (req, res) => {
-  const db = database.db(mongodb_database);
-  const userCollection = db.collection("users");
-
   const userId = req.session._id;
   const answers = {
     question1: req.body.question1,
@@ -420,6 +420,7 @@ app.post("/quiz", async (req, res) => {
   };
 
   try {
+    // Update the user's quizAnswers in the database
     const result = await userCollection.updateOne(
       { _id: new ObjectId(userId) },
       { $set: { quizAnswers: answers } }
@@ -428,6 +429,7 @@ app.post("/quiz", async (req, res) => {
     res.redirect("/gachaLoading");
   } catch (err) {
     console.error(err);
+    // Handle errors when saving quiz answers to the database
     res.status(500).send("Error saving quiz answers to database");
   }
 });
@@ -731,23 +733,27 @@ app.post("/removeBookmark", async (req, res) => {
   res.redirect("/bookmarks");
 });
 
+// Render the user's profile page
 app.get("/profile", async (req, res) => {
   const userId = req.session._id;
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
   console.log(user);
 
-  // Check if the user has completed the travel quiz
+  // Check if the user has completed the travel quiz to accurately render the profile page
   const hasCompletedQuiz =
     user.quizAnswers &&
     Object.values(user.quizAnswers).every((answer) => answer !== "");
 
+  // Render the profile page and pass the user and hasCompletedQuiz as variables
   res.render("profile", { user, hasCompletedQuiz });
 });
 
+// Update user profile 
 app.post("/updateProfile", async (req, res) => {
   const userId = req.session._id;
   const user = await userCollection.findOne({ _id: new ObjectId(userId) });
 
+  // Determines if a field should be updated or keep its existing value from the user
   const updatedFields = {
     username: req.body.username ? req.body.username : user.username,
     email: req.body.email ? req.body.email : user.email,
@@ -763,6 +769,7 @@ app.post("/updateProfile", async (req, res) => {
     emailNotifications: req.body.emailNotifications === "on", // Convert checkbox value to boolean
   };
 
+  // Filters any fields that are null so null fields will not be saved
   const nonNullFields = {};
   for (const [key, value] of Object.entries(updatedFields)) {
     if (value !== null) {
@@ -770,11 +777,13 @@ app.post("/updateProfile", async (req, res) => {
     }
   }
 
+  // Update only the non-null fields in the user's profile in the database
   await userCollection.updateOne(
     { _id: new ObjectId(userId) },
     { $set: nonNullFields }
   );
 
+  // Redirect to the user's profile page
   res.redirect("/profile");
 });
 
@@ -916,6 +925,7 @@ app.get("/reviews", async (req, res) => {
   }
 });
 
+// Renders he review form
 app.get("/reviewForm", sessionValidation, (req, res) => {
   console.log(req.body);
   var country = req.query.country;
@@ -925,8 +935,8 @@ app.get("/reviewForm", sessionValidation, (req, res) => {
   res.render("reviewForm", { name, userId, country });
 });
 
+// Saves the user's review
 app.post("/reviewForm", async (req, res) => {
-  // Get the user ID from the session
   const userId = req.session.user_id;
 
   // Create a review object with all form field values
@@ -959,7 +969,7 @@ app.get("/thankyou", (req, res) => {
   res.render("thankyou");
 });
 
-// Delete Review Route
+// Delete review 
 app.get("/deleteReview", async (req, res) => {
   const reviewId = req.query.id;
 
@@ -978,7 +988,7 @@ app.get("/deleteReview", async (req, res) => {
   }
 });
 
-// Update Review Route (render the update form)
+// Renders the update review form
 app.get("/updateReview", async (req, res) => {
   const reviewId = req.query.id;
   console.log("ID: ", reviewId);
@@ -988,8 +998,6 @@ app.get("/updateReview", async (req, res) => {
     const review = await reviewsCollection.findOne({
       _id: new ObjectId(reviewId),
     });
-    console.log("Review:", review);
-    console.log("ID: ", reviewId);
 
     // Render the update review form with the retrieved review
     res.render("updateReview", { review });
@@ -999,7 +1007,7 @@ app.get("/updateReview", async (req, res) => {
   }
 });
 
-// Update Review Route (handle the form submission)
+// Saves the updated review
 app.post("/updateReview", async (req, res) => {
   const reviewId = req.query.id;
 
@@ -1030,6 +1038,7 @@ app.post("/updateReview", async (req, res) => {
   }
 });
 
+// Search reviews by country name
 app.get("/searchReviews", async (req, res) => {
   try {
     // Retrieve the country query from the URL parameters
@@ -1047,11 +1056,11 @@ app.get("/searchReviews", async (req, res) => {
     // Retrieve the user"s ID from the session
     const userId = req.session._id;
 
-    // Retrieve the user"s reviews from the reviews collection
+    // Retrieve the user's reviews from the reviews collection
     const myReviews = await reviewsCollection.find({ userId }).toArray();
     console.log("My Reviews:", myReviews);
 
-    // Render the reviews page with the retrieved reviews and user"s reviews
+    // Render the reviews page with the retrieved reviews and user's reviews
     res.render("reviews", { reviews, myReviews });
   } catch (error) {
     console.error(error);

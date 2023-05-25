@@ -3,6 +3,7 @@
 <div class="container py-5 text-center">
   <h1 class="display-4 mb-4">Preference Quiz</h1>
 
+  <!--- Back button --->
   <a class="back" href="javascript:history.back()" style="display: flex">
     <div class="d-flex align-items-center">
       <p class="material-symbols-outlined">arrow_back_ios</p>
@@ -10,7 +11,9 @@
     </div>
   </a>
 
+  <!--- Quiz questions --->
   <form method="post" action="/quiz">
+    <!--- Question 1-->
     <div class="form-group mb-4">
       <div class="card bg">
         <h4 class="card-header text-center bg-success-subtle">
@@ -54,6 +57,7 @@
       </div>
     </div>
 
+    <!--- Question 2-->
     <div class="form-group mb-4">
       <div class="card">
         <h4 class="card-header text-center bg-success-subtle">
@@ -97,6 +101,7 @@
       </div>
     </div>
 
+    <!--- Question 3-->
     <div class="form-group mb-4">
       <div class="card">
         <h4 class="card-header text-center bg-success-subtle">
@@ -127,6 +132,7 @@
       </div>
     </div>
 
+    <!--- Question 4-->
     <div class="form-group mb-4">
       <div class="card bg">
         <h4 class="card-header text-center bg-success-subtle">
@@ -170,6 +176,7 @@
       </div>
     </div>
 
+    <!--- Question 5-->
     <div class="form-group mb-4">
       <div class="card">
         <h4 class="card-header text-center bg-success-subtle">
@@ -229,6 +236,7 @@
       </div>
     </div>
 
+    <!--- Reset and submit buttons --->
     <input type="hidden" name="userId" value="<%= userId %>" />
     <button id="reset-btn" type="button" class="btn btn-outline-secondary mx-1 mb-5">Reset</button>
     <button type="submit" class="btn btn-outline-secondary mb-5">Submit</button>

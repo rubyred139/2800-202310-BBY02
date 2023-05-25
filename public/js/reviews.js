@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Perform search only if the search value is not empty
     if (searchValue !== '') {
-      // Redirect to the same page with the search query parameter
+      // Redirect to the reviews page with the search query parameter
       window.location.href = `/searchReviews?country=${encodeURIComponent(searchValue)}`;
     }
   };
@@ -30,11 +30,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // Clear the search input value
     searchInput.value = '';
 
-    // Redirect to the same page without the search query parameter
+    // Redirect to the reviews page without the search query parameter
     window.location.href = '/reviews';
   });
 
-  // Search input keypress event listener
+  // Search input keypress event listener to perform search on "Enter"
   searchInput.addEventListener('keypress', (event) => {
     // Check if the Enter key is pressed (keyCode 13)
     if (event.keyCode === 13) {

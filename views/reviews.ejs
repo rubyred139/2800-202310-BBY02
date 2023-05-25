@@ -8,6 +8,7 @@
       about? Tell us your travel story!
     </p>
     <p></p>
+    <!-- Leave your own review button -->
     <form method="get" action="/reviewForm">
       <button type="submit" class="btn btn-outline-secondary mb-1">
         Leave a Review
@@ -117,6 +118,7 @@
         <p class="card-text">
           <strong>Traveller: </strong> <%= review.userName %>
         </p>
+        <!-- Delete your review -->
         <a
           href="#"
           class="btn btn-secondary text-light"
@@ -125,6 +127,7 @@
           data-review-id="<%= review._id %>"
           >Delete</a
         >
+        <!-- Update your review -->
         <a
           href="/updateReview?id=<%= review._id %>"
           class="btn btn-light text-dark"
@@ -136,7 +139,7 @@
   </div>
 </div>
 
-<!-- Delete review confirmation Modal -->
+<!-- Delete review confirmation modal -->
 <div
   class="modal fade"
   id="deleteModal"
