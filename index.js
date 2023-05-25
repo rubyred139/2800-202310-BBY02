@@ -1,5 +1,5 @@
 require("./utils.js");
-
+const fs = require("fs");
 require("dotenv").config();
 
 const { Configuration, OpenAIApi } = require("openai");
@@ -94,20 +94,30 @@ function sendEmail(username, useremail, country, date) {
     }
   });
 
+
   // Define the email options
   const mailOptions = {
     from: process.env.ZOHO_USER,
     to: useremail,
     subject: `Share your review of ${country} on AdvenTour`,
     html: `
-    <p>Hi ${username},</p>
+      <p>Hi ${username},</p>
 
-    <p>I hope you had a wonderful trip in ${country}! Share your experiences with us now! </p>
-    <p><a href="http://txirvpjzag.eu09.qoddiapp.com/reviewForm">Click here to add your review</a></p>
-    
-    <p>AdvenTour</p>
-    <img src="/logo.png">
-    `
+      <p>I hope you had a wonderful trip in ${country}! Share your experiences with us now! </p>
+      <p><a href="http://txirvpjzag.eu09.qoddiapp.com/reviewForm">Click here to add your review</a></p>
+
+      <p>AdvenTour always value your privacy, if you don't want to receive this email, you can log in and change the privacy settings on your profile.</p>
+      
+
+      <img width="400px" src="cid:logo" alt="AdvenTour Logo">
+      `,
+    attachments:[
+      {
+        fileName: "logo",
+        path: "public/logo.png",
+        cid: "logo"
+      }
+    ]
   };
 
   transporter.sendMail(mailOptions, (error, info) => {
@@ -120,7 +130,7 @@ function sendEmail(username, useremail, country, date) {
 }
 
 // schedule the task everyday at 6am to check if any user's trip ends
-cron.schedule('0 6 * * *', async () => {
+cron.schedule('45 10 * * *', async () => {
   const users = await userCollection.find().toArray();
   // Iterate through the users and send emails
   users.forEach(async (user) => {
