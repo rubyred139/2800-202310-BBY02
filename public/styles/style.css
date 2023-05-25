@@ -1,8 +1,7 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&display=swap");
 
 body {
-  font-family: 'Comfortaa', cursive;
-
+  font-family: "Comfortaa", cursive;
 }
 
 #quizQ3 {
@@ -15,10 +14,6 @@ body {
 }
 
 /*** Profile page styling ***/
-#profileContainer {
-  margin-bottom: 200px;
-}
-
 #imageSelectionModal.modal-backdrop {
   display: none;
 }
@@ -32,7 +27,7 @@ body {
 }
 
 .image-option.selected {
-  border: 2px solid blue; 
+  border: 2px solid blue;
 }
 /*** End of profile page styling ***/
 
@@ -41,7 +36,6 @@ body {
   height: 100%;
   transform-style: preserve-3d;
   transition: transform 0.5s ease-in-out;
-
 }
 
 .card-back {
@@ -60,7 +54,6 @@ body {
 
 .card.flipped {
   transform: rotateY(180deg);
-
 }
 
 .card-front {
@@ -76,7 +69,6 @@ body {
   display: inline-block;
   overflow: hidden;
   transition: transform 0.3s;
-
 }
 
 #dieButton:hover {
@@ -85,7 +77,6 @@ body {
 
 #startButton:hover {
   cursor: pointer;
-
 }
 
 #airplane-container {
@@ -94,7 +85,6 @@ body {
   animation: slideAnimation 4s linear infinite;
   overflow: hidden;
   display: inline-block;
-  /* background: red; */
 }
 
 #airplane-container.hidden {
@@ -119,8 +109,6 @@ body {
     transform: translateX(-100%);
   }
 }
-
-
 
 .confetti {
   position: absolute;
@@ -156,3 +144,37 @@ body {
   text-decoration: none;
 }
 
+/* 404 page styling */
+.error-page {
+  background-image: url("/404.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+}
+
+.error-page .container {
+  text-align: center;
+}
+
+#heading404 {
+  font-size: 40pt;
+}
+/* End of 404 page styling */
+
+.custom-btn-primary {
+  color: white;
+  background-color: #5895f2;
+}
+
+.custom-btn-primary:hover {
+  color: white;
+  background-color: #2979f0;
+}
+
+/*error message box highlights*/
+.highlighted {
+  border-color: #ed414172;
+  box-shadow: 0 2px 4px rgba(159, 155, 155, 0.2);
+}

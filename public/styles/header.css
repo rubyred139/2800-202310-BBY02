@@ -1,26 +1,21 @@
-
 .material-symbols-outlined {
-  font-variation-settings:
-  'FILL' 0,
-  'wght' 350,
-  'GRAD' -25,
-  'opsz' 48
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" -25, "opsz" 48;
 }
 
 .profile {
   padding-right: 8px;
 }
-
+ 
 .navbar-toggler {
-  padding: .25rem .3rem;
+  padding: 0.25rem 0.3rem;
   font-size: 1.25rem;
   line-height: 1;
   background-color: transparent;
   border: 1px solid transparent;
-  border-radius: .25rem;
-  transition: box-shadow .15s ease-in-out;
+  border-radius: 0.25rem;
+  transition: box-shadow 0.15s ease-in-out;
   box-shadow: none;
-  width: 30px; /* adjust this value as needed */
+  width: 30px;
 }
 
 .navbar-toggler:focus,
@@ -35,13 +30,23 @@
 }
 
 .nav-link:hover {
-  color:rgb(52, 148, 204);
+  color: rgb(52, 148, 204);
 }
+
 .navbar-nav .nav-link {
   margin-right: 50px;
-  
 }
 
 .dropdown-toggle.dropdown-toggle-no-caret::after {
   display: none;
+}
+
+.custom-btn-primary {
+  color: white;
+  background-color: #5895f2;
+}
+
+.custom-btn-primary:hover {
+  color: white;
+  background-color: #2979f0;
 }

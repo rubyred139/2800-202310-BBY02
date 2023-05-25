@@ -1,111 +1,326 @@
 <%- include("templates/header") %>
-<div class="rounded-top text-white d-flex flex-row" style="background-color: powderblue; height: 150px;">
-  <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px;">
-    <div class="rounded-circle bg-white d-flex align-items-center justify-content-center shadow-4-strong" style="width: 150px; height: 150px; margin: 0 auto; position: relative;">
-      <img id="profilePic" class="rounded-circle profile-pic" alt="avatar2" src="<%= user.profilePicture %>" style="width: 150px; height: 150px;">
-      <button type="button" class="btn edit-profile-btn" data-bs-toggle="modal" data-bs-target="#imageSelectionModal" style="position: absolute; bottom: -5px; right: -5px;">
+<!--- Profile header -->
+<div
+  class="rounded-top text-white d-flex flex-row"
+  style="background-color: powderblue; height: 150px"
+>
+  <div class="ms-4 mt-5 d-flex flex-column" style="width: 150px">
+    <!-- Profile picture -->
+    <div
+      class="rounded-circle bg-white d-flex align-items-center justify-content-center shadow-4-strong"
+      style="width: 150px; height: 150px; margin: 0 auto; position: relative"
+    >
+      <img
+        id="profilePic"
+        class="rounded-circle profile-pic"
+        alt="avatar2"
+        src="<%= user.profilePicture %>"
+        style="width: 150px; height: 150px"
+      />
+      <!-- Edit profile picture -->
+      <button
+        type="button"
+        class="btn edit-profile-btn"
+        data-bs-toggle="modal"
+        data-bs-target="#imageSelectionModal"
+        style="position: absolute; bottom: -5px; right: -5px"
+      >
         <span class="material-symbols-outlined">add_circle</span>
       </button>
     </div>
   </div>
-  <div class="ms-2" style="margin-top: 80px;">
-    <h1 style="color: white;"><strong><%= user.username %>'s Profile</strong></h1>
+  <div class="ms-2" style="margin-top: 80px">
+    <h1 style="color: white">
+      <strong><%= user.username %>'s Profile</strong>
+    </h1>
   </div>
 </div>
 
-<!-- Image Selection Modal -->
-<div class="modal fade" id="imageSelectionModal" tabindex="-1" aria-labelledby="imageSelectionModalLabel" aria-hidden="true">
+<!-- Profile picture selection modal -->
+<div
+  class="modal fade"
+  id="imageSelectionModal"
+  tabindex="-1"
+  aria-labelledby="imageSelectionModalLabel"
+  aria-hidden="true"
+>
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="imageSelectionModalLabel">Select Profile Picture</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h5 class="modal-title" id="imageSelectionModalLabel">
+          Select Profile Picture
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
       </div>
       <div class="modal-body">
+        <!-- Profile picture options -->
         <div class="image-selection d-flex justify-content-center flex-wrap">
-          <img src="profilepic1.png" id="profilepic1.png" class="rounded-circle image-option selected" style="width: 150px; height: 150px;">
-          <img src="profilepic2.png" id="profilepic2.png" class="rounded-circle image-option" style="width: 150px; height: 150px;">
-          <img src="profilepic3.png" id="profilepic3.png" class="rounded-circle image-option" style="width: 150px; height: 150px;">
-          <img src="profilepic4.png" id="profilepic4.png" class="rounded-circle image-option" style="width: 150px; height: 150px;">
+          <img
+            src="profilepic1.png"
+            id="profilepic1.png"
+            class="rounded-circle image-option selected"
+            alt="profile pic 1"
+            style="width: 150px; height: 150px"
+          />
+          <img
+            src="profilepic2.png"
+            id="profilepic2.png"
+            class="rounded-circle image-option"
+            alt="profile pic 2"
+            style="width: 150px; height: 150px"
+          />
+          <img
+            src="profilepic3.png"
+            id="profilepic3.png"
+            class="rounded-circle image-option"
+            alt="profile pic 3"
+            style="width: 150px; height: 150px"
+          />
+          <img
+            src="profilepic4.png"
+            id="profilepic4.png"
+            class="rounded-circle image-option"
+            alt="profile pic 4"
+            style="width: 150px; height: 150px"
+          />
         </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button>
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          data-bs-dismiss="modal"
+        >
+          Close
+        </button>
         <form method="POST" action="/updateProfile">
-          <input type="hidden" name="profilePicture" id="selectedImage" value="">
-          <button type="submit" class="btn btn-secondary text-light save-profile-btn" data-bs-dismiss="modal">Save</button>
+          <input
+            type="hidden"
+            name="profilePicture"
+            id="selectedImage"
+            value=""
+          />
+          <!-- Save new profile picture selection -->
+          <button
+            type="submit"
+            class="btn btn-secondary text-light save-profile-btn"
+            data-bs-dismiss="modal"
+          >
+            Save
+          </button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container my-5 pt-2 pb-4 gap-1" id="profileContainer">
+<div class="container my-5 pt-2 gap-1" id="profileContainer">
   <form method="POST" action="/updateProfile">
     <fieldset class="mb-3" id="personalInfoFields" disabled>
-      <legend class="text-center"><span class="material-symbols-outlined">person</span>Personal Information</legend>
-      <div class="form-group" style="margin-bottom: 10px;">
-        <label for="nameInput">Name</label>
-        <input type="text" id="nameInput" class="form-control" name="username" value="<%= user.username %>">
+      <legend class="text-center">
+        <span class="material-symbols-outlined">person</span>
+        Personal Information
+      </legend>
+      <div class="form-group" style="margin-bottom: 10px">
+        <label for="nameInput">Name<span id="nameAsterisk" class="text-danger" style="display: none">*</span></label></label>
+        <input
+          type="text"
+          id="nameInput"
+          class="form-control"
+          name="username"
+          value="<%= user.username %>"
+        />
       </div>
-      <div class="form-group" style="margin-bottom: 10px;">
-        <label for="emailInput">Email</label>
-        <input type="email" id="emailInput" class="form-control" name="email" value="<%= user.email %>" readonly disabled>
+      <div class="form-group" style="margin-bottom: 10px">
+        <label for="emailInput">Email<span id="emailAsterisk" class="text-danger" style="display: none">*</span></label>
+        <input
+          type="email"
+          id="emailInput"
+          class="form-control"
+          name="email"
+          value="<%= user.email %>"
+          readonly
+          disabled
+        />
       </div>
-      <br>
-      <hr>
-      <legend class="text-center"><span class="material-symbols-outlined">lock</span>Password and Security</legend>
-      <div class="form-group" style="margin-bottom: 10px;">
-        <label for="passwordInput">Password</label>
-        <input type="password" id="passwordInput" class="form-control" name="password" placeholder="********">
+      <br />
+      <hr />
+      <h4 class="text-center">
+        <span class="material-symbols-outlined">lock</span>Password and Security
+      </h4>
+      <div class="form-group" style="margin-bottom: 10px">
+        <label for="passwordInput">Password<span id="passwordAsterisk" class="text-danger" style="display: none">*</span></label>
+        <input
+          type="password"
+          id="passwordInput"
+          class="form-control"
+          name="password"
+          placeholder="********"
+        />
       </div>
-      <div class="form-group" style="margin-bottom: 10px;">
-        <label for="securityAnswerInput">Security Question: What is your favourite animal?</label>
-        <input type="text" id="securityAnswerInput" class="form-control" name="securityAnswer" value="<%= user.securityAnswer %>">
+      <div class="form-group" style="margin-bottom: 10px">
+        <label for="securityAnswerInput"
+          >Security Question: What is your favourite animal?<span id="securityAsterisk" class="text-danger" style="display: none">*</span></label
+        >
+        <input
+          type="text"
+          id="securityAnswerInput"
+          class="form-control"
+          name="securityAnswer"
+          value="<%= user.securityAnswer %>"
+        />
+      </div>
+      <br />
+      <hr />
+      <h4 class="text-center">
+        <span class="material-symbols-outlined">notifications</span>Notification
+        Settings
+      </h4>
+      <div class="form-group">
+        <label for="emailNotifications"
+          >Do you want to receive email notifications to remind you to post a
+          review of your travels?</label
+        >
+        <input
+          type="checkbox"
+          id="emailNotifications"
+          name="emailNotifications"
+          <%
+          if
+          (user.emailNotifications)
+          { %>checked<% } %>>
       </div>
     </fieldset>
-    
-    <div class="d-flex justify-content-end mt-2 mb-4">
-      <button type="button" id="editProfBtn" class="btn btn-outline-secondary" onclick="editUserInfo()">Edit</button>
+
+    <div class="d-flex justify-content-end mb-4">
+      <!-- Edit personal information -->
+      <button
+        type="button"
+        id="editProfBtn"
+        class="btn btn-outline-secondary"
+        onclick="editUserInfo()"
+      >
+        Edit
+      </button>
       <span style="width: 10px"></span>
-      <div id="saveCancelButtons" style="display: none;">
+      <div id="saveCancelButtons" style="display: none">
         <button type="submit" class="btn btn-secondary text-light">Save</button>
         <span style="width: 10px"></span>
-        <button type="button" class="btn btn-outline-secondary" onclick="cancelEdit()">Cancel</button>
+        <!-- Cancel edit of personal information -->
+        <button
+          type="button"
+          class="btn btn-outline-secondary"
+          onclick="cancelEdit()"
+        >
+          Cancel
+        </button>
       </div>
     </div>
   </form>
-  <hr>
+  <hr />
+  <!-- Populates user's travel preference quiz answers from database if the user has done the quiz -->
   <fieldset class="mb-3" id="quizAnswersFields" disabled>
     <legend class="text-center">Travel Preferences</legend>
-    <div class="d-flex flex-column align-items fs-2 mx-auto" style="max-width:400px">
-      <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill text-sm"><%= user.quizAnswers.question1 %></span>
-      <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill"><%= user.quizAnswers.question2 %></span>
-      <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill"><%= user.quizAnswers.question3 %></span>
-      <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question4 %></span>
-      <span id="quiz5-answer-goes-here" class="badge bg-success-subtle text-info-emphasis rounded-pill"><%= user.quizAnswers.question5 %></span>
+    <% if (user.quizAnswers) { %>
+    <div
+      class="d-flex flex-column align-items fs-2 mx-auto"
+      style="max-width: 400px"
+    >
+      <span
+        id="quiz1-answer-goes-here"
+        class="badge bg-success-subtle text-success-emphasis rounded-pill text-sm"
+        ><%= user.quizAnswers.question1 %></span
+      >
+      <span
+        id="quiz2-answer-goes-here"
+        class="badge bg-danger-subtle text-primary-emphasis rounded-pill"
+        ><%= user.quizAnswers.question2 %></span
+      >
+      <span
+        id="quiz3-answer-goes-here"
+        class="badge bg-warning-subtle text-warning-emphasis rounded-pill"
+        ><%= user.quizAnswers.question3 %></span
+      >
+      <span
+        id="quiz4-answer-goes-here"
+        class="badge bg-info-subtle text-info-emphasis rounded-pill"
+        ><%= user.quizAnswers.question4 %></span
+      >
+      <span
+        id="quiz5-answer-goes-here"
+        class="badge bg-success-subtle text-info-emphasis rounded-pill"
+        ><%= user.quizAnswers.question5 %></span
+      >
     </div>
+    <% } else { %>
+      <!-- Default text if the user has not done the quiz -->
+    <div class="text-center">
+      You have not selected your travel preferences.
+    </div>
+    <% } %>
   </fieldset>
-  
-  <div class="d-flex justify-content-end mt-1 ms-auto">
-    <button type="button" class="btn btn-outline-secondary" onclick="location.href='/quiz'">Retake Quiz</button>
+
+  <!-- Changes text on the take quiz button depending on if the user has already done the quiz or not -->
+  <div class="d-flex justify-content-end mt-1 mb-5 pb-5 ms-auto">
+    <!-- If the user has done the quiz -->
+    <% if (hasCompletedQuiz) { %>
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      onclick="location.href='/quiz'"
+    >
+      Retake Quiz
+    </button>
+    <% } else { %>
+      <!-- If the user has not done the quiz -->
+    <button
+      type="button"
+      class="btn btn-outline-secondary"
+      onclick="location.href='/quiz'"
+    >
+      Take Quiz
+    </button>
+    <% } %>
   </div>
 </div>
 
 <script>
+// Store initial email notification checkbox value (set default as false)
+let initialEmailNotificationValue = false;
+
+// Called when the user clicks the "Edit Profile" button.
+// Enables the editing of personal information fields and shows the save/cancel buttons.
   function editUserInfo() {
-    document.getElementById('personalInfoFields').disabled = false;
-    document.getElementById('saveCancelButtons').style.display = 'block';
-    document.getElementById('editProfBtn').style.display = 'none';
+    document.getElementById("personalInfoFields").disabled = false; // Enable personal information fields
+    document.getElementById("saveCancelButtons").style.display = "block"; // Show save/cancel buttons
+    document.getElementById("editProfBtn").style.display = "none"; // Hide the edit profile button
+    document.getElementById("nameAsterisk").style.display = "inline"; // Show asterisk for name field
+    document.getElementById("emailAsterisk").style.display = "inline"; // Show asterisk for email field
+    document.getElementById("passwordAsterisk").style.display = "inline"; // Show asterisk for password field
+    document.getElementById("securityAsterisk").style.display = "inline"; // Show asterisk for security field
+    initialEmailNotificationValue = document.getElementById("emailNotifications").checked; // Store the initial value of the email notification checkbox based on what user has
   }
 
+  // Called when the user clicks the "Cancel" button while editing the profile.
+  // Reverts the changes made during editing and hides the save/cancel buttons.
   function cancelEdit() {
-    document.getElementById('personalInfoFields').disabled = true;
-    document.getElementById('editProfBtn').style.display = 'block';
-    document.getElementById('saveCancelButtons').style.display = 'none';
-    document.getElementById('nameInput').value = '<%= user.username %>';
-    document.getElementById('securityAnswerInput').value = '<%= user.securityAnswer %>';
-    document.getElementById('passwordInput').value = '';
+    document.getElementById("personalInfoFields").disabled = true; // Disable personal information fields
+    document.getElementById("editProfBtn").style.display = "block"; // Show the edit profile button
+    document.getElementById("saveCancelButtons").style.display = "none"; // Hide save/cancel buttons
+    document.getElementById("nameInput").value = "<%= user.username %>"; // Reset name input value
+    document.getElementById("securityAnswerInput").value =
+      "<%= user.securityAnswer %>"; // Reset security answer input value
+      document.getElementById("emailNotifications").checked = initialEmailNotificationValue; // Reset email notification checkbox value to the initial value
+    document.getElementById("passwordInput").value = ""; // Clear password input value
+    document.getElementById("emailAsterisk").style.display = "none"; // Hide asterisk for email field
+    document.getElementById("nameAsterisk").style.display = "none"; // Hide asterisk for name field
+    document.getElementById("passwordAsterisk").style.display = "none"; // Hide asterisk for password field
+    document.getElementById("securityAsterisk").style.display = "none"; // Hide asterisk for security field
   }
 
   const editProfileBtn = document.querySelector(".edit-profile-btn");
@@ -114,13 +329,15 @@
   const imageOptions = document.querySelectorAll(".image-option");
   const imageSelectionModal = document.getElementById("imageSelectionModal");
 
+  // Event listener for the edit profile button
   editProfileBtn.addEventListener("click", () => {
     // Show the modal
     imageSelectionModal.classList.add("show");
     imageSelectionModal.style.display = "block";
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
   });
 
+  // Event listener for the save profile button
   saveProfileBtn.addEventListener("click", () => {
     // Loop through imageOptions and find the selected image
     let selectedImageSrc = "";
@@ -136,11 +353,13 @@
     // Close the modal
     imageSelectionModal.classList.remove("show");
     imageSelectionModal.style.display = "none";
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = "auto"; // Restore scrolling
   });
 
+  // Get the current profile picture source
   const currentProfilePicSrc = profilePic.src;
 
+  // Set the "selected" class for the current profile picture in the image options
   imageOptions.forEach((image) => {
     // Check if the current image's source matches the user's profile picture source
     if (image.src === currentProfilePicSrc) {
@@ -163,15 +382,15 @@
   });
 
   // Set the profile picture source to the selected image
-  const selectedImageInput = document.getElementById('selectedImage');
+  const selectedImageInput = document.getElementById("selectedImage");
   let selectedImageSrc = profilePic.src; // Initialize with default image source
 
   imageOptions.forEach((imageOption) => {
-    imageOption.addEventListener('click', () => {
+    imageOption.addEventListener("click", () => {
       // Remove 'selected' class from all options
-      imageOptions.forEach((option) => option.classList.remove('selected'));
+      imageOptions.forEach((option) => option.classList.remove("selected"));
       // Add 'selected' class to the clicked option
-      imageOption.classList.add('selected');
+      imageOption.classList.add("selected");
       // Set the value of the hidden input field to the selected image name
       selectedImageInput.value = imageOption.src;
       // Set the selected image source
@@ -184,6 +403,3 @@
 </script>
 
 <%- include("templates/footer") %>
-
-
-

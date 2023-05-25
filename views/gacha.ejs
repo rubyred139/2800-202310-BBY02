@@ -1,130 +1,165 @@
-<%- include("templates/header_logoOnly") %>
+<%- include("templates/header") %>
 
-<body>
+<div class="content m-3">
+  <h2 class="display-4 fw-normal m-3 text-center">Country Roulette</h2>
 
-  <div class="content m-3">
-    <h1 class="display-4 fw-normal m-3 text-center">Random Country Generator</h1>
-
-    <div class="mt-4 d-flex justify-content-center fs-4"><%= name %>'s profile preferences:</div>
-    <div class="d-flex flex-wrap justify-content-center align-items-center gap-1 px-3 py-2 fs-4">
-      <div class="d-flex flex-row">
-        <span id="quiz1-answer-goes-here" class="badge bg-success-subtle text-success-emphasis rounded-pill mt-2">
-          <%= quizAnswers.question1 %>
-        </span>
-        <span id="quiz2-answer-goes-here" class="badge bg-danger-subtle text-primary-emphasis rounded-pill mt-2">
-          <%= quizAnswers.question2 %>
-        </span>
-        <span id="quiz3-answer-goes-here" class="badge bg-warning-subtle text-warning-emphasis rounded-pill mt-2">
-          <%= quizAnswers.question3 %>
-        </span>
-  
-      </div>
-      <div class="d-flex flex-row">
-  
-        <span id="quiz4-answer-goes-here" class="badge bg-info-subtle text-info-emphasis rounded-pill mt-2">
-          <%= quizAnswers.question4 %>
-        </span>
-        <span id="quiz4-answer-goes-here" class="badge bg-primary-subtle text-info-emphasis rounded-pill mt-2">
-          <%= quizAnswers.question5 %>
-        </span>
-      </div>
-
+  <!--Display user's preferences-->
+  <div class="mt-4 d-flex justify-content-center fs-4">
+    <%= name %>'s profile preferences:
+  </div>
+  <div
+    class="d-flex flex-wrap justify-content-center align-items-center gap-1 px-3 py-2 fs-4"
+  >
+    <div class="d-flex flex-row">
+      <span
+        id="quiz1-answer-goes-here"
+        class="badge bg-success-subtle text-success-emphasis rounded-pill mt-2"
+      >
+        <%= quizAnswers.question1 %>
+      </span>
+      <span
+        id="quiz2-answer-goes-here"
+        class="badge bg-danger-subtle text-primary-emphasis rounded-pill mt-2"
+      >
+        <%= quizAnswers.question2 %>
+      </span>
+      <span
+        id="quiz3-answer-goes-here"
+        class="badge bg-warning-subtle text-warning-emphasis rounded-pill mt-2"
+      >
+        <%= quizAnswers.question3 %>
+      </span>
     </div>
-    <div class="d-flex justify-content-center mb-5">
-      <a href="/quiz" type="button" class="d-flex justify-content-center mt-2 mb-2 d-inlne-block">
-        <span
-          class="d-flex justify-content-center align-items-center mx-auto fs-4 btn btn-outline-secondary rounded-pill m-3 "> 
-          Retake the quiz
-          <img src="./arrow_forward.png" height="70%"></img>
-        </span>
-      </a>
+    <div class="d-flex flex-row">
+      <span
+        id="quiz4-answer-goes-here"
+        class="badge bg-info-subtle text-info-emphasis rounded-pill mt-2"
+      >
+        <%= quizAnswers.question4 %>
+      </span>
+      <span
+        id="quiz5-answer-goes-here"
+        class="badge bg-primary-subtle text-info-emphasis rounded-pill mt-2"
+      >
+        <%= quizAnswers.question5 %>
+      </span>
     </div>
   </div>
-
-
-
-
-
-
-  <div class="content d-flex justify-content-center align-items-center m-3">
-    <h1 class="fw-bold fs-1 <%= flipVisibility %>">FLIP IT!</h1>
+  <!--Add the link for quiz page-->
+  <div class="d-flex justify-content-center mb-5">
+    <a
+      href="/quiz"
+      class="d-flex justify-content-center mt-2 mb-2 d-inline-block"
+      style="text-decoration: none"
+    >
+      <span
+        class="d-flex justify-content-center align-items-center mx-auto fs-4 btn btn-outline-secondary rounded-pill m-3"
+      >
+        Retake the quiz
+        <img
+          src="./arrow_forward.png"
+          style="height: 70%"
+          alt="arrow forward"
+        />
+      </span>
+    </a>
   </div>
+</div>
 
-  <div class="album py-3 ">
-    <div class="container">
+<div class="content d-flex justify-content-center align-items-center m-3">
+  <h1 class="fw-bold fs-1 <%= flipVisibility %>">FLIP A CARD!</h1>
+</div>
+<!--Display the cards-->
+<div class="album py-3">
+  <div class="container">
+    <div class="list-group list-group-checkable d-grid border-0">
+      <div
+        id="newcard-goes-here"
+        class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3"
+      >
+        <% let i=0; %> <% for(i=0; i < confirmedCountries.length; i++) { %>
 
-      <div class="list-group list-group-checkable d-grid border-0">
-        <div id="newcard-goes-here" class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
-          <% let i=0; %>
-          <% for(i=0; i < confirmedCountries.length; i++) { %>              
-
-            <div class="col">
-              <div class="card btn btn-outline-warning w-100">
-                <div class="card-body card-front w-100 p-0">
-                  <img src="<%= imageURLs[i] %>" width="100%" height="100%"> 
-                </div>
-
-                <div class="card-body card-back w-100 overflow-auto">
-                  <h3 class="card-header fw-bold py-1" style="background-color: transparent;">
-                    <%= confirmedCountries[i].name %>
-                  </h3>          
-                  <p class="card-title fst-italic mt-2">
-                    <%= confirmedCountries[i].location %>
-                  </p>
-                  <p class="card-text">
-                    <%= confirmedCountries[i].descr %>
-                  </p>
-                  <div class="d-flex justify-content-between align-items-center">
-                  </div>
-                  <div class="button">
-                    <form name="redirect" action="/main/<%= confirmedCountries[i].name %>" method="post">
-                    <button class="btn btn-sm btn-outline-primary read-more-btn w-100">Read more</button>
-                    </form>
-                  </div>
-                </div>   
-              </div>  
+        <div class="col">
+          <div class="card btn btn-outline-warning w-100">
+            <div class="card-body card-front w-100 p-0">
+              <img
+                src="<%= imageURLs[i] %>"
+                style="width: 100%; height: 100%"
+                alt="country card"
+              />
             </div>
 
-          <% } %>
+            <div class="card-body card-back w-100 overflow-auto">
+              <h3
+                class="card-header fw-bold py-1"
+                style="background-color: transparent"
+              >
+                <%= confirmedCountries[i].name %>
+              </h3>
+              <p class="card-title fst-italic mt-2">
+                <%= confirmedCountries[i].location %>
+              </p>
+              <p class="card-text"><%= confirmedCountries[i].descr %></p>
+              <div
+                class="d-flex justify-content-between align-items-center"
+              ></div>
+              <div class="button">
+                <form
+                  name="redirect"
+                  action="/main/<%= confirmedCountries[i].name %>"
+                  method="post"
+                >
+                  <button
+                    class="btn btn-sm btn-outline-primary read-more-btn w-100"
+                  >
+                    Read more
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
 
-          </div>        
-        </div>
-        <div class="<%= cardVisibility %>"> <!--Only display if no confirmed countries-->
-          <h3 class="text-center">There are no lesser-known countries within <%= quizAnswers.question5 %> continent that meets your preferences.
-          </h3>
-        </div>
+        <% } %>
       </div>
     </div>
-    <div class="d-flex justify-content-center pb-5 m-5">
-      <a href="/gachaLoading" class="d-inline-block" >
-        <img id="dieButton" src="./dices.png" class="btn btn-outline-light" width="250"></img>
-      </a>
+    <div class="<%= cardVisibility %>">
+      <!--Only display if no confirmed countries-->
+      <h3 class="text-center">
+        There are no lesser-known countries within <%= quizAnswers.question5 %>
+        continent that meets your preferences.
+      </h3>
     </div>
+  </div>
+</div>
+<!--Dice to generate more country-->
+<div class="d-flex justify-content-center pb-5 m-5">
+  <a href="/gachaLoading" class="d-inline-block">
+    <img
+      id="dieButton"
+      src="./dices.png"
+      class="btn btn-outline-light"
+      width="250"
+      alt="die"
+    />
+  </a>
+</div>
 
-    
-    <script>
-      const cards = document.querySelectorAll('.card');
+<script>
+  const cards = document.querySelectorAll(".card");
 
-      cards.forEach(card => {
-        card.addEventListener('click', () => {
-          card.classList.toggle('flipped');
-        });
-      });
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      card.classList.toggle("flipped");
+    });
+  });
 
-      const readMoreBtns = document.querySelectorAll('.read-more-btn');
-      readMoreBtns.forEach(btn => {
-        btn.addEventListener('click', e => {
-          e.stopPropagation();
-        });
-      });
+  const readMoreBtns = document.querySelectorAll(".read-more-btn");
+  readMoreBtns.forEach((btn) => {
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+  });
+</script>
 
-
-
-
-
-
-    </script>
-  </body>
-
-
+<%- include("templates/footer") %>

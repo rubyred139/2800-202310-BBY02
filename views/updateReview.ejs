@@ -2,22 +2,22 @@
 <a class="back" href="/reviews" style="display: flex;">
   <p class="material-symbols-outlined">
     arrow_back_ios
-    </span>
+  </p>
     <p>Back</p>
 </a>
 <div class="container py-5 mt-1 mb-4">
   <h1>Update Review</h1>
   <form method="POST" action="/updateReview?id=<%= review._id %>">
     <div class="mb-3">
-      <label for="reviewTitle" class="form-label">Review Title</label>
-      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="<%= review.title %>" required>
+      <label for="reviewTitle" class="form-label">Review Title <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="<%= review.title %>" maxlength="50" required>
     </div>
     <div class="mb-3">
-      <label for="countryName" class="form-label">Country</label>
-      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= review.country %>" required>
+      <label for="countryName" class="form-label">Country <span class="text-danger">*</span></label>
+      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= review.country %>" maxlength="50" pattern="[a-zA-Z0-9\s]+" required>
     </div>
     <div class="mb-3">
-      <label for="visitTime" class="form-label">Season</label>
+      <label for="visitTime" class="form-label">Season <span class="text-danger">*</span></label>
       <select class="form-select" id="visitTime" name="visitTime" required>
         <option value="" disabled>Select a season</option>
         <option value="Spring" <%= review.visitTime === 'Spring' ? 'selected' : '' %>>Spring</option>
@@ -27,7 +27,7 @@
       </select>
     </div>
     <div class="mb-3">
-      <label for="tripLength" class="form-label">Length</label>
+      <label for="tripLength" class="form-label">Length <span class="text-danger">*</span></label>
       <select class="form-select" id="tripLength" name="tripLength" required>
         <option value="" disabled>Select a trip length</option>
         <option value="1-3 days" <%= review.tripLength === '1-3 days' ? 'selected' : '' %>>1-3 days</option>
@@ -37,7 +37,7 @@
       </select>
     </div>
     <div class="mb-3">
-      <label for="vacationType" class="form-label">Reason for Travel</label>
+      <label for="vacationType" class="form-label">Reason for Travel <span class="text-danger">*</span></label>
       <select class="form-select" id="vacationType" name="vacationType" required>
         <option <%= review.vacationType === 'Relaxing getaway' ? 'selected' : '' %>>Relaxing getaway</option>
         <option <%= review.vacationType === 'Adventure trip' ? 'selected' : '' %>>Adventure trip</option>
@@ -49,11 +49,12 @@
       </select>      
     </div>
     <div class="mb-3">
-      <label for="experience" class="form-label">Experience</label>
+      <label for="experience" class="form-label">Experience <span class="text-danger">*</span></label>
       <textarea class="form-control" id="experience" name="experience" rows="3" required><%= review.experience %></textarea>
     </div>
     <input type="hidden" name="name" value="<%= review.userName %>">
     <input type="hidden" name="userId" value="<%= review.userId %>">
+    <button type="reset" class="btn btn-outline-secondary mx-1">Reset</button>
     <button type="submit" class="btn btn-secondary text-light">Update Review</button>
   </form>
 </div>
