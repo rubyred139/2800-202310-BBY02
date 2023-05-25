@@ -11,7 +11,7 @@
           <h5 class="card-title"><%= savedCountries[i] %></h5>
           <div class="btn-group">
             <form action="/main/<%= savedCountries[i] %>" method="post">
-              <button type="submit" class="btn btn-sm btn-outline-secondary">
+              <button type="submit" class="btn btn-sm btn-outline-secondary view">
                 View
               </button>
             </form>
@@ -21,7 +21,7 @@
                 name="remove"
                 value="<%= savedCountries[i] %>"
               />
-              <button type="submit" class="btn btn-sm btn-outline-secondary">
+              <button type="submit" class="btn btn-sm btn-outline-secondary remove">
                 Remove
               </button>
             </form>
@@ -145,7 +145,7 @@
   }
   // Event listener for opening the modal
   openModalBtn.forEach(function (button) {
-    addEventListener("click", openModal);
+    button.addEventListener("click", openModal);
   })
 
 </script>

@@ -1,12 +1,34 @@
 require("./utils.js");
+
 require("dotenv").config();
-// const url = require("url");
+
 const { Configuration, OpenAIApi } = require("openai");
+// backup openai API key
+// const config = new Configuration({
+//   apiKey: process.env.OPENAI_API_KEY,
+// });
+
 const openai = new OpenAIApi(
   new Configuration({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: process.env.OPENAI_API_KEY,
   })
 );
+
+const express = require("express");
+const session = require("express-session");
+const MongoStore = require("connect-mongo");
+
+const { ObjectId } = require("mongodb");
+const bcrypt = require("bcrypt");
+const path = require('path');
+const saltRounds = 12;
+
+const app = express();
+app.use(express.json());
+
+const Joi = require("joi");
+const port = process.env.PORT || 2000;
+const expireTime = 2 * 60 * 60 * 1000; //expires after 2 hr (minutes * seconds * millis)
 
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
@@ -15,43 +37,31 @@ const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
 const node_session_secret = process.env.NODE_SESSION_SECRET;
-const nodemailer = require("nodemailer");
-const express = require("express");
-const session = require("express-session");
-const MongoStore = require("connect-mongo");
+
 var { database } = include("databaseConnection");
-var mongoStore = MongoStore.create({
-  mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
-  crypto: {
-    secret: mongodb_session_secret,
-  }
-});
-
-const { ObjectId } = require("mongodb");
-const bcrypt = require("bcrypt");
-const path = require("path");
-const saltRounds = 12;
-
-const app = express();
-const Joi = require("joi");
-const port = process.env.PORT || 2000;
-const expireTime = 2 * 60 * 60 * 1000; //expires after 2 hr (minutes * seconds * millis)
 const userCollection = database.db(mongodb_database).collection("users");
 const untrvl_countries = database
   .db(mongodb_database)
   .collection("under-travelled_countries");
-const reviewsCollection = database.db(mongodb_database).collection("reviews");
+const reviewsCollection = database.db(mongodb_database).collection('reviews');
 
 app.set("view engine", "ejs");
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }))
+
+app.use(express.urlencoded({ extended: false }));
+
+var mongoStore = MongoStore.create({
+  mongoUrl: `mongodb+srv://${mongodb_user}:${mongodb_password}@${mongodb_host}/sessions`,
+  crypto: {
+    secret: mongodb_session_secret,
+  },
+});
 
 app.use(
   session({
     secret: node_session_secret,
     store: mongoStore,
     saveUninitialized: false,
-    resave: true
+    resave: true,
   })
 );
 
@@ -76,14 +86,15 @@ app.get("/", (req, res) => {
 
 app.get("/easterEgg", (req, res) => {
   res.render("easterEgg");
-})
+});
 
 app.get("/nosql-injection", async (req, res) => {
   var username = req.query.user;
 
   if (!username) {
     res.send(
-      `<h3>no user provided - try /nosql-injection?user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`
+      `<h3>no user provided - try /nosql-injection?
+        user=name</h3> <h3>or /nosql-injection?user[$ne]=name</h3>`
     );
     return;
   }
@@ -93,9 +104,7 @@ app.get("/nosql-injection", async (req, res) => {
 
   if (validationResult.error != null) {
     console.log(validationResult.error);
-    res.send(
-      "<h1>A NoSQL injection attack was detected!!</h1>"
-    );
+    res.send("<h1>A NoSQL injection attack was detected!</h1>");
     return;
   }
 
@@ -122,14 +131,14 @@ app.post("/signupSubmit", async (req, res) => {
     username: Joi.string().alphanum().max(20).required(),
     email: Joi.string().required(),
     password: Joi.string().required(),
-    securityAnswer: Joi.string().required(),
+    securityAnswer: Joi.string().required()
   });
 
   const validationResult = schema.validate({
     username,
     password,
     email,
-    securityAnswer,
+    securityAnswer
   });
 
   if (validationResult.error != null) {
@@ -180,14 +189,14 @@ app.post("/signupSubmit", async (req, res) => {
     password: hashedPassword,
     securityAnswer: securityAnswer,
     profilePicture: "profilepic3.png",
-    emailNotifications: true, // Default value for email notification preference
+    emailNotifications: true // Default value for email notification preference
   });
   console.log("Inserted user");
 
   //create a session and redirect to main page
   req.session.user = {
     username: username,
-    email: email,
+    email: email
   };
 
   //sets authentication to true
@@ -259,7 +268,7 @@ app.post("/changePassword", async (req, res) => {
 
   const existingUser = await userCollection.findOne({
     email: existingEmail,
-    securityAnswer: securityAnswer,
+    securityAnswer: securityAnswer
   });
 
   if (!existingUser) {
@@ -299,7 +308,7 @@ app.post("/resetPassword", async (req, res) => {
     res.render("login", {
       successMessage:
         "Your password has been changed successfully. Please log in again.",
-      errorMessage: "",
+      errorMessage: ""
     });
     console.log("password is changed for user with this email: ", email);
   }
@@ -313,8 +322,8 @@ app.get("/quiz", (req, res) => {
   if (!req.session.authenticated) {
     res.redirect("/");
   } else {
-    var name = req.session.name;
-    var userId = req.session._id;
+    const name = req.session.name;
+    const userId = req.session._id;
     res.render("quiz", { name, userId });
   }
 });
@@ -351,15 +360,17 @@ app.get("/logout", (req, res) => {
   res.redirect("/");
 });
 
-// Isolate keywords from chatGPT response and uses them to search for and return related images
+// Isolate keywords from chatGPT response and uses 
+// them to search for and return related images
 async function getFactImages(place) {
   const factImageUrls = [];
-  for (const x in place) {
+  for (x in place) {
     var testFact = place[x];
     console.log(testFact);
 
     try {
-      const requestURL = `https://api.unsplash.com/search/photos?query=${testFact}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const requestURL = `https://api.unsplash.com/search/photos?query=
+        ${testFact}&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
       const response = await fetch(requestURL);
       const responseBody = await response.json();
       var imageURL = responseBody.results[0].urls.regular;
@@ -368,7 +379,8 @@ async function getFactImages(place) {
       // If no images available from search, a default picture will be used instead
     } catch (err) {
       console.log(err);
-      const defaultURL = `https://api.unsplash.com/search/photos?query=continental-breakfast&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
+      const defaultURL = `https://api.unsplash.com/search/photos?query=
+        continental-breakfast&client_id=${process.env.UNSPLASH_ACCESSKEY}`;
       const response = await fetch(defaultURL);
       const responseBody = await response.json();
       var imageURL = responseBody.results[0].urls.regular;
@@ -435,10 +447,10 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
       temperature: 0,
       top_p: 1.0,
       frequency_penalty: 0.0,
-      presence_penalty: 0.0,
+      presence_penalty: 0.0
     });
 
-    // ChatGPT response is retrieved 
+    // ChatGPT response is retrieved
     const apiResponse = countryResponse.data;
     const completion = apiResponse.choices[0].text;
 
@@ -461,7 +473,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
         $set: {
           promptAnswers: resultFacts,
           currentCountry: currentCountry,
-          promptAnswerPlaces: resultFactNames,
+          promptAnswerPlaces: resultFactNames
         },
       }
     );
@@ -512,21 +524,21 @@ function sendEmail(username, useremail, country, date) {
   });
 }
 
-app.post("/markCountry", async(req, res) => {
+app.post("/markCountry", async (req, res) => {
   try {
     const userId = req.session._id;
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
-    const markedCountries = result.markedCountry || []
+    const markedCountries = result.markedCountry || [];
 
-    const markedCountry = req.body.mark
-    const endDate = req.body.endDate
+    const markedCountry = req.body.mark;
+    const endDate = req.body.endDate;
 
     // Add marked country
     let recordExists = false;
-    if (markedCountries.length !==0) {
-      for (let i=0; i<markedCountries.length; i++) {
-        let record = markedCountries[i]
-        if (record.countryName === markedCountry){
+    if (markedCountries.length !== 0) {
+      for (let i = 0; i < markedCountries.length; i++) {
+        let record = markedCountries[i];
+        if (record.countryName === markedCountry) {
           recordExists = true;
           break;
         }
@@ -534,49 +546,56 @@ app.post("/markCountry", async(req, res) => {
     }
     if (recordExists) {
       try {
-      await userCollection.updateOne(
-        { _id: new ObjectId(userId), "markedCountry.countryName": markedCountry },
-        { $set: { "markedCountry.$.endDate": endDate } }
-      );
-      res.redirect("/bookmarks");
-      } catch(error) {
-        console.error(error)
+        await userCollection.updateOne(
+          {
+            _id: new ObjectId(userId),
+            "markedCountry.countryName": markedCountry,
+          },
+          { $set: { "markedCountry.$.endDate": endDate } }
+        );
+        res.redirect("/bookmarks");
+      } catch (error) {
+        console.error(error);
       }
     } else {
       await userCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $push: { markedCountry: { countryName: markedCountry, endDate: endDate }} }
+        {
+          $push: {
+            markedCountry: { countryName: markedCountry, endDate: endDate },
+          },
+        }
       );
       res.redirect("/bookmarks");
     }
   } catch (error) {
     console.error(error);
   }
-})
+});
 
 // Send out emails
-app.get("/notification", async(req, res) =>{
+app.get("/notification", async (req, res) => {
   try {
-    const userEmail = req.session.user.email
-    const userName = req.session.user.username
+    const userEmail = req.session.user.email;
+    const userName = req.session.user.username;
     const userId = req.session._id;
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
-    const emailNotification = result.emailNotifications
-    const markedCountries = result.markedCountry
+    const emailNotification = result.emailNotifications;
+    const markedCountries = result.markedCountry;
 
     // If user allows for email notification, loop through the array of the mark countries and send email
     if (emailNotification) {
-      for (let i=0; i<markedCountries.length; i++) {
-        const countryName = markedCountries[i].countryName
-        console.log(countryName)
-        const date = markedCountries[i].endDate
-        sendEmail(userName, userEmail, countryName, date)
+      for (let i = 0; i < markedCountries.length; i++) {
+        const countryName = markedCountries[i].countryName;
+        console.log(countryName);
+        const date = markedCountries[i].endDate;
+        sendEmail(userName, userEmail, countryName, date);
       }
     }
   } catch (error) {
     console.error(error);
   }
-})
+});
 
 // Loading wheel for main page
 app.get("/mainLoading", sessionValidation, (req, res) => {
@@ -605,7 +624,12 @@ app.get("/main", sessionValidation, async (req, res) => {
     const places = result.promptAnswerPlaces;
     var imagesList = await getFactImages(places);
 
-    res.render("main", { facts: facts, gachaCountry, imagesList, isBookmarked });
+    res.render("main", {
+      facts: facts,
+      gachaCountry,
+      imagesList,
+      isBookmarked,
+    });
   } catch (error) {
     console.error(error);
     res.redirect("/noCountry");
@@ -678,7 +702,7 @@ app.post("/removeBookmark", async (req, res) => {
   );
 
   res.redirect("/bookmarks");
-})
+});
 
 app.get("/profile", async (req, res) => {
   const userId = req.session._id;
@@ -686,7 +710,9 @@ app.get("/profile", async (req, res) => {
   console.log(user);
 
   // Check if the user has completed the travel quiz
-  const hasCompletedQuiz = user.quizAnswers && Object.values(user.quizAnswers).every(answer => answer !== "");
+  const hasCompletedQuiz =
+    user.quizAnswers &&
+    Object.values(user.quizAnswers).every((answer) => answer !== "");
 
   res.render("profile", { user, hasCompletedQuiz });
 });
@@ -698,9 +724,15 @@ app.post("/updateProfile", async (req, res) => {
   const updatedFields = {
     username: req.body.username ? req.body.username : user.username,
     email: req.body.email ? req.body.email : user.email,
-    password: req.body.password ? await bcrypt.hash(req.body.password, 10) : user.password,
-    securityAnswer: req.body.securityAnswer ? req.body.securityAnswer : user.securityAnswer,
-    profilePicture: req.body.profilePicture ? path.basename(req.body.profilePicture) : user.profilePicture,
+    password: req.body.password
+      ? await bcrypt.hash(req.body.password, 10)
+      : user.password,
+    securityAnswer: req.body.securityAnswer
+      ? req.body.securityAnswer
+      : user.securityAnswer,
+    profilePicture: req.body.profilePicture
+      ? path.basename(req.body.profilePicture)
+      : user.profilePicture,
     emailNotifications: req.body.emailNotifications === "on", // Convert checkbox value to boolean
   };
 
@@ -745,7 +777,7 @@ async function countryGenerator(quizAnswers) {
         descr: one sentence description of the courtry
     }]    
   `;
-  console.log(prompt)
+  console.log(prompt);
   const response = await openai.createChatCompletion({
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: prompt }],
@@ -768,11 +800,13 @@ async function checkCountries(countries) {
       if (countries.length >= 3) {
         // Slice the array to three if more than three countries pass the database verification
         function getRandom3Countries() {
-          const shuffledArray = confirmedCountries.sort(() => Math.random() - 0.5);
+          const shuffledArray = confirmedCountries.sort(
+            () => Math.random() - 0.5
+          );
           return shuffledArray.slice(0, 3);
         }
         getRandom3Countries();
-        confirmedCountries = confirmedCountries.slice(0, 3)
+        confirmedCountries = confirmedCountries.slice(0, 3);
       }
     } catch (err) {
       console.error("Error executing MongoDB query:", err);
@@ -819,7 +853,14 @@ app.get("/gacha", sessionValidation, async (req, res) => {
     flipVisibility = "d-none";
   }
   const imageURLs = await getImage(confirmedCountries);
-  res.render("gacha", { name, confirmedCountries, quizAnswers, imageURLs, cardVisibility, flipVisibility })
+  res.render("gacha", {
+    name,
+    confirmedCountries,
+    quizAnswers,
+    imageURLs,
+    cardVisibility,
+    flipVisibility,
+  });
 });
 
 // Loads this page when no country has been selected
@@ -870,7 +911,7 @@ app.post("/reviewForm", async (req, res) => {
     vacationType: req.body.vacationType,
     experience: req.body.experience,
     userName: req.body.name,
-    userId: req.body.userId
+    userId: req.body.userId,
   };
   console.log(review);
 
@@ -889,7 +930,7 @@ app.post("/reviewForm", async (req, res) => {
 
 app.get("/thankyou", (req, res) => {
   res.render("thankyou");
-})
+});
 
 // Delete Review Route
 app.get("/deleteReview", async (req, res) => {
@@ -897,7 +938,9 @@ app.get("/deleteReview", async (req, res) => {
 
   try {
     // Delete the review from the database
-    const result = await reviewsCollection.deleteOne({ _id: new ObjectId(reviewId) });
+    const result = await reviewsCollection.deleteOne({
+      _id: new ObjectId(reviewId),
+    });
     console.log(`Deleted review from database with ID: ${reviewId}`);
 
     // Redirect to the reviews page
@@ -915,7 +958,9 @@ app.get("/updateReview", async (req, res) => {
 
   try {
     // Retrieve the review from the database
-    const review = await reviewsCollection.findOne({ _id: new ObjectId(reviewId) });
+    const review = await reviewsCollection.findOne({
+      _id: new ObjectId(reviewId),
+    });
     console.log("Review:", review);
     console.log("ID: ", reviewId);
 
@@ -940,11 +985,14 @@ app.post("/updateReview", async (req, res) => {
     vacationType: req.body.vacationType,
     experience: req.body.experience,
     userName: req.body.name,
-    userId: req.body.userId
+    userId: req.body.userId,
   };
   try {
     // Update the review in the database
-    const result = await reviewsCollection.updateOne({ _id: new ObjectId(reviewId) }, { $set: updatedReview });
+    const result = await reviewsCollection.updateOne(
+      { _id: new ObjectId(reviewId) },
+      { $set: updatedReview }
+    );
     console.log(`Updated review in database with ID: ${reviewId}`);
 
     // Redirect to the reviews page
@@ -964,7 +1012,9 @@ app.get("/searchReviews", async (req, res) => {
     const countryRegex = new RegExp(country, "i");
 
     // Retrieve all reviews from the reviews collection, filtered by the specified country
-    const reviews = await reviewsCollection.find({ country: countryRegex }).toArray();
+    const reviews = await reviewsCollection
+      .find({ country: countryRegex })
+      .toArray();
     console.log("Reviews:", reviews);
 
     // Retrieve the user"s ID from the session
@@ -990,5 +1040,5 @@ app.get("*", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log("Port listening on " + port)
+  console.log("Port listening on " + port);
 });
