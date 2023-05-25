@@ -36,11 +36,14 @@
       crossorigin="anonymous"
     ></script>
   </head>
+
   <body class="text-center vsc-initialized">
+    <!--back button-->
     <a href="/" style="display: flex">
       <p class="material-symbols-outlined">arrow_back_ios</p>
       <p>Back</p>
     </a>
+
     <main class="form-signin w-100 m-auto">
       <img
         class="mx-auto my-auto py-3"
@@ -49,9 +52,11 @@
         width="250"
       />
       <h1 class="h3 mb-3 fw-normal">Create an account</h1>
+      <!--display error message-->
       <% if (errorMessage) { %>
       <div class="alert alert-danger" role="alert"><%= errorMessage %></div>
       <% } %>
+      <!--form to sign up and submit-->
       <form action="/signupSubmit" method="post">
         <div class="form-floating <%= errorMessage.includes('Name') ? ' error' : '' %>">
           <input
@@ -63,7 +68,7 @@
             maxlength="50"
             pattern="[a-zA-Z0-9\s]+"
           />
-          <label for="floatingUsername">Username</label>
+          <label for="floatingUsername">Username</label> <!--username-->
         </div>
         <div class="form-floating <%= errorMessage.includes('Email') ? ' error' : '' %>">
           <input
@@ -74,7 +79,7 @@
             placeholder="Email Address"
             maxlength="100"
           />
-          <label for="floatingInput">Email address</label>
+          <label for="floatingInput">Email address</label> <!--email-->
         </div>
         <div class="form-floating<%= errorMessage.includes('Password') ? ' error' : '' %>">
           <input
@@ -85,7 +90,7 @@
             placeholder="Password"
             maxlength="100"
           />
-          <label for="floatingPassword">Password</label>
+          <label for="floatingPassword">Password</label> <!--password-->
         </div>
         <div class="form-floating<%= errorMessage.includes('Security') ? ' error' : '' %>">
           <input
@@ -97,8 +102,8 @@
             maxlength="50"
           />
           <label for="floatingSecurityQuestion"
-            >What is your favourite animal?</label
-          >
+            >What is your favourite animal?</label 
+          >  <!--security question-->
         </div>
         <button class="w-100 btn btn-lg custom-btn-primary" type="submit">
           Submit

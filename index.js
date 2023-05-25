@@ -1,6 +1,7 @@
 require("./utils.js");
 require("dotenv").config();
 
+// chatGPT module import
 const { Configuration, OpenAIApi } = require("openai");
 const openai = new OpenAIApi(
   new Configuration({
@@ -8,6 +9,7 @@ const openai = new OpenAIApi(
   })
 );
 
+// Required module imports
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
@@ -16,6 +18,7 @@ const nodemailer = require("nodemailer"); // send email
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const path = require('path');
+
 const saltRounds = 12;
 
 const app = express();
@@ -25,6 +28,7 @@ const Joi = require("joi");
 const port = process.env.PORT || 2000;
 const expireTime = 2 * 60 * 60 * 1000; //expires after 2 hr (minutes * seconds * millis)
 
+// mongoDB connection details
 const mongodb_host = process.env.MONGODB_HOST;
 const mongodb_user = process.env.MONGODB_USER;
 const mongodb_password = process.env.MONGODB_PASSWORD;
@@ -33,6 +37,7 @@ const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
 const node_session_secret = process.env.NODE_SESSION_SECRET; 
 
+// Variables to access mongoDB collections
 var { database } = include("databaseConnection");
 const userCollection = database.db(mongodb_database).collection("users");
 const untrvl_countries = database
@@ -51,7 +56,7 @@ var mongoStore = MongoStore.create({
   },
 });
 
-//create session 
+// Create session 
 app.use(
   session({
     secret: node_session_secret,
@@ -61,7 +66,7 @@ app.use(
   })
 );
 
-//checks to see if the user is logged in and has a valid session
+// Checks to see if the user is logged in and has a valid session
 function isValidSession(req) {
   if (req.session.authenticated) {
     return true;
@@ -69,7 +74,7 @@ function isValidSession(req) {
   return false;
 }
 
-//allows user to see the site if session is valid
+// Allows user to see the site if session is valid
 function sessionValidation(req, res, next) {
   if (isValidSession(req)) {
     next();
@@ -125,7 +130,7 @@ function sendEmail(username, useremail, country, date) {
   });
 }
 
-// schedule the task everyday at 6am to check if any user's trip ends
+// Schedule the task everyday at 6am to check if any user's trip ends
 cron.schedule('0 6 * * *', async () => {
   const users = await userCollection.find().toArray();
   // Iterate through the users and send emails
@@ -159,12 +164,12 @@ app.get("/", (req, res) => {
   res.render("landing");
 });
 
-// Easter eggs
+// Easter egg
 app.get("/easterEgg", (req, res) => {
   res.render("easterEgg");
 });
 
-//handles nosql-injection attacks 
+// Handles nosql-injection attacks 
 app.get("/nosql-injection", async (req, res) => {
   var username = req.query.user;
 
@@ -199,14 +204,14 @@ app.get("/signup", (req, res) => {
   res.render("signup", { errorMessage: "" });
 });
 
-//create account for new user (user, email, password, security answer)
+// Create account for new user (user, email, password, security answer)
 app.post("/signupSubmit", async (req, res) => {
   var username = req.body.username.trim();
   var email = req.body.email.trim();
   var password = req.body.password.trim();
   var securityAnswer = req.body.securityAnswer.trim();
 
-  //validated using joi
+  // Validated using joi
   const schema = Joi.object({
     username: Joi.string().alphanum().max(20).required(),
     email: Joi.string().required(),
@@ -221,51 +226,50 @@ app.post("/signupSubmit", async (req, res) => {
     securityAnswer
   });
 
-  //error messages if input is wrong
+  // Error messages if input is wrong
   if (validationResult.error != null) {
     const errorMessage = validationResult.error.message;
-    //look at terminal to see error message
+    // Look at terminal to see error message
     console.log(validationResult.error);
-
+    //error message for invalid username
     if (errorMessage.includes("username")) {
       const errorMessage = "Name is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
-
+    //error message for invalid email
     if (errorMessage.includes("email")) {
       const errorMessage = "Email is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
-
+    //error message for invalid password
     if (errorMessage.includes("password")) {
       const errorMessage = "Password is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
-
+    //erorr message for invalid security answer
     if (errorMessage.includes("securityAnswer")) {
-      // added
-      const errorMessage = "Security answer is required."; // added
+      const errorMessage = "Security answer is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
   } else {
-    // check if user with the same email already exists
+    // Check if user with the same email already exists
     const existingUser = await userCollection.findOne({ email: email });
     if (existingUser) {
-      // email already taken, handle accordingly
+      // Email already taken, handle accordingly
       const errorMessage = "Email already in use.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
   }
 
-  //hashes the password using bcrypt before storing
+  // Hashes the password using bcrypt before storing
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
-  //stores the user information to our users database
+  // Stores the user information to our users database
   const result = await userCollection.insertOne({
     username: username,
     email: email,
@@ -276,19 +280,19 @@ app.post("/signupSubmit", async (req, res) => {
   });
   console.log("Inserted user");
 
-  //create a session and redirect to main page
+  // Create a session and redirect to main page
   req.session.user = {
     username: username,
     email: email
   };
 
-  //sets authentication to true
+  // Sets authentication to true
   req.session.authenticated = true;
 
-  //sets their username
+  // Sets their username
   req.session.username = username;
 
-  //sets user"s id in the user session
+  // Sets user"s id in the user session
   req.session._id = result.insertedId;
 
   res.redirect("/quizWelcome");
@@ -299,12 +303,12 @@ app.get("/login", (req, res) => {
   res.render("login", { errorMessage: "", successMessage: "" });
 });
 
-//log in using email and password
+// Log in using email and password
 app.post("/loggingin", async (req, res) => {
   var email = req.body.email.trim();
   var password = req.body.password.trim();
 
-  //user input validated using joi
+  // User input validated using joi
   const schema = Joi.string().required();
   const validationResult = schema.validate(email, password);
   if (validationResult.error != null) {
@@ -321,7 +325,7 @@ app.post("/loggingin", async (req, res) => {
 
   console.log(result);
 
-  //error messages if input is not valid
+  // Error messages if input is not valid
   if (result.length != 1) {
     console.log("user not found");
     const errorMessage = "User not found.";
@@ -345,16 +349,17 @@ app.post("/loggingin", async (req, res) => {
   }
 });
 
+//change password page
 app.get("/changePassword", (req, res) => {
   res.render("changePassword", { errorMessage: "" });
 });
 
-//allow users to change their password 
+// Allow users to change their password 
 app.post("/changePassword", async (req, res) => {
   const existingEmail = req.body.email.trim();
   const securityAnswer = req.body.securityAnswer.trim();
 
-  //validate their email and security answer
+  // Validate their email and security answer
   const existingUser = await userCollection.findOne({
     email: existingEmail,
     securityAnswer: securityAnswer
@@ -379,19 +384,19 @@ app.get("/resetPassword", (req, res) => {
   res.render("resetPassword", { errorMessage: "", email: email });
 });
 
-//reset password function 
+// Reset password function 
 app.post("/resetPassword", async (req, res) => {
   const newPassword = req.body.password.trim();
   const confirmPassword = req.body.confirmPassword.trim();
   const email = req.session.email.trim();
 
-  //error message if the entered password doesn't match
+  // Error message if the entered password doesn't match
   if (newPassword !== confirmPassword) {
     const errorMessage = "Passwords do not match";
     res.render("resetPassword", { errorMessage: errorMessage, email: email });
     return;
   } else {
-    //password is hashed before updating in database
+    // Password is hashed before updating in database
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     await userCollection.updateOne(
       { email: email },
@@ -449,7 +454,7 @@ app.post("/quiz", async (req, res) => {
   }
 });
 
-//logging out destroys the session
+// Logging out destroys the session
 app.get("/logout", (req, res) => {
   req.session.destroy();
   console.log("user logged out");
@@ -582,7 +587,7 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
 });
 
 // Users are allow to mark the country for next trip
-// and save the enddate of the trip into database
+// and save the end date of the trip into database
 app.post("/markCountry", async (req, res) => {
   try {
     const userId = req.session._id;
@@ -808,7 +813,7 @@ async function getQuizAnswers(userId) {
 }
 
 // Country generator function for gacha page
-// it picks up the quiz answers and form the prompt and feed to openai API
+// It picks up the quiz answers and form the prompt and feed to openai API
 async function countryGenerator(quizAnswers) {
   q1answer = quizAnswers.question1.toLowerCase();
   q2answer = quizAnswers.question2.toLowerCase();
@@ -840,7 +845,7 @@ async function countryGenerator(quizAnswers) {
 
 }
 
-// Double confirm that the countries chagGPT provided is under-travelled by cross-checking the under-travelled countries collection in the database
+// Double confirm that the countries chatGPT provided is under-travelled by cross-checking the under-travelled countries collection in the database
 async function checkCountries(countries) {
   let confirmedCountries = [];
 
@@ -933,14 +938,14 @@ app.get("/reviews", async (req, res) => {
     const reviews = await reviewsCollection.find({}).toArray();
     console.log("Reviews:", reviews);
 
-    // Retrieve the user"s ID from the session
+    // Retrieve the user's ID from the session
     const userId = req.session._id;
 
-    // Retrieve the user"s reviews from the reviews collection
+    // Retrieve the user's reviews from the reviews collection
     const myReviews = await reviewsCollection.find({ userId }).toArray();
     console.log("My Reviews:", myReviews);
 
-    // Render the reviews page with the retrieved reviews and user"s reviews
+    // Render the reviews page with the retrieved reviews and user's reviews
     res.render("reviews", { reviews, myReviews });
   } catch (error) {
     console.error(error);
@@ -948,7 +953,7 @@ app.get("/reviews", async (req, res) => {
   }
 });
 
-// Renders he review form
+// Renders the review form
 app.get("/reviewForm", sessionValidation, (req, res) => {
   console.log(req.body);
   var country = req.query.country;
@@ -988,6 +993,7 @@ app.post("/reviewForm", async (req, res) => {
   }
 });
 
+// Shown after leaving a review
 app.get("/thankyou", (req, res) => {
   res.render("thankyou");
 });
