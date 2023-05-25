@@ -18,7 +18,7 @@ const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
 const cron = require("node-cron") // schedule to send email after user's trip ends
-const nodemailer = require("nodemailer"); // sedn email
+const nodemailer = require("nodemailer"); // send email
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const path = require('path');
@@ -37,7 +37,7 @@ const mongodb_password = process.env.MONGODB_PASSWORD;
 const mongodb_database = process.env.MONGODB_DATABASE;
 const mongodb_session_secret = process.env.MONGODB_SESSION_SECRET;
 
-const node_session_secret = process.env.NODE_SESSION_SECRET;
+const node_session_secret = process.env.NODE_SESSION_SECRET; 
 
 var { database } = include("databaseConnection");
 const userCollection = database.db(mongodb_database).collection("users");
@@ -57,6 +57,7 @@ var mongoStore = MongoStore.create({
   },
 });
 
+//create session 
 app.use(
   session({
     secret: node_session_secret,
@@ -66,6 +67,7 @@ app.use(
   })
 );
 
+//checks to see if the user is logged in and has a valid session
 function isValidSession(req) {
   if (req.session.authenticated) {
     return true;
@@ -73,6 +75,7 @@ function isValidSession(req) {
   return false;
 }
 
+//allows user to see the site if session is valid
 function sessionValidation(req, res, next) {
   if (isValidSession(req)) {
     next();
@@ -166,6 +169,7 @@ app.get("/easterEgg", (req, res) => {
   res.render("easterEgg");
 });
 
+//handles nosql-injection attacks 
 app.get("/nosql-injection", async (req, res) => {
   var username = req.query.user;
 
@@ -199,12 +203,14 @@ app.get("/signup", (req, res) => {
   res.render("signup", { errorMessage: "" });
 });
 
+//create account for new user (user, email, password, security answer)
 app.post("/signupSubmit", async (req, res) => {
   var username = req.body.username.trim();
   var email = req.body.email.trim();
   var password = req.body.password.trim();
   var securityAnswer = req.body.securityAnswer.trim();
 
+  //validated using joi
   const schema = Joi.object({
     username: Joi.string().alphanum().max(20).required(),
     email: Joi.string().required(),
@@ -219,6 +225,7 @@ app.post("/signupSubmit", async (req, res) => {
     securityAnswer
   });
 
+  //error messages if input is wrong
   if (validationResult.error != null) {
     const errorMessage = validationResult.error.message;
     //look at terminal to see error message
@@ -259,8 +266,10 @@ app.post("/signupSubmit", async (req, res) => {
     }
   }
 
+  //hashes the password using bcrypt before storing
   var hashedPassword = await bcrypt.hash(password, saltRounds);
 
+  //stores the user information to our users database
   const result = await userCollection.insertOne({
     username: username,
     email: email,
@@ -293,19 +302,21 @@ app.get("/login", (req, res) => {
   res.render("login", { errorMessage: "", successMessage: "" });
 });
 
+//log in using email and password
 app.post("/loggingin", async (req, res) => {
   var email = req.body.email.trim();
   var password = req.body.password.trim();
 
+  //user input validated using joi
   const schema = Joi.string().required();
   const validationResult = schema.validate(email, password);
   if (validationResult.error != null) {
     console.log(validationResult.error);
-    const errorMessage = "User not found.";
+    const errorMessage = "User not found."; 
     res.render("login", { errorMessage: errorMessage, successMessage: "" });
     return;
   }
-
+ 
   const result = await userCollection
     .find({ email: email })
     .project({ email: 1, password: 1, username: 1, _id: 1 })
@@ -313,6 +324,7 @@ app.post("/loggingin", async (req, res) => {
 
   console.log(result);
 
+  //error messages if input is not valid
   if (result.length != 1) {
     console.log("user not found");
     const errorMessage = "User not found.";
@@ -340,10 +352,12 @@ app.get("/changePassword", (req, res) => {
   res.render("changePassword", { errorMessage: "" });
 });
 
+//allow users to change their password 
 app.post("/changePassword", async (req, res) => {
   const existingEmail = req.body.email.trim();
   const securityAnswer = req.body.securityAnswer.trim();
 
+  //validate their email and security answer
   const existingUser = await userCollection.findOne({
     email: existingEmail,
     securityAnswer: securityAnswer
@@ -368,16 +382,19 @@ app.get("/resetPassword", (req, res) => {
   res.render("resetPassword", { errorMessage: "", email: email });
 });
 
+//reset password function 
 app.post("/resetPassword", async (req, res) => {
   const newPassword = req.body.password.trim();
   const confirmPassword = req.body.confirmPassword.trim();
   const email = req.session.email.trim();
 
+  //error message if the entered password doesn't match
   if (newPassword !== confirmPassword) {
     const errorMessage = "Passwords do not match";
     res.render("resetPassword", { errorMessage: errorMessage, email: email });
     return;
   } else {
+    //password is hashed before updating in database
     const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
     await userCollection.updateOne(
       { email: email },
@@ -434,6 +451,7 @@ app.post("/quiz", async (req, res) => {
   }
 });
 
+//logging out destroys the session
 app.get("/logout", (req, res) => {
   req.session.destroy();
   console.log("user logged out");
