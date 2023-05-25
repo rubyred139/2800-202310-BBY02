@@ -1,14 +1,20 @@
-<%- include("templates/header_logoOnly") %>
+<%- include("templates/header") %>
 <div class="d-flex justify-content-center my-5 py-1">
   <h3 class="display-5 fw-normal">Welcome <%= name %>!</h3>
 </div>
 <div class="d-flex justify-content-center">
   <div class="card text-center mb-3">
     <div class="card-body py-2">
-      <p class="card-text display-6">
-        Take our preference<br />quiz to tailor your<br />recommendation
-      </p>
+      <p class="card-text display-6">Take our preference<br>quiz to tailor your<br>recommendation</p>
     </div>
+  </div>
+</div>
+<div class="d-flex justify-content-center py-1">
+  <form action='/quiz' method='get'>
+    <button type="submit" class="btn btn-outline-secondary rounded px-3" style="width: 250px"; type="button">Next <i class="bi bi-arrow-right"></i></button>
+  </form>
+</div>
+  
     <%- include("templates/footer") %>
   </div>
 </div>

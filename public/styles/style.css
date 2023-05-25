@@ -29,7 +29,6 @@ body {
 .image-option.selected {
   border: 2px solid blue;
 }
-
 /*** End of profile page styling ***/
 
 .card {
@@ -86,7 +85,6 @@ body {
   animation: slideAnimation 4s linear infinite;
   overflow: hidden;
   display: inline-block;
-  /* background: red; */
 }
 
 #airplane-container.hidden {
@@ -172,4 +170,10 @@ body {
 .custom-btn-primary:hover {
   color: white;
   background-color: #2979f0;
+}
+
+/*error message box highlights*/
+.highlighted {
+  border-color: #ed414172; 
+  box-shadow: 0 2px 4px rgba(159, 155, 155, 0.2);
 }
