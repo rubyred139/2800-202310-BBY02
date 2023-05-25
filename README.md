@@ -1,15 +1,15 @@
 ## AdvenTour 
 Hello! :wave: Welcome to AdvenTour, an exciting travel web-app that allows you to uncover hidden travel destinations through an interactive experience known as Country Roulette!  
 
-<div style="text-align: center;">
+<div style="align: center;">
   <img src="public/logo.png" alt="AdvenTour logo" style="width: 600px;">
 </div>
 
-<div style="text-align: center;">
+<div style="align: center;">
 <a href="http://txirvpjzag.eu09.qoddiapp.com">Visit our Site!</a> 
 </div>
 
-### Contributors
+### 👩‍💻 Contributors 👨‍💻 
 
 | Ruby Chen  | Gaganjit Heer| Victor Fung | Angela Yu |
 ---| --- | --- | --- |
