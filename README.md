@@ -16,6 +16,7 @@ Install:
 -joi
 -ejs
 -nodemailer
+-node-cron
 
 Credits:
 CSS Framework- Bootstrap 5.3

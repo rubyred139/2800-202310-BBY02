@@ -17,7 +17,8 @@ const openai = new OpenAIApi(
 const express = require("express");
 const session = require("express-session");
 const MongoStore = require("connect-mongo");
-
+const cron = require("node-cron") // schedule to send email after user's trip ends
+const nodemailer = require("nodemailer"); // sedn email
 const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const path = require('path');
@@ -79,6 +80,73 @@ function sessionValidation(req, res, next) {
     res.redirect("/");
   }
 }
+
+// Notification
+function sendEmail(username, useremail, country, date) {
+  // Create a transporter object with your SMTP configuration
+  const transporter = nodemailer.createTransport({
+    host: "smtp.zoho.com",
+    port: 587,
+    secure: false,
+    auth: {
+      user: process.env.ZOHO_USER,
+      pass: process.env.ZOHO_PSWD
+    }
+  });
+
+  // Define the email options
+  const mailOptions = {
+    from: process.env.ZOHO_USER,
+    to: useremail,
+    subject: `Share your review of ${country} on AdvenTour`,
+    html: `
+    <p>Hi ${username},</p>
+
+    <p>I hope you had a wonderful trip in ${country}! Share your experiences with us now! </p>
+    <p><a href="http://txirvpjzag.eu09.qoddiapp.com/reviewForm">Click here to add your review</a></p>
+    
+    <p>AdvenTour</p>
+    <img src="/logo.png">
+    `
+  };
+
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.log("Error:", error);
+    } else {
+      console.log("Email sent:", info.response);
+    }
+  });
+}
+
+// schedule the task everyday at 6am to check if any user's trip ends
+cron.schedule('0 6 * * *', async () => {
+  const users = await userCollection.find().toArray();
+  // Iterate through the users and send emails
+  users.forEach(async (user) => {
+    // Check if user has marked countries
+    if (user.markedCountry && user.markedCountry.length > 0) {
+      user.markedCountry.forEach((country) => {
+        const username = user.username;
+        const useremail = user.email
+        countryName = country.countryName
+
+        const endDate = country.endDate
+        const date = new Date(endDate)
+        const month = date.getMonth() + 1
+        const day = date.getDate();
+        const cronDate = "0 6 " + day + " " + month;
+        console.log(countryName)
+        console.log(username)
+        console.log(useremail)
+        console.log(username)
+        console.log(cronDate)
+        sendEmail(username, useremail, countryName, cronDate);
+      })
+    }
+  })
+  console.log('Emails sent to all users.');  
+})
 
 app.get("/", (req, res) => {
   res.render("landing");
@@ -485,50 +553,11 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
   }
 });
 
-// Notification
-function sendEmail(username, useremail, country, date) {
-  // Create a transporter object with your SMTP configuration
-  const transporter = nodemailer.createTransport({
-    host: "smtp.zoho.com",
-    port: 587,
-    secure: false,
-    auth: {
-      user: process.env.ZOHO_USER,
-      pass: process.env.ZOHO_PSWD
-    }
-  });
-
-  // Define the email options
-  const mailOptions = {
-    from: process.env.ZOHO_USER,
-    to: useremail,
-    subject: `Share your review of ${country} on AdvenTour`,
-    html: `
-    <p>Hi ${username},</p>
-
-    <p>I hope you had a wonderful trip in ${country}! Share your experiences with us now! </p>
-    <p><a href="http://txirvpjzag.eu09.qoddiapp.com/reviewForm">Click here to add your review</a></p>
-    
-    <p>AdvenTour</p>
-    <img src="/logo.png">
-    `
-  };
-
-  // Send the email
-  transporter.sendMail(mailOptions, (error, info) => {
-    if (error) {
-      console.log("Error:", error);
-    } else {
-      console.log("Email sent:", info.response);
-    }
-  });
-}
-
 app.post("/markCountry", async (req, res) => {
   try {
     const userId = req.session._id;
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
-    const markedCountries = result.markedCountry || [];
+    const markedCountries = result.markedCountry || {};
 
     const markedCountry = req.body.mark;
     const endDate = req.body.endDate;
@@ -567,30 +596,6 @@ app.post("/markCountry", async (req, res) => {
         }
       );
       res.redirect("/bookmarks");
-    }
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-// Send out emails
-app.get("/notification", async (req, res) => {
-  try {
-    const userEmail = req.session.user.email;
-    const userName = req.session.user.username;
-    const userId = req.session._id;
-    const result = await userCollection.findOne({ _id: new ObjectId(userId) });
-    const emailNotification = result.emailNotifications;
-    const markedCountries = result.markedCountry;
-
-    // If user allows for email notification, loop through the array of the mark countries and send email
-    if (emailNotification) {
-      for (let i = 0; i < markedCountries.length; i++) {
-        const countryName = markedCountries[i].countryName;
-        console.log(countryName);
-        const date = markedCountries[i].endDate;
-        sendEmail(userName, userEmail, countryName, date);
-      }
     }
   } catch (error) {
     console.error(error);
@@ -649,7 +654,7 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
     const result = await userCollection.findOne({ _id: new ObjectId(userId) });
 
     const bookmarkedCountries = result.savedCountries || [];
-
+    const markedCountries = result.markCountry || [];
     const gachaCountry = result.currentCountry;
 
     var isBookmarked;
@@ -658,8 +663,20 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
       // Removes bookmark
       await userCollection.updateOne(
         { _id: new ObjectId(userId) },
-        { $pull: { savedCountries: gachaCountry } }
+        {
+          $pull: { savedCountries: gachaCountry }
+        }
       );
+      // if(markedCountries.includes(gachaCountry)) {
+        // await userCollection.findOne({ _id: new ObjectId(userId), markCountry: {countryName: "Latvia"} })
+        // Removes the markedCountries
+      //   await userCollection.updateOne(
+      //     { _id: new ObjectId(userId) },
+      //     {
+      //       $pull: { markedCountry: { countryName: gachaCountry } }
+      //     }
+      //   );
+      // }      
       isBookmarked = false;
     } else {
       // Adds bookmark
