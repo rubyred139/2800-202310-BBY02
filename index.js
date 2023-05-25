@@ -678,17 +678,7 @@ app.post("/bookmark", sessionValidation, async (req, res) => {
         {
           $pull: { savedCountries: gachaCountry }
         }
-      );
-      // if(markedCountries.includes(gachaCountry)) {
-        // await userCollection.findOne({ _id: new ObjectId(userId), markCountry: {countryName: "Latvia"} })
-        // Removes the markedCountries
-      //   await userCollection.updateOne(
-      //     { _id: new ObjectId(userId) },
-      //     {
-      //       $pull: { markedCountry: { countryName: gachaCountry } }
-      //     }
-      //   );
-      // }      
+      );   
       isBookmarked = false;
     } else {
       // Adds bookmark
@@ -787,9 +777,10 @@ app.post("/updateProfile", async (req, res) => {
   res.redirect("/profile");
 });
 
-async function getQuizAnswers(username) {
+async function getQuizAnswers(userId) {
+  console.log(userId)
   const result = await userCollection
-    .find({ username: username })
+    .find({_id: new ObjectId(userId) })
     .project({ quizAnswers: 1 })
     .toArray();
   console.log(result);
@@ -873,7 +864,7 @@ app.get("/gachaLoading", sessionValidation, (req, res) => {
 });
 app.get("/gacha", sessionValidation, async (req, res) => {
   const name = req.session.username;
-  const quizAnswers = await getQuizAnswers(req.session.username);
+  const quizAnswers = await getQuizAnswers(req.session._id);
 
   // Check if the user has completed the quiz
   if (!quizAnswers || quizAnswers.length === 0) {
