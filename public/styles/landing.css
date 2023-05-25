@@ -24,8 +24,8 @@ body {
 }
 
 .marketing .col-lg-4 p {
-  margin-right: .75rem;
-  margin-left: .75rem;
+  margin-right: 0.75rem;
+  margin-left: 0.75rem;
 }
 
 .featurette-divider {
@@ -33,7 +33,7 @@ body {
 }
 
 .featurette-heading {
-  letter-spacing: -.05rem;
+  letter-spacing: -0.05rem;
 }
 
 @media (min-width: 40em) {
@@ -55,11 +55,7 @@ body {
 }
 
 .material-symbols-outlined {
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 400,
-    'GRAD' 0,
-    'opsz' 48
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
 @media (min-width: 992px) {
@@ -84,9 +80,8 @@ body {
   background-color: #2979f0;
 }
 
-
 @media (max-width: 767px) {
   #myCarousel .carousel-item {
-      max-height: 400px; 
+    max-height: 400px;
   }
 }

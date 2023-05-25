@@ -39,23 +39,18 @@ body {
 }
 
 .material-symbols-outlined {
-  font-variation-settings:
-  
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48
+  font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 48;
 }
 
 a {
-    position: absolute;
-    top: 2%;
-    left: 2%;
-    margin: 10px;
-    color: black;
-    text-decoration: none;
-  }
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  margin: 10px;
+  color: black;
+  text-decoration: none;
+}
 
- a:hover {
-    color:rgb(52, 148, 204);
-  }
+a:hover {
+  color: rgb(52, 148, 204);
+}

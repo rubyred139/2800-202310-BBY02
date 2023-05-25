@@ -1,9 +1,5 @@
 .material-symbols-outlined {
-  font-variation-settings:
-    'FILL' 0,
-    'wght' 300,
-    'GRAD' -25,
-    'opsz' 40
+  font-variation-settings: "FILL" 0, "wght" 300, "GRAD" -25, "opsz" 40;
 }
 
 a:link {
@@ -34,7 +30,7 @@ a:visited {
 
 .label {
   margin-top: -8px;
-  font-size: 9pt
+  font-size: 9pt;
 }
 
 @media (min-width: 992px) {
