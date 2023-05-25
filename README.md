@@ -1,13 +1,20 @@
 ## AdvenTour 
 Hello! :wave: Welcome to AdvenTour, an exciting travel web-app that allows you to uncover hidden travel destinations through an interactive experience known as Country Roulette!  
 
-<img src="public/logo.png" alt="AdvenTour logo" style="width: 600px;">
+<div style="text-align: center;">
+  <img src="public/logo.png" alt="AdvenTour logo" style="width: 600px;">
+</div>
 
-[Visit AdvenTour!](http://txirvpjzag.eu09.qoddiapp.com/)
+<div style="text-align: center;">
+<a href="http://txirvpjzag.eu09.qoddiapp.com">Visit our Site!</a> 
+</div>
 
-|                     Developers                      |
-| Ruby Chen | Gaganjit Heer | Victor Fung | Angela Yu |
-   
+### Contributors
+
+| Ruby Chen  | Gaganjit Heer| Victor Fung | Angela Yu |
+---| --- | --- | --- |
+
+
 ## Project Description
 ✈ The goal of AdvenTour is to help travelers discover unique and authentic experiences in places experiencing under-tourism using AI. 
 
@@ -43,10 +50,6 @@ Top Level Folders and their Subfolders:
 
 ## Running our Project 
 ### Prerequisites
-- npm 
-    ```
-    npm install 
-    ```
 - MongoDB Atlas
     1. [create a MongoDB account](https://www.mongodb.com/)  
     2. Install MongoDB 
@@ -62,28 +65,10 @@ Top Level Folders and their Subfolders:
 2. Obtain API keys from:
 - [OpenAI](https://platform.openai.com/account/api-keys)
 - [Unsplash](https://unsplash.com/developers)
-3. Install
-- dotenv   
-- express 
-- express-session
-- connect-mongo
-- connect-mongodb-session
-- bcrypt
-- joi
-- ejs
-- OpenAI   
-- nodemailer     
+3. Install 
+- npm packages
     ```
-    npm i dotenv
-    npm i express
-    npm i express-session
-    npm i connect-mongo
-    npm i connect-mongodb-session
-    npm i bcrypt
-    npm i joi
-    npm i ejs
-    npm i openai
-    npm i nodemailer
+    npm install 
     ```
 4. Create a ```.env``` file and set up your environment variables 
    - [Generate GUIDs here!](https://guidgenerator.com/online-guid-generator.aspx)
