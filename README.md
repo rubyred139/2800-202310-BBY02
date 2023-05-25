@@ -120,6 +120,7 @@ Top Level Folders and their Subfolders:
 -  Food icon [Flaticon created by Freepik](https://www.flaticon.com/free-icons/restaurant)
 -  Die icon [Flaticon created by Luvdat](https://www.flaticon.com/free-icons/dices)
 -  Languages icon [Flaticon created by Freepik](https://www.flaticon.com/free-icons/language) 
+-  README.md [Emojis](https://www.webfx.com/tools/emoji-cheat-sheet/)
 
 ### Images 
 - [Unsplash API](https://unsplash.com/developers)
@@ -143,7 +144,7 @@ Top Level Folders and their Subfolders:
 - CSS3 Loading Spinner [By Ivan VIllamil](https://codepen.io/ivillamil/pen/xxaEdB)
  
 ## 🤖 Use of AI Services 
-We used two AI services in our app.
+We used AI to generate recommendations in our app.
 ### OpenAI API 
 1. Retrieve the following 5 user preferences from database:  
    - reason for traveling
@@ -156,8 +157,8 @@ We used two AI services in our app.
    - location of the country
    - one sentence description of the country 
 3. Responses are cross-checked to the country database and validated before they are shown 
-- **see Dataset section below for more information on how we filtered out the dataset*
-4. Response is displayed on the gacha page and used by Unsplash API to generate the images. **see below*
+  **see Dataset section below for more information on how we filtered out the dataset*
+4. Response is displayed on the gacha page and used by Unsplash API to generate the images. 
 5. Prompt GPT using preferences and the country they selected to generate 6 interesting facts about the country and return the response in the the desired JSON response format.
    - an interesting fact about the country
    - a fact about an interesting business in the country 
@@ -165,12 +166,7 @@ We used two AI services in our app.
    - a fun activity to do in the country
    - a fact about the national dish eaten in the country
    - a fact about the language spoken in the country
-2. Response is displayed on the main page 
-
-### Unsplash API (image generator)
-1. Retrieve selected country from database
-2. A request is made to the Unsplash API for photos related to the country 
-3. The image URL is fetched and displayed on the page
+6. Response is displayed on the main page 
 
 ### Limitations
  
@@ -180,7 +176,7 @@ We used two AI services in our app.
 - preference quiz questions were changed to optimize the prompts
 - additional variables ie. `continent` of the preffered country was added to enhance accuracy
 
-<b> Rate Limit </b>: Only a maximum of 3 requests to the API can be made per minute. Exceeding this limit can throttle the requests. In addition, if a high volume of requests are made to the API by other users, that can slow down our response times. 
+<b> Rate Limit</b>: Only a maximum of 3 requests to the API can be made per minute. Exceeding this limit can throttle the requests. In addition, if a high volume of requests are made to the API by other users, that can slow down our response times. 
 - we added a loading spinner to let the user know the response is generating
 
 ## 📊 DataSet   
