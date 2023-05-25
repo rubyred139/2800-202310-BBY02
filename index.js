@@ -231,25 +231,25 @@ app.post("/signupSubmit", async (req, res) => {
     const errorMessage = validationResult.error.message;
     // Look at terminal to see error message
     console.log(validationResult.error);
-
+    //error message for invalid username
     if (errorMessage.includes("username")) {
       const errorMessage = "Name is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
-
+    //error message for invalid email
     if (errorMessage.includes("email")) {
       const errorMessage = "Email is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
-
+    //error message for invalid password
     if (errorMessage.includes("password")) {
       const errorMessage = "Password is required.";
       res.render("signup", { errorMessage: errorMessage });
       return;
     }
-
+    //erorr message for invalid security answer
     if (errorMessage.includes("securityAnswer")) {
       const errorMessage = "Security answer is required.";
       res.render("signup", { errorMessage: errorMessage });
@@ -349,6 +349,7 @@ app.post("/loggingin", async (req, res) => {
   }
 });
 
+//change password page
 app.get("/changePassword", (req, res) => {
   res.render("changePassword", { errorMessage: "" });
 });
