@@ -14,7 +14,7 @@
     <div class="form-group mb-4">
       <div class="card bg">
         <h4 class="card-header text-center bg-success-subtle">
-          What is your reason for travelling?
+          What is your reason for travelling?<span class="text-danger">*</span>
         </h4>
         <div class="card-body">
           <button
@@ -57,7 +57,7 @@
     <div class="form-group mb-4">
       <div class="card">
         <h4 class="card-header text-center bg-success-subtle">
-          What is your preferred destination type?
+          What is your preferred destination type?<span class="text-danger">*</span>
         </h4>
         <div class="card-body">
           <button
@@ -100,11 +100,11 @@
     <div class="form-group mb-4">
       <div class="card">
         <h4 class="card-header text-center bg-success-subtle">
-          What month do you want to go travelling?
+          What month do you want to go travelling?<span class="text-danger">*</span>
         </h4>
         <select
           class="form-select custom-select-md"
-          size="4"
+          size="6"
           id="quizQ3"
           multiple="multiple"
           name="question3"
@@ -130,7 +130,7 @@
     <div class="form-group mb-4">
       <div class="card bg">
         <h4 class="card-header text-center bg-success-subtle">
-          What activity do you mainly want to do at your destination?
+          What activity do you mainly want to do at your destination?<span class="text-danger">*</span>
         </h4>
         <div class="card-body">
           <button
@@ -173,7 +173,7 @@
     <div class="form-group mb-4">
       <div class="card">
         <h4 class="card-header text-center bg-success-subtle">
-          Which continent do you want to travel to?
+          Which continent do you want to travel to?<span class="text-danger">*</span>
         </h4>
         <div class="card-body">
           <button
@@ -230,6 +230,7 @@
     </div>
 
     <input type="hidden" name="userId" value="<%= userId %>" />
+    <button id="reset-btn" type="button" class="btn btn-outline-secondary mx-1 mb-5">Clear</button>
     <button type="submit" class="btn btn-outline-secondary mb-5">Submit</button>
   </form>
 </div>

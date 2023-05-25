@@ -122,7 +122,7 @@
         Personal Information
       </legend>
       <div class="form-group" style="margin-bottom: 10px">
-        <label for="nameInput">Name</label>
+        <label for="nameInput">Name<span id="nameAsterisk" class="text-danger" style="display: none">*</span></label></label>
         <input
           type="text"
           id="nameInput"
@@ -132,7 +132,7 @@
         />
       </div>
       <div class="form-group" style="margin-bottom: 10px">
-        <label for="emailInput">Email</label>
+        <label for="emailInput">Email<span id="emailAsterisk" class="text-danger" style="display: none">*</span></label>
         <input
           type="email"
           id="emailInput"
@@ -149,7 +149,7 @@
         <span class="material-symbols-outlined">lock</span>Password and Security
       </h4>
       <div class="form-group" style="margin-bottom: 10px">
-        <label for="passwordInput">Password</label>
+        <label for="passwordInput">Password<span id="passwordAsterisk" class="text-danger" style="display: none">*</span></label>
         <input
           type="password"
           id="passwordInput"
@@ -160,7 +160,7 @@
       </div>
       <div class="form-group" style="margin-bottom: 10px">
         <label for="securityAnswerInput"
-          >Security Question: What is your favourite animal?</label
+          >Security Question: What is your favourite animal?<span id="securityAsterisk" class="text-danger" style="display: none">*</span></label
         >
         <input
           type="text"
@@ -282,6 +282,10 @@
     document.getElementById("personalInfoFields").disabled = false;
     document.getElementById("saveCancelButtons").style.display = "block";
     document.getElementById("editProfBtn").style.display = "none";
+    document.getElementById("nameAsterisk").style.display = "inline";
+    document.getElementById("emailAsterisk").style.display = "inline";
+    document.getElementById("passwordAsterisk").style.display = "inline";
+    document.getElementById("securityAsterisk").style.display = "inline";
   }
 
   function cancelEdit() {
@@ -292,6 +296,10 @@
     document.getElementById("securityAnswerInput").value =
       "<%= user.securityAnswer %>";
     document.getElementById("passwordInput").value = "";
+    document.getElementById("emailAsterisk").style.display = "none";
+    document.getElementById("nameAsterisk").style.display = "none";
+    document.getElementById("passwordAsterisk").style.display = "none";
+    document.getElementById("securityAsterisk").style.display = "none";
   }
 
   const editProfileBtn = document.querySelector(".edit-profile-btn");
