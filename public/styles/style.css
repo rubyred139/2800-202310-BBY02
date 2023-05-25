@@ -171,3 +171,9 @@ body {
   color: white;
   background-color: #2979f0;
 }
+
+/*error message box highlights*/
+.highlighted {
+  border-color: #ed414172; 
+  box-shadow: 0 2px 4px rgba(159, 155, 155, 0.2);
+}
