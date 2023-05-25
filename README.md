@@ -1,15 +1,21 @@
-## AdvenTour
-Developed by Ruby Chen, Gagan Heer, Victor Fung, Angela Yu. 
+## :earth_americas: AdvenTour 
+Hello! :wave:
 
-## Project Description
+:woman_technologist: Developed by Ruby Chen, Gaganjit Heer, Victor Fung, Angela Yu
+
+##  :airplane: Project Description
 The goal of AdvenTour is to help travelers discover unique and authentic experiences in places experiencing under-tourism using AI. 
 
-## Technologies Used
-Frontend: Bootstrap 5.3 
+## :desktop_computer: Technologies Used
+Frontend: Bootstrap 5.3, CSS
 
-Backend: Node, EJS, JavaScript, CSS
+Backend: Node, EJS, JavaScript
 
-Database: https://www.kaggle.com/datasets/abdulhamitcelik/international-tourism-receipts 
+Database: MongoDB
+
+Dataset: https://www.kaggle.com/datasets/abdulhamitcelik/international-tourism-receipts 
+
+API: OpenAI API GPT-3.5, Unsplash API 
 
 ## Table of Contents
 
@@ -48,7 +54,7 @@ Landing Page images-
 2. Krong Siem Reap, Cambodia Photo by Lukas Kloeppel: https://www.pexels.com/photo/silhouette-of-trees-near-body-of-water-2416576/
 3. Havana, Cuba Photo by Sophia: https://www.pexels.com/photo/colorful-historic-buildings-in-city-square-5211643/
 Featurette gifs made using Canva 
-
+ 
 ## Use of AI Services 
 AI and API Usage:
 OpenAI 
