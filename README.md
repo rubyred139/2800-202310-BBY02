@@ -106,7 +106,7 @@ Top Level Folders and their Subfolders:
 4. 💭 <b>Write your own review of the country or read other's reviews </b>
 - Share your own travel experiences and assist others in finding their ideal destination that they may have never considered before. 
  
-## :memo: Credits, References, Licenses
+## :memo: Credits, References
 ### CSS Framework
 - [Bootstrap v5.3.0-alpha3](https://getbootstrap.com/)
 
