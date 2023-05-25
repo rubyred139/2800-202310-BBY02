@@ -821,7 +821,7 @@ async function countryGenerator(quizAnswers) {
   Return response in the following parsable JSON format only,
     [{
         name: country that meets the above mentioned criteria,
-        location: the location of the recommended country,,
+        location: the location of the recommended country,
         descr: one sentence description of the courtry
     }]    
   `;
@@ -830,8 +830,14 @@ async function countryGenerator(quizAnswers) {
     model: "gpt-3.5-turbo",
     messages: [{ role: "user", content: prompt }],
   });
-  const parsedResponse = JSON.parse(response.data.choices[0].message.content);
-  return parsedResponse;
+  try {
+    const parsedResponse = JSON.parse(response.data.choices[0].message.content);
+    return parsedResponse;
+  } catch (error){
+    console.log(error)
+    res.render("404")
+  }
+
 }
 
 // Double confirm that the countries chagGPT provided is under-travelled by cross-checking the under-travelled countries collection in the database
