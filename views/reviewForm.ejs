@@ -1,48 +1,75 @@
 <%- include("templates/header") %>
+<a class="back" href="/reviews" style="display: flex">
+  <p class="material-symbols-outlined">arrow_back_ios</p>
+  <p>Back</p>
 <a class="back" href="/reviews" style="display: flex;">
   <p class="material-symbols-outlined">
     arrow_back_ios
-    </span>
-    <p>Back</p>
+  </p>
+  <p>Back</p>
 </a>
 <div class="container py-5 mt-1 mb-5">
-  <br>
+  <br />
   <h1>Tell Us About Your Trip</h1>
-  <br>
+  <br />
   <form method="post" action="/reviewForm">
     <div class="form-group">
       <label for="reviewTitle">Review Title</label>
-      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" required>
-      <br>
+      <input
+        type="text"
+        class="form-control"
+        id="reviewTitle"
+        name="reviewTitle"
+        maxlength="50"
+        required
+      />
+      <br />
     </div>
     <div class="form-group">
       <label for="countryName">Country Name</label>
-      <input type="text" class="form-control" id="countryName" name="countryName" required>
-      <br>
+      <input
+        type="text"
+        class="form-control"
+        id="countryName"
+        name="countryName"
+        value="<%= country %>"
+        maxlength="50"
+        pattern="[a-zA-Z0-9\s]+"
+        required
+      />
+      <br />
     </div>
     <div class="form-group">
       <label for="visitTime">When did you visit?</label>
       <select class="form-select" id="visitTime" name="visitTime" required>
+        <option disabled selected>Select</option>
         <option>Spring</option>
         <option>Summer</option>
         <option>Fall</option>
         <option>Winter</option>
       </select>
-      <br>
+      <br />
     </div>
     <div class="form-group">
       <label for="tripLength">How long was your trip?</label>
       <select class="form-select" id="tripLength" name="tripLength" required>
+        <option disabled selected>Select</option>
         <option>1-3 days</option>
         <option>4-7 days</option>
         <option>8-14 days</option>
         <option>More than 14 days</option>
       </select>
-      <br>
+      <br />
     </div>
     <div class="form-group">
       <label for="vacationType">What type of vacation did you have?</label>
-      <select class="form-select" id="vacationType" name="vacationType" required>
+      <select
+        class="form-select"
+        id="vacationType"
+        name="vacationType"
+        required
+      >
+        <option disabled selected>Select</option>
         <option>Relaxing getaway</option>
         <option>Adventure trip</option>
         <option>Cultural exploration</option>
@@ -51,17 +78,29 @@
         <option>Solo trip</option>
         <option>Business travel</option>
       </select>
-      <br>
+      <br />
     </div>
     <div class="form-group">
       <label for="experience">Tell us about your experience</label>
-      <textarea class="form-control" id="experience" name="experience" rows="3" required></textarea>
+      <textarea
+        class="form-control"
+        id="experience"
+        name="experience"
+        rows="3"
+        maxlength="800"
+        required
+      ></textarea>
     </div>
-    <br>
+    <br />
     <div class="d-flex justify-content-end mb-5">
-      <input type="hidden" name="userId" value="<%= userId %>">
-      <input type="hidden" name="name" value="<%= name %>">
-      <button type="submit" class="btn btn-outline-secondary mb-4">Submit</button>
+      <input type="hidden" name="userId" value="<%= userId %>" />
+      <input type="hidden" name="name" value="<%= name %>" />
+      <button type="submit" class="btn btn-outline-secondary mb-4">
+        Submit
+      </button>
+      <button type="reset" class="btn btn-outline-secondary mb-4 mx-1">
+        Reset
+      </button>
     </div>
   </form>
 </div>

@@ -40,7 +40,8 @@ Logo Creation- made using Canva
 Easter Egg image - made using Canva
 Sound effects - mashup https://www.youtube.com/watch?v=aqCxlxclyzo&pp=ygUKZHVjayBzb3VuZA%3D%3D and https://www.youtube.com/watch?v=Uj93hicGDNc&t=116s
 Loading wheel - https://codepen.io/ivillamil/pen/xxaEdB
-
+Profile page images - made by nawazwazwaz on VectorStock - https://www.vectorstock.com/royalty-free-vectors/vectors-by_nawazwazwaz
+404 page image - Image by pikisuperstar on Freepik - https://www.freepik.com/free-vector/gradient-summer-background_13758040.htm#query=vacation%20background&position=43&from_view=search&track=ais#position=43&query=vacation%20background
 
 Landing Page images-
 1. Sibenik, Croatia Photo by Assedrani Official  from Pexels: https://www.pexels.com/photo/aerial-shot-of-sibenik-croatia-13385470/

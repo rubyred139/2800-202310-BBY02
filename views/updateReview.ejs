@@ -2,7 +2,7 @@
 <a class="back" href="/reviews" style="display: flex;">
   <p class="material-symbols-outlined">
     arrow_back_ios
-    </span>
+  </p>
     <p>Back</p>
 </a>
 <div class="container py-5 mt-1 mb-4">
@@ -10,11 +10,11 @@
   <form method="POST" action="/updateReview?id=<%= review._id %>">
     <div class="mb-3">
       <label for="reviewTitle" class="form-label">Review Title</label>
-      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="<%= review.title %>" required>
+      <input type="text" class="form-control" id="reviewTitle" name="reviewTitle" value="<%= review.title %>" maxlength="50" required>
     </div>
     <div class="mb-3">
       <label for="countryName" class="form-label">Country</label>
-      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= review.country %>" required>
+      <input type="text" class="form-control" id="countryName" name="countryName" value="<%= review.country %>" maxlength="50" pattern="[a-zA-Z0-9\s]+" required >
     </div>
     <div class="mb-3">
       <label for="visitTime" class="form-label">Season</label>
@@ -55,6 +55,7 @@
     <input type="hidden" name="name" value="<%= review.userName %>">
     <input type="hidden" name="userId" value="<%= review.userId %>">
     <button type="submit" class="btn btn-secondary text-light">Update Review</button>
+    <button type="reset" class="btn btn-outline-secondary mx-1">Reset</button>
   </form>
 </div>
 

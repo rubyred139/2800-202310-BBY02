@@ -20,42 +20,23 @@ body {
   z-index: 2;
 }
 
-.form-signin input[type="email"] {
-  margin-bottom: -1px;
-  border-bottom-right-radius: 0;
-  border-bottom-left-radius: 0;
-}
-
-.form-signin input[type="password"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
-.form-signin input[type="securityQuestion"] {
-  margin-bottom: 10px;
-  border-top-left-radius: 0;
-  border-top-right-radius: 0;
-}
-
 .material-symbols-outlined {
   font-variation-settings:
-  
-  'FILL' 0,
-  'wght' 400,
-  'GRAD' 0,
-  'opsz' 48
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 48
 }
 
 a {
-    position: absolute;
-    top: 2%;
-    left: 2%;
-    margin: 10px;
-    color: black;
-    text-decoration: none;
-  }
+  position: absolute;
+  top: 2%;
+  left: 2%;
+  margin: 10px;
+  color: black;
+  text-decoration: none;
+}
 
- a:hover {
-    color:rgb(52, 148, 204);
-  }
+a:hover {
+  color: rgb(52, 148, 204);
+}
