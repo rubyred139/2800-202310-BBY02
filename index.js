@@ -1,13 +1,7 @@
 require("./utils.js");
-const fs = require("fs");
 require("dotenv").config();
 
 const { Configuration, OpenAIApi } = require("openai");
-// backup openai API key
-// const config = new Configuration({
-//   apiKey: process.env.OPENAI_API_KEY,
-// });
-
 const openai = new OpenAIApi(
   new Configuration({
     apiKey: process.env.OPENAI_API_KEY,
@@ -97,7 +91,6 @@ function sendEmail(username, useremail, country, date) {
     }
   });
 
-
   // Define the email options
   const mailOptions = {
     from: process.env.ZOHO_USER,
@@ -133,7 +126,7 @@ function sendEmail(username, useremail, country, date) {
 }
 
 // schedule the task everyday at 6am to check if any user's trip ends
-cron.schedule('45 10 * * *', async () => {
+cron.schedule('0 6 * * *', async () => {
   const users = await userCollection.find().toArray();
   // Iterate through the users and send emails
   users.forEach(async (user) => {
@@ -161,10 +154,12 @@ cron.schedule('45 10 * * *', async () => {
   console.log('Emails sent to all users.');  
 })
 
+// Landing page
 app.get("/", (req, res) => {
   res.render("landing");
 });
 
+// Easter eggs
 app.get("/easterEgg", (req, res) => {
   res.render("easterEgg");
 });
@@ -199,6 +194,7 @@ app.get("/nosql-injection", async (req, res) => {
   res.send(`<h1>Hello ${username}</h1>`);
 });
 
+// Sign up page
 app.get("/signup", (req, res) => {
   res.render("signup", { errorMessage: "" });
 });
@@ -298,6 +294,7 @@ app.post("/signupSubmit", async (req, res) => {
   res.redirect("/quizWelcome");
 });
 
+// Log in page
 app.get("/login", (req, res) => {
   res.render("login", { errorMessage: "", successMessage: "" });
 });
@@ -409,6 +406,7 @@ app.post("/resetPassword", async (req, res) => {
   }
 });
 
+// Quiz welcome page
 app.get("/quizWelcome", (req, res) => {
   res.render("quizWelcome", { name: req.session.username });
 });
@@ -583,6 +581,8 @@ app.post("/main/:countryName", sessionValidation, async (req, res) => {
   }
 });
 
+// Users are allow to mark the country for next trip
+// and save the enddate of the trip into database
 app.post("/markCountry", async (req, res) => {
   try {
     const userId = req.session._id;
@@ -795,6 +795,7 @@ app.post("/updateProfile", async (req, res) => {
   res.redirect("/profile");
 });
 
+// Get the answers from quiz for gacha page
 async function getQuizAnswers(userId) {
   console.log(userId)
   const result = await userCollection
@@ -806,6 +807,8 @@ async function getQuizAnswers(userId) {
   return quizAnswers;
 }
 
+// Country generator function for gacha page
+// it picks up the quiz answers and form the prompt and feed to openai API
 async function countryGenerator(quizAnswers) {
   q1answer = quizAnswers.question1.toLowerCase();
   q2answer = quizAnswers.question2.toLowerCase();
@@ -860,6 +863,7 @@ async function checkCountries(countries) {
   return confirmedCountries;
 }
 
+// Generate images for the countries generated from openai API
 async function getImage(countries) {
   const imageURLs = [];
   for (let i = 0; i < countries.length; i++) {
@@ -877,9 +881,12 @@ async function getImage(countries) {
   return imageURLs;
 }
 
+// Loading page 
 app.get("/gachaLoading", sessionValidation, (req, res) => {
   res.render("gachaLoading");
 });
+
+// Gacha page
 app.get("/gacha", sessionValidation, async (req, res) => {
   const name = req.session.username;
   const quizAnswers = await getQuizAnswers(req.session._id);
@@ -913,6 +920,7 @@ app.get("/completeQuiz", sessionValidation, (req, res) => {
   res.render("completeQuiz");
 });
 
+// Review page
 app.get("/reviews", async (req, res) => {
   try {
     // Retrieve all reviews from the reviews collection
@@ -1079,6 +1087,7 @@ app.get("/searchReviews", async (req, res) => {
 
 app.use(express.static(__dirname + "/public"));
 
+// 404 page
 app.get("*", (req, res) => {
   res.status(404);
   res.render("404");
