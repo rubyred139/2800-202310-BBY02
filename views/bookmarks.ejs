@@ -11,7 +11,10 @@
           <h5 class="card-title"><%= savedCountries[i] %></h5>
           <div class="btn-group">
             <form action="/main/<%= savedCountries[i] %>" method="post">
-              <button type="submit" class="btn btn-sm btn-outline-secondary view">
+              <button
+                type="submit"
+                class="btn btn-sm btn-outline-secondary view"
+              >
                 View
               </button>
             </form>
@@ -21,7 +24,10 @@
                 name="remove"
                 value="<%= savedCountries[i] %>"
               />
-              <button type="submit" class="btn btn-sm btn-outline-secondary remove">
+              <button
+                type="submit"
+                class="btn btn-sm btn-outline-secondary remove"
+              >
                 Remove
               </button>
             </form>
@@ -42,7 +48,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h4 >Mark <%= savedCountries[i] %> for your next trip?</h4>
+            <h4>Mark <%= savedCountries[i] %> for your next trip?</h4>
             <!-- <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button> -->
           </div>
           <div class="modal-body">
@@ -57,9 +63,7 @@
                 </div>
                 <div class="row">
                   <div class="col-auto">
-                    <label for="date" class="col-form-label"
-                      >Start date of your trip :</label
-                    >
+                    <p>Start date of your trip:</p>
                   </div>
                   <div class="col-auto">
                     <input
@@ -73,9 +77,7 @@
                 </div>
                 <div class="row">
                   <div class="col-auto">
-                    <label for="date" class="col-form-label"
-                      >End date of your trip :</label
-                    >
+                    <p>End date of your trip:</p>
                   </div>
                   <div class="col-auto">
                     <input
@@ -117,6 +119,7 @@
     <% } %>
   </div>
 </div>
+<br /><br />
 
 <script>
   // Get the modal element
@@ -132,13 +135,13 @@
 
     // Get the card title and set it as the modal title
     const cardTitle = card.querySelector(".card-title").textContent;
-    console.log(cardTitle)
+    console.log(cardTitle);
     const modalTitle = modal.querySelector(".modal-header");
     modalTitle.textContent = "Mark " + cardTitle + " for your next trip?";
 
     // Get the hidden input value and set it in the modal form
     const hiddenInputValue = card.querySelector('input[name="mark"]').value;
-    console.log(hiddenInputValue)
+    console.log(hiddenInputValue);
     const modalFormInput = modal.querySelector('input[name="mark"]');
     modalFormInput.value = hiddenInputValue;
     $(modal).modal("show");
@@ -146,7 +149,6 @@
   // Event listener for opening the modal
   openModalBtn.forEach(function (button) {
     button.addEventListener("click", openModal);
-  })
-
+  });
 </script>
 <%- include("templates/footer") %>
