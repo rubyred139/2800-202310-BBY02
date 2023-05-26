@@ -85,11 +85,13 @@ Top Level Folders and their Subfolders:
     OPEN_AI_KEY = 'YOUR OPENAI API KEY'
     UNSPLASH_ACCESSKEY = 'YOUR UNSPLASH API KEY'
     ```
-5. Run the app!  
+5. Import under_travelled_countries.csv into the MongoDB database
+
+6. Run the app!  
    ```
    node index.js
    ```
-6. [Link to our testing plan](https://docs.google.com/spreadsheets/d/1MuZ_iibIJ-BL0PQpIT_xWDa18_nufwkgyEI1oplnaqI/edit#gid=394496370) 
+7. [Link to our testing plan](https://docs.google.com/spreadsheets/d/1MuZ_iibIJ-BL0PQpIT_xWDa18_nufwkgyEI1oplnaqI/edit#gid=394496370) 
    
    We have completed GUI Usability testing on the minimum to make a good web page, but we are always open to any suggestions that can make our app better! Bug fixes are also greatly appreciated. See our Contributions section for more information. :crossed_fingers: 
 
