@@ -20,7 +20,7 @@
             </form>
             <form action="/removeBookmark" method="post">
               <input type="hidden" name="remove" value="<%= savedCountries[i] %>" />
-              <button type="button" class="btn btn-sm btn-outline-secondary remove" data-bs-toggle="modal" data-bs-target="#removeBookmarkModal<%= i-1 %>">
+              <button type="button" class="btn btn-sm btn-outline-secondary remove" data-bs-toggle="modal" data-bs-target="#removeBookmarkModal<%= i %>">
                 Remove
               </button>
             </form>
@@ -82,10 +82,8 @@
         </div>
       </div>
     </div>
-    <% } %>
 
     <!-- Remove bookmark confirmation Modal -->
-    <% for (let i=0; i < savedCountries.length; i++) { %>
     <div class="modal fade" id="removeBookmarkModal<%= i %>" tabindex="-1" aria-labelledby="removeBookmarkModalLabel" aria-hidden="true">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -100,7 +98,7 @@
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
           
           <form action="/removeBookmark" method="post">
-            <input type="hidden" name="remove" value="<%= savedCountries[i+1] %>" />
+            <input type="hidden" name="remove" value="<%= savedCountries[i] %>" />
             <button type="submit" id="removeBookmarkConfirm" class="btn btn-danger">Remove</button>
           </form>
           </div>
