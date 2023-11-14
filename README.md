@@ -83,7 +83,7 @@ Top Level Folders and their Subfolders:
     MONGODB_DATABASE = 'YOUR DATABASE NAME'
     MONGODB_SESSION_SECRET = 'YOUR GUID'
     NODE_SESSION_SECRET = 'YOUR GUID' 
-    OPEN_AI_KEY = 'YOUR OPENAI API KEY'
+    OPENAPI_AI_KEY = 'YOUR OPENAI API KEY'
     UNSPLASH_ACCESSKEY = 'YOUR UNSPLASH API KEY'
     ```
 5. Import under_travelled_countries.csv into the MongoDB database
